@@ -1,2 +1,2 @@
-# resource-client
-资源共享管理系统前端
+# carpooling-client
+拼车系统前端
