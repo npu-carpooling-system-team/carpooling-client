@@ -1,0 +1,17 @@
+html.dark{
+    /* 背景换成深灰色 */
+    background: #202020;
+    /* 设置字体颜色为白色 */
+    color: #fff;
+    .imgBox{
+        // svg图像颜色反转黑变白
+        filter: invert(1);
+    }
+    .header{
+        background: black;
+    }
+    // 所有img与el-img标签下的图片亮度下调
+    img, .el-image__inner{
+        filter: brightness(0.8);
+    }
+}
