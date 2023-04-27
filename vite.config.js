@@ -24,7 +24,7 @@ export default defineConfig({
     ],
     server: {
         port: 7070,
-        // host: '0.0.0.0'
+        host: '0.0.0.0'
     },
     preview: {
         port: 7070

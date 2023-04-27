@@ -1,8 +1,12 @@
 <script setup>
+import {useDark} from '@vueuse/core'
+const isDark = useDark()
 </script>
 
 <template>
-  <h1>Hello World</h1>
+    <van-config-provider :theme="isDark ? 'dark' : 'light'" >
+        <router-view/>
+    </van-config-provider>
 </template>
 
 <style scoped>
