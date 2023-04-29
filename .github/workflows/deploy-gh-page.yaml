@@ -6,8 +6,7 @@ on:
       - main
 
 jobs:
-  build:
-    name: step up pnpm and build and deploy
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
