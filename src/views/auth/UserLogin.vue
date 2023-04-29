@@ -12,11 +12,11 @@
     }
     const validatorPassword = (val) => {
         // 4-16位数字或字母或下划线组合
-        return /^[\w]{4,16}$/.test(val)
+        return /^\w{4,16}$/.test(val)
     }
     const validatorCode = (val) => {
         // 4位纯数字
-        return /^[\d]{4}$/.test(val)
+        return /^\d{4}$/.test(val)
     }
     
     const loginDto = ref({
