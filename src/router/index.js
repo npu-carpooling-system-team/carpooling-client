@@ -26,6 +26,14 @@ const routes = [
         }
     },
     {
+        path: '/privacy',
+        name: 'privacy',
+        component: () => import('../views/common/PrivacyPolicy.vue'),
+        meta: {
+            title: '西工大拼车系统-隐私政策'
+        }
+    },
+    {
         path: '/oauth/alipay/success',
         name: 'oauth-success',
         component: () => import('../views/auth/OAuthSuccess.vue'),
@@ -65,7 +73,9 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login' ||
         to.path === '/register' ||
         to.path === '/oauth/alipay/success' ||
-        to.path === '/oauth/alipay/failure') {
+        to.path === '/oauth/alipay/failure' ||
+        to.path === '/privacy'
+    ) {
         return next()
     }
     const token = Cookies.get('token')

@@ -1,8 +1,13 @@
 <script setup>
     import {ref, watch} from 'vue'
-    import {validatorCode, validatorPersonalId, validatorPhone, validatorRegisterCode} from "@/utils/validatorUtil";
-    import {closeToast, showLoadingToast, showNotify} from "vant";
-    import axios from "@/api";
+    import {validatorCode, validatorPhone, validatorRegisterCode} from '@/utils/validatorUtil'
+    import {closeToast, showLoadingToast, showNotify} from 'vant'
+    import 'vant/es/notify/style'
+    import 'vant/es/toast/style'
+    import axios from '@/api'
+    import {useRouter} from 'vue-router'
+
+    const router = useRouter()
     
     const registerDto = ref({
         username: '',
@@ -159,17 +164,102 @@
                     <van-checkbox name="isPassenger">我希望拼车-乘客</van-checkbox>
                     <van-checkbox name="isDriver">我可以搭人-司机</van-checkbox>
                 </van-checkbox-group>
+                <h5 v-if="showExtraForm">请您补充以下信息</h5>
+                <van-uploader v-if="showExtraForm"  style="width: 60%; margin: 0 auto;">
+                    <van-button plain block type="primary" size="small">
+                        拍摄您的身份证-正面-以自动识别
+                    </van-button>
+                </van-uploader>
+                <van-uploader v-if="showExtraForm"  style="width: 60%; margin: 1% auto;">
+                    <van-button plain block type="primary" size="small">
+                        拍摄您的身份证-背面-以自动识别
+                    </van-button>
+                </van-uploader>
                 <van-field
                     v-if="showExtraForm"
                     v-model="registerDto.driversPersonalId"
                     center
+                    disabled
                     clearable
                     label="身份证号"
-                    placeholder="请输入您的身份证号"
-                    :rules="[{validator: validatorPersonalId, message: '请输入正确的身份证号'}]"
+                    placeholder="该位置会被自动填充"
+                />
+                <van-field
+                    v-if="showExtraForm"
+                    v-model="registerDto.driversName"
+                    center
+                    disabled
+                    clearable
+                    label="真实姓名"
+                    placeholder="该位置会被自动填充"
+                />
+                <van-uploader v-if="showExtraForm"  style="width: 60%; margin: 1% auto;">
+                    <van-button plain block type="primary" size="small">
+                        拍摄您的驾驶证-主页-以自动识别
+                    </van-button>
+                </van-uploader>
+                <van-field
+                    v-if="showExtraForm"
+                    v-model="registerDto.driversLicenseNo"
+                    center
+                    disabled
+                    clearable
+                    label="驾驶证号"
+                    placeholder="该位置会被自动填充"
+                />
+                <van-field
+                    v-if="showExtraForm"
+                    v-model="registerDto.driversLicenseType"
+                    center
+                    disabled
+                    clearable
+                    label="准驾类型"
+                    placeholder="该位置会被自动填充"
+                />
+                <van-uploader v-if="showExtraForm"  style="width: 60%; margin: 1% auto;">
+                    <van-button plain block type="primary" size="small">
+                        拍摄您的行驶证-主页-以自动识别
+                    </van-button>
+                </van-uploader>
+                <van-uploader v-if="showExtraForm"  style="width: 60%; margin: 1% auto;">
+                    <van-button plain block type="primary" size="small">
+                        拍摄您的行驶证-副页-以自动识别
+                    </van-button>
+                </van-uploader>
+                <van-field
+                    v-if="showExtraForm"
+                    v-model="registerDto.driversPlateNo"
+                    center
+                    disabled
+                    clearable
+                    label="车牌号"
+                    placeholder="该位置会被自动填充"
+                />
+                <van-field
+                    v-if="showExtraForm"
+                    v-model="registerDto.driversVehicleType"
+                    center
+                    disabled
+                    clearable
+                    label="车牌号"
+                    placeholder="该位置会被自动填充"
+                />
+                <van-field
+                    v-if="showExtraForm"
+                    v-model="registerDto.driversExpireDate"
+                    center
+                    disabled
+                    clearable
+                    label="证照最早过期时间"
+                    placeholder="该位置会被自动填充"
                 />
             </van-cell-group>
-
+            
+            <p>
+                <a>您确认注册则代表您认可我们的</a>
+                <a style="color: #5CA0FF" @click="router.push('/privacy')">隐私政策</a>
+            </p>
+            
             <div class="submit-login-btn">
                 <van-button plain block type="primary" native-type="submit">
                     注册
@@ -181,6 +271,9 @@
 
 <style lang="less" scoped>
     .register-form{
+        .title{
+            margin-top:5%;
+        }
         width: 100%;
         height: 100%;
         text-align: center;
@@ -190,7 +283,7 @@
         }
         .submit-login-btn{
             width: 40%;
-            margin: 5% auto 1%;
+            margin: 5% auto 5%;
         }
     }
 </style>
