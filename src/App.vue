@@ -4,10 +4,14 @@ const isDark = useDark()
 </script>
 
 <template>
-    <van-config-provider :theme="isDark ? 'dark' : 'light'" >
+    <van-config-provider class="config-provider" :theme="isDark ? 'dark' : 'light'" >
         <router-view/>
     </van-config-provider>
 </template>
 
 <style scoped>
+    .config-provider{
+        width: 100%;
+        height: 100%;
+    }
 </style>

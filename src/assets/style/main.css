@@ -10,34 +10,13 @@ html,body,#app{
 
     /*color-scheme: light dark;*/
     /*color: rgba(255, 255, 255, 0.87);*/
-    /*background-color: #242424;*/
+    background-color: #ebedf0;
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
-}
-
-.imgBox{
-    /*将黑色svg图标变成#409EFF*/
-    filter: invert(0.5) sepia(1) saturate(3) hue-rotate(180deg);
-}
-
-/* 设置el-dialog的上下左右居中 由于dialog挂载在body上,所以scoped的样式对其无效,需要设置全局样式 */
-.el-dialog {
-    display: flex;
-    flex-direction: column;
-    margin: 0 !important;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.el-dialog .el-dialog__body {
-    flex: 1;
-    overflow: auto;
 }
 
 /**

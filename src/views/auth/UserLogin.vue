@@ -1,23 +1,15 @@
 <script setup>
     import {ref} from 'vue'
+    import {useRouter} from 'vue-router'
     import axios from '../../api/index.js'
     import {encrypt} from '@/utils/jsencrypt'
     import Cookies from 'js-cookie'
     import {showLoadingToast, closeToast, showNotify} from 'vant'
     import 'vant/es/notify/style'
     import 'vant/es/toast/style'
-    
-    const validatorPhone = (val) => {
-        return /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/.test(val)
-    }
-    const validatorPassword = (val) => {
-        // 4-16位数字或字母或下划线组合
-        return /^\w{4,16}$/.test(val)
-    }
-    const validatorCode = (val) => {
-        // 4位纯数字
-        return /^\d{4}$/.test(val)
-    }
+    import {validatorCode, validatorPassword, validatorPhone} from "@/utils/validatorUtil";
+
+    const router = useRouter()
     
     const loginDto = ref({
         username: '',
@@ -31,7 +23,7 @@
     // 开始登录流程
     const preCheckFailed = () => {
         showNotify({ type: 'danger', message: '表单校验未通过,请检查输入' })
-        // 重新设置form-box的高度到60%
+        // 重新设置form-box的高度到50%
         const formBox = document.getElementById('form-box')
         formBox.style.height = '50%'
     }
@@ -50,6 +42,7 @@
             const resp = await axios.post('/api/auth/login/password', passwordLoginDto)
             if (resp.data.code !== null && resp.data.code === 2000){
                 Cookies.set('token', resp.data.result.token)
+                await router.push('/main')
             } else {
                 showNotify({ type: 'danger', message: '用户名密码登录未通过,请检查输入' });
             }
@@ -113,6 +106,7 @@
             const resp = await axios.post('/api/auth/login/phone', codeLoginDto)
             if (resp.data.code !== null && resp.data.code === 2000){
                 Cookies.set('token', resp.data.result.token)
+                await router.push('/main')
             } else {
                 showNotify({ type: 'danger', message: '用户名短信登录未通过,请检查输入' });
             }
@@ -123,12 +117,16 @@
         }
     }
     
-    const jumpToAlipay = async () => {
-        await window.location.replace(`https://openauth.alipaydev.com/oauth2/publicAppAuthorize.htm?` +
+    const jumpToAlipay = () => {
+        window.location.replace(`https://openauth.alipaydev.com/oauth2/publicAppAuthorize.htm?` +
             `app_id=${import.meta.env.VITE_ALIPAY_SANDBOX_APP_ID}` +
             `scope=${import.meta.env.VITE_ALIPAY_SANDBOX_LOGIN_SCOPE}` +
             `redirect_uri=${import.meta.env.VITE_ALIPAY_SANDBOX_LOGIN_REDIRECT_URI}`
         )
+    }
+    
+    const jumpToRegister = async () => {
+        await router.push('/register')
     }
 </script>
 
@@ -176,6 +174,7 @@
                         label="密码"
                         type="password"
                         placeholder="请输入密码"
+                        autocomplete="off"
                         :rules="[{ validator: validatorPassword, message: '应为4-16位数字/字母/下划线' }]"
                     />
                 </van-cell-group>
@@ -214,7 +213,7 @@
                     <van-button plain block type="primary" native-type="submit">
                         登录
                     </van-button>
-                    <van-button plain block type="success">
+                    <van-button plain block type="success" @click="jumpToRegister()">
                         新账号注册
                     </van-button>
                 </div>
@@ -222,7 +221,8 @@
 
             <img
                 @click="jumpToAlipay()"
-                class="alipay-icon" src="../../assets/imgs/alipayLogo.png" alt="支付宝登录"/>
+                class="alipay-icon" src="../../assets/imgs/alipayLogo.png" alt="支付宝登录"
+            />
         </div>
     </div>
 </template>

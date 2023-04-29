@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     name: step up pnpm and build and deploy
     runs-on: ubuntu-latest
     steps:
