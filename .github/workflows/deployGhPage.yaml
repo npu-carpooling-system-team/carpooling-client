@@ -6,7 +6,6 @@ on:
       - main
 
 jobs:
-  cache-and-install:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,10 +38,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-  deploy-gh-pages:
-    runs-on: ubuntu-latest
-    needs: cache-and-install
-    steps:
       - name: Install dependencies
         run: pnpm install
 

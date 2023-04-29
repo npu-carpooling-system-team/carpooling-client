@@ -8,6 +8,8 @@ import { VantResolver } from 'unplugin-vue-components/resolvers'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    base: './',
+    publicDir: 'public',
     plugins: [
         vue(),
         // 启用顶级js文件中的await
@@ -29,7 +31,6 @@ export default defineConfig({
     preview: {
         port: 7070
     },
-    base: './',
     build: {
         // 构建打包时规范js文件大小
         chunkSizeWarningLimit:500,
@@ -37,7 +38,6 @@ export default defineConfig({
             output:{
                 manualChunks(id) {
                     if (id.includes('node_modules')) {
-
                         return id.toString().split('node_modules/')[1].split('/')[0].toString();
                     }
                 }

@@ -141,7 +141,7 @@
                 round
                 width="80%"
                 height="80%"
-                src="../../public/carpooling.svg"
+                src="/carpooling.svg"
             />
         </div>
         <div class="form-box" id="form-box">
