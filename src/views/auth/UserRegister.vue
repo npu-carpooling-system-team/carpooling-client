@@ -1,6 +1,6 @@
 <script setup>
     import {ref, watch} from 'vue'
-    import {validatorCode, validatorPhone, validatorRegisterCode} from "@/utils/validatorUtil";
+    import {validatorCode, validatorPersonalId, validatorPhone, validatorRegisterCode} from "@/utils/validatorUtil";
     import {closeToast, showLoadingToast, showNotify} from "vant";
     import axios from "@/api";
     
@@ -164,6 +164,7 @@
                     clearable
                     label="身份证号"
                     placeholder="请输入您的身份证号"
+                    :rules="[{validator: validatorPersonalId, message: '请输入正确的身份证号'}]"
                 />
             </van-cell-group>
 
