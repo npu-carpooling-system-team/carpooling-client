@@ -9,7 +9,7 @@ const isDark = useDark()
     </van-config-provider>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
     .config-provider{
         width: 100%;
         height: 100%;

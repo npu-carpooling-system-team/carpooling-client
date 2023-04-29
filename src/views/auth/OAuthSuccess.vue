@@ -41,7 +41,7 @@
     </div>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
     .welcome-banner{
         // 上下左右居中
         display: flex;

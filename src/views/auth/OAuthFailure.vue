@@ -4,5 +4,5 @@
 <template>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 </style>

@@ -71,12 +71,14 @@
     watch(role, (newValue) => {
         showExtraForm.value = !!newValue.includes('isDriver');
     })
+    
+    const onSubmit = () => {}
 </script>
 
 <template>
     <div class="register-form">
         <h3 class="title">西工大拼车平台——注册</h3>
-        <van-form @submit="onSubmit">
+        <van-form @submit="onSubmit()">
             <van-cell-group inset style="padding: 1%;">
                 <van-field
                     v-model="registerDto.username"
@@ -177,7 +179,7 @@
     </div>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
     .register-form{
         width: 100%;
         height: 100%;
