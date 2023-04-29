@@ -1,7 +1,7 @@
 <script setup>
     import {ref} from 'vue'
     import axios from '../../api/index.js'
-    import {encrypt} from '../../utils/jsencrypt'
+    import {encrypt} from '@/utils/jsencrypt'
     import Cookies from 'js-cookie'
     import {showLoadingToast, closeToast, showNotify} from 'vant'
     import 'vant/es/notify/style'
