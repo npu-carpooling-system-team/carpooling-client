@@ -1,22 +1,22 @@
 import ocr_api20210707, * as $ocr_api20210707 from '@alicloud/ocr-api20210707'
 import * as $OpenApi from '@alicloud/openapi-client'
+import axios from '../api'
 import Util, * as $Util from '@alicloud/tea-util'
-import axios from '@/api'
 
 const token = await axios.get(import.meta.env.VITE_OCR_STS_URL)
 
 const config = new $OpenApi.Config({
     accessKeyId: token.data.AccessKeyId,
     accessKeySecret: token.data.AccessKeySecret,
-    securityToken: token.data.SecurityToken,
 })
 config.endpoint = `ocr-api.cn-hangzhou.aliyuncs.com`;
 
 const client = new ocr_api20210707(config)
 
-export const scanIdCard = async (picUrl) => {
-    let recognizeIdCardRequest = new $ocr_api20210707.RecognizeIdcardRequest({
-        url: picUrl,
+export const scanIdCard = async (file) => {
+    let recognizeIdCardRequest =
+        new $ocr_api20210707.RecognizeIdcardRequest({
+        body: file,
         outputQualityInfo: true,
         outputFigure: true,
     })

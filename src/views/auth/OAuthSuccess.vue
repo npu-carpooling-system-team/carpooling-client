@@ -37,7 +37,7 @@
 
 <template>
     <div class="welcome-banner">
-        <h1>登陆成功,3s后执行跳转</h1>
+        <h1>正在处理登录信息</h1>
     </div>
 </template>
 
