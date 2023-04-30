@@ -119,8 +119,8 @@
     
     const jumpToAlipay = () => {
         window.location.replace(`https://openauth.alipaydev.com/oauth2/publicAppAuthorize.htm?` +
-            `app_id=${import.meta.env.VITE_ALIPAY_SANDBOX_APP_ID}` +
-            `scope=${import.meta.env.VITE_ALIPAY_SANDBOX_LOGIN_SCOPE}` +
+            `app_id=${import.meta.env.VITE_ALIPAY_SANDBOX_APP_ID}&` +
+            `scope=${import.meta.env.VITE_ALIPAY_SANDBOX_LOGIN_SCOPE}&` +
             `redirect_uri=${import.meta.env.VITE_ALIPAY_SANDBOX_LOGIN_REDIRECT_URI}`
         )
     }

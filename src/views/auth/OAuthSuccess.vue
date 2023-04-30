@@ -19,19 +19,19 @@
             setTimeout(() => {
                 router.push('/login')
             }, 3000)
+        } else {
+            // 设置Cookies
+            Cookies.set('token', token)
+            // 展示正确登录的提醒
+            showNotify({
+                type: 'success',
+                message: '登录成功,3s后执行跳转',
+                duration: 3000
+            })
+            setTimeout(() => {
+                router.push('/main')
+            }, 3000)
         }
-        // 设置Cookies
-        Cookies.set('token', token)
-        router.push('/main')
-        // 展示正确登录的提醒
-        showNotify({
-            type: 'success',
-            message: '登录成功,3s后执行跳转',
-            duration: 3000
-        })
-        setTimeout(() => {
-            router.push('/main')
-        }, 3000)
     })
 </script>
 
