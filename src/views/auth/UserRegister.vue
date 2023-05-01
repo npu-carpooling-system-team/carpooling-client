@@ -6,7 +6,7 @@
     import 'vant/es/toast/style'
     import axios from '@/api'
     import {useRouter} from 'vue-router'
-    import {scanIdCard} from "@/utils/ocrUtil";
+    import {scanDrivingLicense, scanIdCard, scanVehicleLicense} from '@/utils/ocrUtil'
 
     const router = useRouter()
     
@@ -35,6 +35,10 @@
     const smsLoadingText = ref('')
 
     const sendSms = async () => {
+        if (!validatorPhone(registerDto.value.username)){
+            showNotify({ type: 'danger', message: '手机号格式不正确' });
+            return
+        }
         showLoadingToast({
             duration: 0,
             forbidClick: true,
@@ -73,6 +77,12 @@
     
     const confirmSms = async() => {
         confirmSmsDto.value.phone = registerDto.value.username
+        if (!validatorCode(confirmSmsDto.value.code) ||
+            !validatorPhone(confirmSmsDto.value.phone)
+        ){
+            showNotify({ type: 'danger', message: '格式不正确' });
+            return
+        }
         showLoadingToast({
             duration: 0,
             forbidClick: true,
@@ -106,6 +116,10 @@
     const mailLoadingText = ref('')
     
     const sendMail = async () => {
+        if (!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(registerDto.value.email)){
+            showNotify({ type: 'danger', message: '邮箱格式不正确' });
+            return
+        }
         showLoadingToast({
             duration: 0,
             forbidClick: true,
@@ -142,6 +156,11 @@
     
     const confirmMail = async () => {
         confirmMailDto.value.mail = registerDto.value.email
+        if(!validatorCode(confirmMailDto.value.code) ||
+            /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(confirmMailDto.value.code)){
+            showNotify({ type: 'danger', message: '格式不正确' });
+            return
+        }
         showLoadingToast({
             duration: 0,
             forbidClick: true,
@@ -168,9 +187,186 @@
     const showExtraForm = ref(false)
     
     // 进入司机专属部分
+    
+    // 身份证正反写是因为JSON解析有那么点问题 找不出face和back
     const resolveIdCardFront = async (file) => {
-        const resp = await scanIdCard(file)
-        console.log(resp)
+        // 大于10M则禁止识别
+        if (file.content.size > 10 * 1024 * 1024) {
+            showNotify({ type: 'danger', message: '文件大小不能超过10M' });
+            return
+        }
+        // 开始转圈
+        showLoadingToast({
+            duration: 0,
+            forbidClick: true,
+            message: '正在识别身份证',
+        })
+        try {
+            const {data} = await scanIdCard(file)
+            if(data.code === 2000){
+                // 进一步解析
+                const resolveResult = JSON.parse(data.data)
+                if(resolveResult.data.face !== null) {
+                    const face = resolveResult.data.face
+                    // 正面
+                    if (face.warning.isCopy !== 0 || face.warning.isReshoot !== 0){
+                        showNotify({ type: 'danger', message: '识别到翻拍或复制。请识别原件身份证' });
+                        return
+                    }
+                    registerDto.value.driversName = face.data.name
+                    registerDto.value.driversPersonalId = face.data.idNumber
+                } else{
+                    showNotify({ type: 'danger', message: '身份证识别失败,请重试' });
+                }
+            } else {
+                showNotify({ type: 'danger', message: `身份证识别失败,${data.msg},请重试` });
+            }
+        } catch (e) {
+            showNotify({ type: 'danger', message: `服务器异常${e},请通知管理员` });
+        } finally {
+            closeToast();
+        }
+    }
+
+    const resolveIdCardBack = async (file) => {
+        // 大于10M则禁止识别
+        if (file.content.size > 10 * 1024 * 1024) {
+            showNotify({ type: 'danger', message: '文件大小不能超过10M' });
+            return
+        }
+        // 开始转圈
+        showLoadingToast({
+            duration: 0,
+            forbidClick: true,
+            message: '正在识别身份证',
+        })
+        try {
+            const {data} = await scanIdCard(file)
+            if(data.code === 2000){
+                // 进一步解析
+                const resolveResult = JSON.parse(data.data)
+                if(resolveResult.data.back !== null){
+                    const back = resolveResult.data.back
+                    // 反面
+                    if (back.warning.isCopy !== 0 || back.warning.isReshoot !== 0){
+                        showNotify({ type: 'danger', message: '识别到翻拍或复制。请识别原件身份证' });
+                        return
+                    }
+                    // data.validPeriod 2022.12.16-2032.12.16
+                    // 取出后面那个2032.12.16并改写成yyyy-MM-dd
+                    if (back.data.validPeriod.split('-')[1] === '长期'){
+                        // 给一个很远很远的日子
+                        back.data.validPeriod = '2999-12-31'
+                    } else {
+                        registerDto.value.driversExpireDate =
+                            back.data.validPeriod.split('-')[1]
+                                .replace(/(\d{4})\.(\d{2})\.(\d{2})/, '$1-$2-$3')
+                    }
+                } else {
+                    showNotify({ type: 'danger', message: '请识别身份证反面' });
+                }
+            } else {
+                showNotify({ type: 'danger', message: `身份证识别失败,${data.msg},请重试` });
+            }
+        } catch (e) {
+            showNotify({ type: 'danger', message: `服务器异常${e},请通知管理员` });
+        } finally {
+            closeToast();
+        }
+    }
+    
+    const resolveDrivingLicense = async (file) => {
+        // 大于10M则禁止识别
+        if (file.content.size > 10 * 1024 * 1024) {
+            showNotify({ type: 'danger', message: '文件大小不能超过10M' });
+            return
+        } else if(registerDto.value.driversName === ''){
+            showNotify({ type: 'danger', message: '请先识别身份证信息' });
+        }
+        // 开始转圈
+        showLoadingToast({
+            duration: 0,
+            forbidClick: true,
+            message: '正在识别驾驶证',
+        })
+        try{
+            const {data} = await scanDrivingLicense(file)
+            if (data.code === 2000){
+                // 进一步解析
+                const resolveResult = JSON.parse(data.data)
+                if(resolveResult.data.face !== null) {
+                    if (resolveResult.data.face.data.name !== registerDto.value.driversName
+                        || resolveResult.data.face.data.licenseNumber !== registerDto.value.driversPersonalId
+                    ){
+                        showNotify({ type: 'danger', message: '驾驶证与身份证所属人不一致,请更新材料' });
+                        return
+                    }
+                    registerDto.value.driversLicenseNo = resolveResult.data.face.data.licenseNumber
+                    registerDto.value.driversLicenseType = resolveResult.data.face.data.approvedType
+                    // resolveResult.data.face.data.validPeriod 2021-07-28至2027-07-28 取出2027-07-28
+                    const licenseExpireDate = resolveResult.data.face.data.validPeriod.split('至')[1]
+                    // 比较registerDto.value.driversExpireDate 与 licenseExpireDate
+                    // 哪个先到就取哪个
+                    if (registerDto.value.driversExpireDate === ''){
+                        registerDto.value.driversExpireDate = licenseExpireDate
+                    } else {
+                        registerDto.value.driversExpireDate =
+                            registerDto.value.driversExpireDate > licenseExpireDate ?
+                                licenseExpireDate : registerDto.value.driversExpireDate
+                    }
+                } else {
+                    showNotify({ type: 'danger', message: '驾驶证识别失败,请重试' });
+                }
+            } else {
+                showNotify({ type: 'danger', message: `驾驶证识别失败,${data.msg},请重试` });
+            }
+        } catch (e) {
+            showNotify({ type: 'danger', message: `服务器异常${e},请通知管理员` });
+        } finally {
+            closeToast();
+        }
+    }
+    
+    const resolveVehicleLicenseFront = async (file) => {
+        // 大于10M则禁止识别
+        if (file.content.size > 10 * 1024 * 1024) {
+            showNotify({ type: 'danger', message: '文件大小不能超过10M' });
+            return
+        }
+        // 开始转圈
+        showLoadingToast({
+            duration: 0,
+            forbidClick: true,
+            message: '正在识别行驶证',
+        })
+        try{
+            const {data} = await scanVehicleLicense(file)
+            if (data.code === 2000){
+                // 进一步解析
+                const resolveResult = JSON.parse(data.data)
+                if(resolveResult.data.face !== null) {
+                    if(import.meta.env.VITE_NODE_ENV==='production' &&
+                        resolveResult.data.face.data.owner !== registerDto.value.driversName
+                    ){
+                        showNotify({ type: 'danger',
+                            message: '行驶证与身份证所属人不一致或身份信息为空,请更新材料' });
+                        return
+                    } else if(resolveResult.data.face.data.useNature !== '非营运'){
+                        showNotify({ type: 'warning', message: '行驶证非营运,我们建议您更新材料' });
+                    }
+                    registerDto.value.driversPlateNo =
+                        resolveResult.data.face.data.licensePlateNumber
+                    registerDto.value.driversVehicleType =
+                        resolveResult.data.face.data.model + " " + resolveResult.data.face.data.vehicleType
+                }
+                } else {
+                    showNotify({ type: 'danger', message: '行驶证识别失败,请重试' });
+                }
+        } catch (e) {
+            showNotify({ type: 'danger', message: `服务器异常${e},请通知管理员` });
+        } finally {
+            closeToast();
+        }
     }
     
     // 监听role的值 如果role数组中包含了isDriver则增加额外的表单
@@ -277,7 +473,7 @@
                         拍摄您的身份证-正面-以自动识别
                     </van-button>
                 </van-uploader>
-                <van-uploader v-if="showExtraForm" style="width: 60%; margin: 1% auto;">
+                <van-uploader v-if="showExtraForm" style="width: 60%; margin: 1% auto;" :after-read="resolveIdCardBack">
                     <van-button plain block type="primary" size="small">
                         拍摄您的身份证-背面-以自动识别
                     </van-button>
@@ -300,7 +496,7 @@
                     label="真实姓名"
                     placeholder="该位置会被自动填充"
                 />
-                <van-uploader v-if="showExtraForm" style="width: 60%; margin: 1% auto;">
+                <van-uploader v-if="showExtraForm" style="width: 60%; margin: 1% auto;" :after-read="resolveDrivingLicense">
                     <van-button plain block type="primary" size="small">
                         拍摄您的驾驶证-主页-以自动识别
                     </van-button>
@@ -323,7 +519,7 @@
                     label="准驾类型"
                     placeholder="该位置会被自动填充"
                 />
-                <van-uploader v-if="showExtraForm"  style="width: 60%; margin: 1% auto;">
+                <van-uploader v-if="showExtraForm"  style="width: 60%; margin: 1% auto;" :after-read="resolveVehicleLicenseFront">
                     <van-button plain block type="primary" size="small">
                         拍摄您的行驶证-主页-以自动识别
                     </van-button>
@@ -348,7 +544,9 @@
                     center
                     disabled
                     clearable
-                    label="车牌号"
+                    autosize
+                    type="textarea"
+                    label="车型"
                     placeholder="该位置会被自动填充"
                 />
                 <van-field
@@ -371,6 +569,9 @@
                 <van-button plain block type="primary" native-type="submit">
                     注册
                 </van-button>
+                <van-button plain block type="success" @click="router.push('/login')">
+                    返回登录页
+                </van-button>
             </div>
         </van-form>
     </div>
@@ -389,8 +590,12 @@
             justify-content: space-around;
         }
         .submit-login-btn{
-            width: 40%;
+            display: flex;
+            justify-content: space-around;
             margin: 5% auto 5%;
+            .van-button{
+                width: 40%;
+            }
         }
     }
 </style>

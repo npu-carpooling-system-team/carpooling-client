@@ -1,18 +1,6 @@
 lockfileVersion: '6.0'
 
 dependencies:
-  '@alicloud/ocr-api20210707':
-    specifier: ^1.1.13
-    version: 1.1.13
-  '@alicloud/openapi-client':
-    specifier: ^0.4.5
-    version: 0.4.5
-  '@alicloud/tea-util':
-    specifier: ^1.4.5
-    version: 1.4.5
-  '@esbuild-plugins/node-modules-polyfill':
-    specifier: ^0.2.2
-    version: 0.2.2(esbuild@0.17.18)
   '@vueuse/core':
     specifier: ^10.1.0
     version: 10.1.0(vue@3.2.47)
@@ -22,9 +10,6 @@ dependencies:
   axios:
     specifier: ^1.4.0
     version: 1.4.0
-  events:
-    specifier: ^3.3.0
-    version: 3.3.0
   js-cookie:
     specifier: ^3.0.5
     version: 3.0.5
@@ -43,9 +28,6 @@ dependencies:
   pinia:
     specifier: ^2.0.35
     version: 2.0.35(vue@3.2.47)
-  rollup-plugin-node-polyfills:
-    specifier: ^0.2.1
-    version: 0.2.1
   vant:
     specifier: ^4.2.0
     version: 4.2.0(vue@3.2.47)
@@ -60,9 +42,6 @@ dependencies:
     version: 4.1.6(vue@3.2.47)
 
 devDependencies:
-  '@esbuild-plugins/node-globals-polyfill':
-    specifier: ^0.2.3
-    version: 0.2.3(esbuild@0.17.18)
   '@vitejs/plugin-vue':
     specifier: ^4.2.1
     version: 4.2.1(vite@4.3.3)(vue@3.2.47)
@@ -80,99 +59,6 @@ devDependencies:
     version: 4.3.3(less@4.1.3)
 
 packages:
-
-  /@alicloud/credentials@2.2.6:
-    resolution: {integrity: sha512-jG+msY77dHmAF3x+8VTy7fEgORyXLHmDci8t92HeipBdCHsPptDegA++GEwKgR7f6G4wvafYt+aqMZ1iligdrQ==}
-    dependencies:
-      '@alicloud/tea-typescript': 1.8.0
-      httpx: 2.2.7
-      ini: 1.3.8
-      kitx: 2.1.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /@alicloud/endpoint-util@0.0.1:
-    resolution: {integrity: sha512-+pH7/KEXup84cHzIL6UJAaPqETvln4yXlD9JzlrqioyCSaWxbug5FUobsiI6fuUOpw5WwoB3fWAtGbFnJ1K3Yg==}
-    dependencies:
-      '@alicloud/tea-typescript': 1.8.0
-      kitx: 2.1.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /@alicloud/gateway-spi@0.0.8:
-    resolution: {integrity: sha512-KM7fu5asjxZPmrz9sJGHJeSU+cNQNOxW+SFmgmAIrITui5hXL2LB+KNRuzWmlwPjnuA2X3/keq9h6++S9jcV5g==}
-    dependencies:
-      '@alicloud/credentials': 2.2.6
-      '@alicloud/tea-typescript': 1.8.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /@alicloud/ocr-api20210707@1.1.13:
-    resolution: {integrity: sha512-8TW4oENnfhxJjW22tlW/PIfziv997AOKI7QQYOHDh7rqYHLnNFXoy9eMfT2zQcMryTdVX3CUvEWga9LCYNYF2w==}
-    dependencies:
-      '@alicloud/endpoint-util': 0.0.1
-      '@alicloud/openapi-client': 0.4.5
-      '@alicloud/openapi-util': 0.3.1
-      '@alicloud/tea-typescript': 1.8.0
-      '@alicloud/tea-util': 1.4.5
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /@alicloud/openapi-client@0.4.5:
-    resolution: {integrity: sha512-x1blwhfPOVkH/JCLWFssFRWDL0C75RToun9AwhNV+84gqJB2/GUipm3quHGLon8JiQ0DQ9YBUho2rukSoAvhJQ==}
-    dependencies:
-      '@alicloud/credentials': 2.2.6
-      '@alicloud/gateway-spi': 0.0.8
-      '@alicloud/openapi-util': 0.3.1
-      '@alicloud/tea-typescript': 1.8.0
-      '@alicloud/tea-util': 1.4.5
-      '@alicloud/tea-xml': 0.0.2
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /@alicloud/openapi-util@0.3.1:
-    resolution: {integrity: sha512-6mGT+hs+SXismZi/CEkjPhhbn2U3qTT/Qv/RXAYFA1DC3Jk4/YaX3N7RtpgdzOhdD7uI8XtNkaULKHZY3BrtxQ==}
-    dependencies:
-      '@alicloud/tea-typescript': 1.8.0
-      '@alicloud/tea-util': 1.4.5
-      kitx: 2.1.0
-      sm3: 1.0.3
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /@alicloud/tea-typescript@1.8.0:
-    resolution: {integrity: sha512-CWXWaquauJf0sW30mgJRVu9aaXyBth5uMBCUc+5vKTK1zlgf3hIqRUjJZbjlwHwQ5y9anwcu18r48nOZb7l2QQ==}
-    dependencies:
-      '@types/node': 12.20.55
-      httpx: 2.2.7
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /@alicloud/tea-util@1.4.5:
-    resolution: {integrity: sha512-7NuThYUi90/ivT/ORKusm0NVKlc1khPTtlzTR77xEqSBt7d24Ee/Lo70hx9PWP28nHpIZ1gM0NKYBtpq7HUDlg==}
-    dependencies:
-      '@alicloud/tea-typescript': 1.8.0
-      kitx: 2.1.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /@alicloud/tea-xml@0.0.2:
-    resolution: {integrity: sha512-Xs7v5y7YSNSDDYmiDWAC0/013VWPjS3dQU4KezSLva9VGiTVPaL3S7Nk4NrTmAYCG6MKcrRj/nGEDIWL5KRoPg==}
-    dependencies:
-      '@alicloud/tea-typescript': 1.8.0
-      '@types/xml2js': 0.4.11
-      xml2js: 0.4.23
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /@antfu/utils@0.7.2:
     resolution: {integrity: sha512-vy9fM3pIxZmX07dL+VX1aZe7ynZ+YyB0jY+jE6r3hOK6GNY2t6W8rzpFC4tgpbXUYABkFQwgJq2XYXlxbXAI0g==}
@@ -200,24 +86,6 @@ packages:
       '@babel/helper-string-parser': 7.21.5
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: 2.0.0
-
-  /@esbuild-plugins/node-globals-polyfill@0.2.3(esbuild@0.17.18):
-    resolution: {integrity: sha512-r3MIryXDeXDOZh7ih1l/yE9ZLORCd5e8vWg02azWRGj5SPTuoh69A2AIyn0Z31V/kHBfZ4HgWJ+OK3GTTwLmnw==}
-    peerDependencies:
-      esbuild: '*'
-    dependencies:
-      esbuild: 0.17.18
-    dev: true
-
-  /@esbuild-plugins/node-modules-polyfill@0.2.2(esbuild@0.17.18):
-    resolution: {integrity: sha512-LXV7QsWJxRuMYvKbiznh+U1ilIop3g2TeKRzUxOG5X3YITc8JyyTa90BmLwqqv0YnX4v32CSlG+vsziZp9dMvA==}
-    peerDependencies:
-      esbuild: '*'
-    dependencies:
-      esbuild: 0.17.18
-      escape-string-regexp: 4.0.0
-      rollup-plugin-node-polyfills: 0.2.1
-    dev: false
 
   /@esbuild/android-arm64@0.17.18:
     resolution: {integrity: sha512-/iq0aK0eeHgSC3z55ucMAHO05OIqmQehiGay8eP5l/5l+iEr4EIbh4/MI8xD9qRFjqzgkc0JkX0LculNC9mXBw==}
@@ -679,26 +547,12 @@ packages:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: false
 
-  /@types/node@12.20.55:
-    resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
-    dev: false
-
-  /@types/node@14.18.43:
-    resolution: {integrity: sha512-n3eFEaoem0WNwLux+k272P0+aq++5o05bA9CfiwKPdYPB5ZambWKdWoeHy7/OJiizMhzg27NLaZ6uzjLTzXceQ==}
-    dev: false
-
   /@types/node@18.16.3:
     resolution: {integrity: sha512-OPs5WnnT1xkCBiuQrZA4+YAV4HEJejmHneyraIaxsbev5yCEr6KMwINNFP9wQeFIw8FWcoTqF3vQsa5CDaI+8Q==}
     dev: false
 
   /@types/web-bluetooth@0.0.16:
     resolution: {integrity: sha512-oh8q2Zc32S6gd/j50GowEjKLoOVOwHP/bWVjKJInBwQqdOYMdPrf1oVlelTlyfFK3CKxL1uahMDAr+vy8T7yMQ==}
-    dev: false
-
-  /@types/xml2js@0.4.11:
-    resolution: {integrity: sha512-JdigeAKmCyoJUiQljjr7tQG3if9NkqGUgwEUqBvV0N7LM4HyQk7UXCnusRa1lnvXAEYJ8mw8GtZWioagNztOwA==}
-    dependencies:
-      '@types/node': 18.16.3
     dev: false
 
   /@vant/popperjs@1.3.0:
@@ -1422,6 +1276,7 @@ packages:
   /escape-string-regexp@4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
+    dev: true
 
   /escodegen@1.14.3:
     resolution: {integrity: sha512-qFcX0XJkdg+PB3xjZZG/wKSuT1PnQWx57+TVSjIMmILd2yC/6ByYElPwJnslDsuWuSAp4AwJGumarAAmJch5Kw==}
@@ -1560,10 +1415,6 @@ packages:
   /estraverse@5.3.0:
     resolution: {integrity: sha512-MMdARuVEQziNTeJD8DgMqmhwR11BRQ/cBP+pLtYdSTnf3MIO8fFeiINEbX36ZdNlfU/7A9f3gUw49B3oQsvwBA==}
     engines: {node: '>=4.0'}
-
-  /estree-walker@0.6.1:
-    resolution: {integrity: sha512-SqmZANLWS0mnatqbSfRP5g8OXZC12Fgg1IwNtLsyHDzJizORW4khDfjPqJZsemPWBB2uqykUah5YpQ6epsqC/w==}
-    dev: false
 
   /estree-walker@2.0.2:
     resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
@@ -1836,15 +1687,6 @@ packages:
       - supports-color
     dev: false
 
-  /httpx@2.2.7:
-    resolution: {integrity: sha512-Wjh2JOAah0pdczfqL8NC5378G7jMt0Zcpn8U+yyxAiejjlagzSTQgJHuVvka2VNPQlKfoGehYRc79WKq9E4gDw==}
-    dependencies:
-      '@types/node': 14.18.43
-      debug: 4.3.4
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /humanize-ms@1.2.1:
     resolution: {integrity: sha512-Fl70vYtsAFb/C06PTS9dZBo7ihau+Tu/DNCk/OyHhea07S+aeMWpFFkUaXRa8fI+ScZbEI8dfSxwY7gxZ9SAVQ==}
     dependencies:
@@ -1898,10 +1740,6 @@ packages:
 
   /inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
-
-  /ini@1.3.8:
-    resolution: {integrity: sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==}
-    dev: false
 
   /ip@1.1.8:
     resolution: {integrity: sha512-PuExPYUiu6qMBQb4l06ecm6T6ujzhmh+MeJcW9wa89PoAz5pvd4zPgN5WJV104mb6S2T1AwNIAaB70JNrLQWhg==}
@@ -2036,12 +1874,6 @@ packages:
     resolution: {integrity: sha512-OYWlK0j+roh+eyaMROlNbS5cd5R25Y+IUpdl7cNdB8HNrkgwQzIS7L9MegxOiWNBj9dQhA/yAxiMwCC5mwNoBw==}
     dev: false
 
-  /kitx@2.1.0:
-    resolution: {integrity: sha512-C/5v9MtIX7aHGOjwn5BmrrbNkJSf7i0R5mRzmh13GSAdRqQ7bYQo/Su2pTYNylFicqKNTVX3HML9k1u8k51+pQ==}
-    dependencies:
-      '@types/node': 12.20.55
-    dev: false
-
   /klona@2.0.6:
     resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
     engines: {node: '>= 8'}
@@ -2062,7 +1894,7 @@ packages:
     dependencies:
       klona: 2.0.6
       less: 4.1.3
-      webpack: 5.81.0(esbuild@0.17.18)
+      webpack: 5.81.0
     dev: false
 
   /less@4.1.3:
@@ -2634,27 +2466,6 @@ packages:
       glob: 7.2.3
     dev: true
 
-  /rollup-plugin-inject@3.0.2:
-    resolution: {integrity: sha512-ptg9PQwzs3orn4jkgXJ74bfs5vYz1NCZlSQMBUA0wKcGp5i5pA1AO3fOUEte8enhGUC+iapTCzEWw2jEFFUO/w==}
-    deprecated: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-inject.
-    dependencies:
-      estree-walker: 0.6.1
-      magic-string: 0.25.9
-      rollup-pluginutils: 2.8.2
-    dev: false
-
-  /rollup-plugin-node-polyfills@0.2.1:
-    resolution: {integrity: sha512-4kCrKPTJ6sK4/gLL/U5QzVT8cxJcofO0OU74tnB19F40cmuAKSzH5/siithxlofFEjwvw1YAhPmbvGNA6jEroA==}
-    dependencies:
-      rollup-plugin-inject: 3.0.2
-    dev: false
-
-  /rollup-pluginutils@2.8.2:
-    resolution: {integrity: sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==}
-    dependencies:
-      estree-walker: 0.6.1
-    dev: false
-
   /rollup@3.21.2:
     resolution: {integrity: sha512-c4vC+JZ3bbF4Kqq2TtM7zSKtSyMybFOjqmomFax3xpfYaPZDZ4iz8NMIuBRMjnXOcKYozw7bC6vhJjiWD6JpzQ==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
@@ -2737,10 +2548,6 @@ packages:
       call-bind: 1.0.2
       get-intrinsic: 1.2.0
       object-inspect: 1.12.3
-    dev: false
-
-  /sm3@1.0.3:
-    resolution: {integrity: sha512-KyFkIfr8QBlFG3uc3NaljaXdYcsbRy1KrSfc4tsQV8jW68jAktGeOcifu530Vx/5LC+PULHT0Rv8LiI8Gw+c1g==}
     dev: false
 
   /smart-buffer@4.2.0:
@@ -2857,7 +2664,7 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
-  /terser-webpack-plugin@5.3.7(esbuild@0.17.18)(webpack@5.81.0):
+  /terser-webpack-plugin@5.3.7(webpack@5.81.0):
     resolution: {integrity: sha512-AfKwIktyP7Cu50xNjXF/6Qb5lBNzYaWpU6YfoX3uZicTx0zTy0stDDCsvjDapKsSDvOeWo5MEq4TmdBy2cNoHw==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
@@ -2874,12 +2681,11 @@ packages:
         optional: true
     dependencies:
       '@jridgewell/trace-mapping': 0.3.18
-      esbuild: 0.17.18
       jest-worker: 27.5.1
       schema-utils: 3.1.2
       serialize-javascript: 6.0.1
       terser: 5.17.1
-      webpack: 5.81.0(esbuild@0.17.18)
+      webpack: 5.81.0
     dev: false
 
   /terser@5.17.1:
@@ -3206,7 +3012,7 @@ packages:
     resolution: {integrity: sha512-kyDivFZ7ZM0BVOUteVbDFhlRt7Ah/CSPwJdi8hBpkK7QLumUqdLtVfm/PX/hkcnrvr0i77fO5+TjZ94Pe+C9iw==}
     dev: true
 
-  /webpack@5.81.0(esbuild@0.17.18):
+  /webpack@5.81.0:
     resolution: {integrity: sha512-AAjaJ9S4hYCVODKLQTgG5p5e11hiMawBwV2v8MYLE0C/6UAGLuAF4n1qa9GOwdxnicaP+5k6M5HrLmD4+gIB8Q==}
     engines: {node: '>=10.13.0'}
     hasBin: true
@@ -3237,7 +3043,7 @@ packages:
       neo-async: 2.6.2
       schema-utils: 3.1.2
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.7(esbuild@0.17.18)(webpack@5.81.0)
+      terser-webpack-plugin: 5.3.7(webpack@5.81.0)
       watchpack: 2.4.0
       webpack-sources: 3.2.3
     transitivePeerDependencies:
