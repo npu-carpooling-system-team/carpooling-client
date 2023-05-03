@@ -1,12 +1,13 @@
 <script setup>
     import {ref, watch} from 'vue'
-    import {validatorCode, validatorPhone, validatorRegisterCode} from '@/utils/validatorUtil'
+    import {validatorCode, validatorPassword, validatorPhone, validatorRegisterCode} from '@/utils/validatorUtil'
     import {closeToast, showLoadingToast, showNotify} from 'vant'
     import 'vant/es/notify/style'
     import 'vant/es/toast/style'
     import axios from '@/api'
     import {useRouter} from 'vue-router'
     import {scanDrivingLicense, scanIdCard, scanVehicleLicense} from '@/utils/ocrUtil'
+    import {encrypt} from '@/utils/jsencrypt'
 
     const router = useRouter()
     
@@ -187,12 +188,21 @@
     const showExtraForm = ref(false)
     
     // 进入司机专属部分
-    
-    // 身份证正反写是因为JSON解析有那么点问题 找不出face和back
-    const resolveIdCardFront = async (file) => {
+    const picPreCheck = (file) => {
+        console.log(file.file.type)
         // 大于10M则禁止识别
         if (file.content.size > 10 * 1024 * 1024) {
             showNotify({ type: 'danger', message: '文件大小不能超过10M' });
+            return false
+        } else if (!/image\/(png|jpg|jpeg|JPG|PNG)/.test(file.file.type)) {
+            showNotify({ type: 'danger', message: '文件格式不正确' });
+            return false
+        }
+        return true
+    }
+    // 身份证正反写是因为JSON解析有那么点问题 找不出face和back
+    const resolveIdCardFront = async (file) => {
+        if (!picPreCheck(file)){
             return
         }
         // 开始转圈
@@ -229,9 +239,7 @@
     }
 
     const resolveIdCardBack = async (file) => {
-        // 大于10M则禁止识别
-        if (file.content.size > 10 * 1024 * 1024) {
-            showNotify({ type: 'danger', message: '文件大小不能超过10M' });
+        if (!picPreCheck(file)){
             return
         }
         // 开始转圈
@@ -277,8 +285,7 @@
     
     const resolveDrivingLicense = async (file) => {
         // 大于10M则禁止识别
-        if (file.content.size > 10 * 1024 * 1024) {
-            showNotify({ type: 'danger', message: '文件大小不能超过10M' });
+        if (!picPreCheck(file)) {
             return
         } else if(registerDto.value.driversName === ''){
             showNotify({ type: 'danger', message: '请先识别身份证信息' });
@@ -328,9 +335,7 @@
     }
     
     const resolveVehicleLicenseFront = async (file) => {
-        // 大于10M则禁止识别
-        if (file.content.size > 10 * 1024 * 1024) {
-            showNotify({ type: 'danger', message: '文件大小不能超过10M' });
+        if (!picPreCheck(file)){
             return
         }
         // 开始转圈
@@ -369,12 +374,128 @@
         }
     }
     
+    const resolveVehicleLicenseBack = async (file) => {
+        if (!picPreCheck(file)){
+            return
+        }
+        // 开始转圈
+        showLoadingToast({
+            duration: 0,
+            forbidClick: true,
+            message: '正在识别行驶证',
+        })
+        try{
+            const {data} = await scanVehicleLicense(file)
+            if (data.code === 2000){
+                // 进一步解析
+                const resolveResult = JSON.parse(data.data)
+                if(resolveResult.data.back !== null) {
+                    if (resolveResult.data.back.inspectionRecord == null){
+                        showNotify({ type: 'danger', message: '行驶证未年检,请更新材料' })
+                        return
+                    }
+                    // 解析 浙江的格式是 浙AS0N56检验有效期至2020年05月浙AQ;浙AS0N56检验有效期至2024年05月浙A
+                    // 我们现在需要把其中 2020年05月 和 2024年05月 即所有 '有效期至'后面的内容取出来
+                    // 比较大小 取最大的 再与registerDto.value.driversExpireDate比较 取小的
+                    const inspectionRecord = resolveResult.data.back.inspectionRecord
+                    const reg = /有效期至([\u4e00-\u9fa5]{2,4}\d{1,4}年\d{1,2}月)/g
+                    const matchResult = inspectionRecord.match(reg)
+                    if (matchResult === null){
+                        showNotify({ type: 'danger', message: '行驶证年检信息解析失败,请更新材料' })
+                        return
+                    }
+                    // 对matchResult进行排序
+                    matchResult.sort((a, b) => {
+                        const aYear = a.match(/\d{1,4}年\d{1,2}月/)[0]
+                        const bYear = b.match(/\d{1,4}年\d{1,2}月/)[0]
+                        return aYear > bYear ? 1 : -1
+                    })
+                    // 取最大的
+                    const maxExpireDate = matchResult[matchResult.length - 1].match(/\d{1,4}年\d{1,2}月/)[0]
+                    // 比较registerDto.value.driversExpireDate 与 maxExpireDate 将maxExpireDate转为yyyy-MM-dd
+                    const licenseExpireDate = maxExpireDate.replace('年', '-').replace('月', '-01')
+                    // 哪个先到就取哪个
+                    if (registerDto.value.driversExpireDate === ''){
+                        registerDto.value.driversExpireDate = licenseExpireDate
+                    } else {
+                        registerDto.value.driversExpireDate =
+                            registerDto.value.driversExpireDate > licenseExpireDate ?
+                                licenseExpireDate : registerDto.value.driversExpireDate
+                    }
+                    
+                }
+            } else {
+                showNotify({ type: 'danger', message: '行驶证识别失败,请重试' });
+            }
+        } catch (e) {
+            showNotify({ type: 'danger', message: `服务器异常${e},请通知管理员` });
+        } finally {
+            closeToast();
+        }
+    }
+    
     // 监听role的值 如果role数组中包含了isDriver则增加额外的表单
     watch(role, (newValue) => {
         showExtraForm.value = !!newValue.includes('isDriver');
     })
     
-    const onSubmit = () => {}
+    // 这下终于得注册了
+    const onSubmit = async () => {
+        // 开始转圈
+        showLoadingToast({
+            duration: 0,
+            forbidClick: true,
+            message: '正在提交注册信息,我们推荐您完成注册后及时绑定支付宝。',
+        })
+        try {
+            // 开始预校验
+            // 解析用户角色
+            if (role.value.indexOf('isDriver') !== -1) {
+                registerDto.value.isDriver = true
+            } else if (role.value.indexOf('isPassenger') !== -1) {
+                registerDto.value.isPassenger = true
+            }
+            if (!registerDto.value.isDriver && !registerDto.value.isPassenger){
+                showNotify({ type: 'danger', message: '请选择用户角色' })
+                return
+            }
+            // 如果是司机 则有关字段均不允许为空
+            if (registerDto.value.isDriver &&
+                (registerDto.value.driversName === '' ||
+                    registerDto.value.driversPersonalId === '' ||
+                    registerDto.value.driversVehicleType === '' ||
+                    registerDto.value.driversExpireDate === '' ||
+                    registerDto.value.driversPlateNo === ''
+                )
+            ){
+                showNotify({ type: 'danger', message: '请完善司机信息' })
+                return
+            }
+            // 确认手机号与邮箱已经完成校验
+            if (!checkSmsDisabled.value){
+                showNotify({ type: 'danger', message: '请先完成手机号校验' })
+                return
+            }
+            if (!checkMailDisabled.value && registerDto.value.email !== ''){
+                showNotify({ type: 'danger', message: '请先完成邮箱校验' })
+                return
+            }
+            // 预校验结束 开始提交
+            registerDto.value.password = encrypt(registerDto.value.password)
+            const {data} = await axios.post('/api/auth/register/user', registerDto.value)
+            if (data.code === 2000){
+                showNotify({ type: 'success', message: '注册成功,请您登录' })
+                // 跳转到登录页面
+                await router.push('/login')
+            } else {
+                showNotify({ type: 'danger', message: data.message })
+            }
+        } catch (e) {
+            showNotify({ type: 'danger', message: `服务器异常${e},请通知管理员` });
+        } finally {
+            closeToast();
+        }
+    }
 </script>
 
 <template>
@@ -424,6 +545,15 @@
                 </van-field>
                 <van-button plain block type="primary" v-if="!checkSmsDisabled"
                     size="small" style="width: 40%; margin: 1% auto" @click="confirmSms()">验证手机号码</van-button>
+                <van-field
+                    v-model="registerDto.password"
+                    name="密码"
+                    label="密码"
+                    type="password"
+                    placeholder="请设置密码"
+                    autocomplete="off"
+                    :rules="[{ validator: validatorPassword, message: '应为4-16位数字/字母/下划线' }]"
+                />
                 <van-field
                     v-model="registerDto.email"
                     center
@@ -524,7 +654,7 @@
                         拍摄您的行驶证-主页-以自动识别
                     </van-button>
                 </van-uploader>
-                <van-uploader v-if="showExtraForm"  style="width: 60%; margin: 1% auto;">
+                <van-uploader v-if="showExtraForm"  style="width: 60%; margin: 1% auto;" :after-read="resolveVehicleLicenseBack">
                     <van-button plain block type="primary" size="small">
                         拍摄您的行驶证-副页-以自动识别
                     </van-button>

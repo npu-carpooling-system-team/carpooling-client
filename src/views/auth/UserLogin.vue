@@ -42,7 +42,7 @@
             const resp = await axios.post('/api/auth/login/password', passwordLoginDto)
             if (resp.data.code !== null && resp.data.code === 2000){
                 Cookies.set('token', resp.data.result.token)
-                await router.push('/main')
+                await router.push('/main/home')
             } else {
                 showNotify({ type: 'danger', message: '用户名密码登录未通过,请检查输入' });
             }
@@ -106,7 +106,7 @@
             const resp = await axios.post('/api/auth/login/phone', codeLoginDto)
             if (resp.data.code !== null && resp.data.code === 2000){
                 Cookies.set('token', resp.data.result.token)
-                await router.push('/main')
+                await router.push('/main/home')
             } else {
                 showNotify({ type: 'danger', message: '用户名短信登录未通过,请检查输入' });
             }

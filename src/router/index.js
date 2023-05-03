@@ -50,12 +50,36 @@ const routes = [
         }
     },
     {
-        path: '/main',
-        name: 'main',
+        path: '/main/home',
+        name: 'main-home',
         component: () => import('../views/main/MainPage.vue'),
         meta: {
             title: '西工大拼车系统-主页'
-        }
+        },
+        redirect: '/main/hall',
+        children: [
+            {
+                path: '/main/hall',
+                name: 'main-hall',
+                component: () => import('../views/common/CarpoolingHall.vue'),
+                meta: {
+                    title: '西工大拼车系统-拼车大厅'
+                }
+            }
+        ]
+    },
+    {
+        path: '/404',
+        name: 'NotFound',
+        component: () => import('../views/common/NotFound.vue'),
+        meta: {
+            title: '您访问的页面不存在',
+        },
+    },
+    // 所有未定义路由，全部重定向到404页，必须放在最后
+    {
+        path: '/:catchAll(.*)',
+        redirect: '/404'
     }
 ]
 

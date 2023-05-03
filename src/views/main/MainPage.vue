@@ -1,9 +1,12 @@
 <script setup>
+    import NavBar from '@/components/NavBar.vue'
+
     console.log('hello')
 </script>
 
 <template>
-    <h1>这是主页</h1>
+    <router-view/>
+    <NavBar/>
 </template>
 
 <style lang="less" scoped>

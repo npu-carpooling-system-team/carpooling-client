@@ -29,7 +29,7 @@
                 duration: 3000
             })
             setTimeout(() => {
-                router.push('/main')
+                router.push('/main/home')
             }, 3000)
         }
     })
