@@ -30,7 +30,6 @@ export const useUserStore
             avgScore: '',
             isDeleted: 1
         }
-
     })
 
     return {currentUser}
