@@ -1,1 +1,0 @@
-import{P as t,g as r}from"./.pnpm-88824f8d.js";const a=t.create({baseURL:"https://carpooling-server.wangminan.me"});a.interceptors.request.use(e=>(r.get("token")!==void 0&&(e.headers.Authorization="Bearer "+r.get("token")),e),e=>Promise.reject(e));export{a as _};
