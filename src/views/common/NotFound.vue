@@ -7,9 +7,9 @@
     const router = useRouter()
 
     onMounted(async () => {
-        showFailToast('您似乎来到了不存在车辆的荒原,三秒后跳转到登录页面')
+        showFailToast('您似乎来到了不存在车辆的荒原,三秒后跳转到上一页面')
         setInterval(async () => {
-            await router.push('/login')
+            await router.go(-1)
         }, 3000)
     })
 </script>

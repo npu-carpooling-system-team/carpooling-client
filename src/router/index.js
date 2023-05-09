@@ -56,15 +56,78 @@ const routes = [
         meta: {
             title: '西工大拼车系统-主页'
         },
-        redirect: '/main/hall',
+        redirect: '/main/carpooling',
         children: [
             {
-                path: '/main/hall',
-                name: 'main-hall',
-                component: () => import('../views/common/CarpoolingHall.vue'),
+                path: '/main/carpooling',
+                name: 'main-carpooling',
+                component: () => import('../views/carpooling/MyCarpooling.vue'),
                 meta: {
                     title: '西工大拼车系统-拼车大厅'
                 }
+            },
+            {
+                path: '/main/passenger',
+                name: 'main-passenger-main',
+                component: () => import('../views/passenger/PassengerMain.vue'),
+                meta: {
+                    title: '西工大拼车系统-乘客主页'
+                },
+                redirect: '/main/passenger/passenger-home',
+                children: [
+                    {
+                        path: '/main/passenger/passenger-home',
+                        name: 'main-passenger-home',
+                        component: () => import('../views/passenger/PassengerHome.vue'),
+                    },
+                ]
+            },
+            {
+                path: '/main/driver',
+                name: 'main-driver-main',
+                component: () => import('../views/driver/DriverMain.vue'),
+                meta: {
+                    title: '西工大拼车系统-司机主页'
+                },
+                redirect: '/main/driver/driver-home',
+                children: [
+                    {
+                        path: '/main/driver/driver-home',
+                        name: 'main-driver-home',
+                        component: () => import('../views/driver/DriverHome.vue'),
+                    }
+                ]
+            },
+            {
+                path: "/main/my",
+                name: "main-my-main",
+                component: () => import('../views/my/MyMain.vue'),
+                meta: {
+                    title: '西工大拼车系统-我的主页'
+                },
+                redirect: '/main/my/my-home',
+                children: [
+                    {
+                        path: '/main/my/my-home',
+                        name: 'main-my-home',
+                        component: () => import('../views/my/MyHome.vue'),
+                    },
+                    {
+                        path: '/main/my/my-chats',
+                        name: 'main-my-chats',
+                        component: () => import('../views/my/MyChats.vue'),
+                    },
+                    {
+                        path: '/main/my/revise-info',
+                        name: 'main-revise-info',
+                        component: () => import('../views/my/ReviseInfo.vue'),
+                    },
+                    {
+                        path: '/main/my/handle-alipay',
+                        name: 'main-handle-alipay',
+                        component: () => import('../views/my/HandleAlipay.vue'),
+                    }
+                ]
             }
         ]
     },

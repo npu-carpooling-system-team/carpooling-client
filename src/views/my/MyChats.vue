@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <h1>大厅</h1>
+    <h1>我的聊天</h1>
 </template>
 
 <style scoped>

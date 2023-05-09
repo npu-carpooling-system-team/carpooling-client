@@ -39,9 +39,11 @@
             'password' : encrypt(loginDto.value.password)
         }
         try {
-            const resp = await axios.post('/api/auth/login/password', passwordLoginDto)
-            if (resp.data.code !== null && resp.data.code === 2000){
-                Cookies.set('token', resp.data.result.token)
+            // 清除Cookie中的token
+            Cookies.remove('token')
+            const {data} = await axios.post('/api/auth/login/password', passwordLoginDto)
+            if (data.code !== null && data.code === 2000){
+                Cookies.set('token', data.result.token)
                 await router.push('/main/home')
             } else {
                 showNotify({ type: 'danger', message: '用户名密码登录未通过,请检查输入' });
