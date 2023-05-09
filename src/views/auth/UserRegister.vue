@@ -1,13 +1,13 @@
 <script setup>
     import {ref, watch} from 'vue'
-    import {validatorCode, validatorPassword, validatorPhone, validatorRegisterCode} from '@/utils/validatorUtil'
+    import {validatorCode, validatorPassword, validatorPhone, validatorRegisterCode} from '../../utils/validatorUtil'
     import {closeToast, showLoadingToast, showNotify} from 'vant'
     import 'vant/es/notify/style'
     import 'vant/es/toast/style'
-    import axios from '@/api'
+    import axios from '../../api'
     import {useRouter} from 'vue-router'
-    import {scanDrivingLicense, scanIdCard, scanVehicleLicense} from '@/utils/ocrUtil'
-    import {encrypt} from '@/utils/jsencrypt'
+    import {scanDrivingLicense, scanIdCard, scanVehicleLicense} from '../../utils/ocrUtil'
+    import {encrypt} from '../../utils/jsencrypt'
 
     const router = useRouter()
     
@@ -43,10 +43,10 @@
         showLoadingToast({
             duration: 0,
             forbidClick: true,
-            message: '请求验证码发送中',
+            message: '请求验证码发送中'
         })
         const sendSmsDto = {
-            'phone' : registerDto.value.username
+            'phone': registerDto.value.username
         }
         try {
             const {data} = await axios.post('/api/auth/sendsms', sendSmsDto)
@@ -76,7 +76,7 @@
     
     const checkSmsDisabled = ref(false)
     
-    const confirmSms = async() => {
+    const confirmSms = async () => {
         confirmSmsDto.value.phone = registerDto.value.username
         if (!validatorCode(confirmSmsDto.value.code) ||
             !validatorPhone(confirmSmsDto.value.phone)
@@ -87,14 +87,14 @@
         showLoadingToast({
             duration: 0,
             forbidClick: true,
-            message: '请求验证码验证中',
+            message: '请求验证码验证中'
         })
         try{
             const {data} = await axios.post("/api/auth/checksms", confirmSmsDto.value)
             if (data.code !== null && data.code === 2000){
                 showNotify({ type: 'success', message: '验证码验证成功' });
                 // 禁止重复提交
-                checkSmsDisabled.value=true
+                checkSmsDisabled.value = true
             } else {
                 showNotify({ type: 'danger', message: `验证码验证失败,${data.msg},请重试` });
             }
@@ -124,10 +124,10 @@
         showLoadingToast({
             duration: 0,
             forbidClick: true,
-            message: '请求验证码发送中',
+            message: '请求验证码发送中'
         })
         const sendMailDto = {
-            'email' : registerDto.value.email
+            'email': registerDto.value.email
         }
         try {
             const {data} = await axios.post('/api/auth/sendmail', sendMailDto)
@@ -165,14 +165,14 @@
         showLoadingToast({
             duration: 0,
             forbidClick: true,
-            message: '请求邮箱验证中',
+            message: '请求邮箱验证中'
         })
         try{
             const {data} = await axios.post("/api/auth/checkmail", confirmMailDto.value)
             if (data.code !== null && data.code === 2000){
                 showNotify({ type: 'success', message: '邮箱验证成功' });
                 // 禁止重复提交
-                checkMailDisabled.value=true
+                checkMailDisabled.value = true
             } else {
                 showNotify({ type: 'danger', message: `邮箱验证失败,${data.msg},请重试` });
             }
@@ -209,7 +209,7 @@
         showLoadingToast({
             duration: 0,
             forbidClick: true,
-            message: '正在识别身份证',
+            message: '正在识别身份证'
         })
         try {
             const {data} = await scanIdCard(file)
@@ -246,7 +246,7 @@
         showLoadingToast({
             duration: 0,
             forbidClick: true,
-            message: '正在识别身份证',
+            message: '正在识别身份证'
         })
         try {
             const {data} = await scanIdCard(file)
@@ -294,7 +294,7 @@
         showLoadingToast({
             duration: 0,
             forbidClick: true,
-            message: '正在识别驾驶证',
+            message: '正在识别驾驶证'
         })
         try{
             const {data} = await scanDrivingLicense(file)
@@ -342,7 +342,7 @@
         showLoadingToast({
             duration: 0,
             forbidClick: true,
-            message: '正在识别行驶证',
+            message: '正在识别行驶证'
         })
         try{
             const {data} = await scanVehicleLicense(file)
@@ -350,7 +350,7 @@
                 // 进一步解析
                 const resolveResult = JSON.parse(data.data)
                 if(resolveResult.data.face !== null) {
-                    if(import.meta.env.VITE_NODE_ENV==='production' &&
+                    if(import.meta.env.VITE_NODE_ENV === 'production' &&
                         resolveResult.data.face.data.owner !== registerDto.value.driversName
                     ){
                         showNotify({ type: 'danger',
@@ -382,7 +382,7 @@
         showLoadingToast({
             duration: 0,
             forbidClick: true,
-            message: '正在识别行驶证',
+            message: '正在识别行驶证'
         })
         try{
             const {data} = await scanVehicleLicense(file)
@@ -445,7 +445,7 @@
         showLoadingToast({
             duration: 0,
             forbidClick: true,
-            message: '正在提交注册信息,我们推荐您完成注册后及时绑定支付宝。',
+            message: '正在提交注册信息,我们推荐您完成注册后及时绑定支付宝。'
         })
         try {
             // 开始预校验

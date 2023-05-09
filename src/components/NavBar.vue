@@ -21,6 +21,8 @@
             showNotify({ type: 'danger', message: `首页初始化失败,${data.msg},请刷新页面重试` });
         }
     }
+
+    console.log(currentUser)
     
     onMounted(async () => {
         await getUserBasic()
@@ -29,13 +31,13 @@
 
 <template>
     <van-tabbar v-model="active">
-        <van-tabbar-item icon="todo-list-o" to="/main/carpooling">我的行程</van-tabbar-item>
         <van-tabbar-item v-if="currentUser.user.isDeleted === 0" icon="shop-o" to="/main/passenger">
-            我是乘客
+            我要拼车
         </van-tabbar-item>
-        <van-tabbar-item v-if="currentUser.user.isDeleted === 0" icon="logistics" to="/main/driver">
-            我是司机
+        <van-tabbar-item v-if="currentUser.driver.isDeleted === 0" icon="logistics" to="/main/driver">
+            我要发车
         </van-tabbar-item>
+        <van-tabbar-item icon="todo-list-o" to="/main/carpooling">我的行程</van-tabbar-item>
         <van-tabbar-item icon="user-o" to="/main/my">我的</van-tabbar-item>
     </van-tabbar>
 </template>

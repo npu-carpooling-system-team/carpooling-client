@@ -14,7 +14,7 @@
     const loginDto = ref({
         username: '',
         password: '',
-        code:''
+        code: ''
     })
     
     // 登录模式切换
@@ -32,11 +32,11 @@
         showLoadingToast({
             duration: 0,
             forbidClick: true,
-            message: '登录中',
+            message: '登录中'
         });
         const passwordLoginDto = {
-            'username' : loginDto.value.username,
-            'password' : encrypt(loginDto.value.password)
+            'username': loginDto.value.username,
+            'password': encrypt(loginDto.value.password)
         }
         try {
             // 清除Cookie中的token
@@ -63,10 +63,10 @@
         showLoadingToast({
             duration: 0,
             forbidClick: true,
-            message: '请求验证码发送中',
+            message: '请求验证码发送中'
         })
         const sendSmsDto = {
-            'phone' : loginDto.value.username
+            'phone': loginDto.value.username
         }
         try {
             const {data} = await axios.post('/api/auth/sendsms', sendSmsDto)
@@ -98,11 +98,11 @@
         showLoadingToast({
             duration: 0,
             forbidClick: true,
-            message: '登录中',
+            message: '登录中'
         });
         const codeLoginDto = {
-            'phone' : loginDto.value.username,
-            'code' : loginDto.value.code
+            'phone': loginDto.value.username,
+            'code': loginDto.value.code
         }
         try {
             const resp = await axios.post('/api/auth/login/phone', codeLoginDto)
