@@ -1,1 +1,0 @@
-import{_ as o}from"./index-d73a807f.js";import{o as t,l as r,N as n,m as e}from"./.pnpm-1a6af7b3.js";const s={},c=e("h1",null,"司机主页",-1),a=e("h2",null,"我要发车",-1);function _(l,m){return t(),r(n,null,[c,a],64)}const d=o(s,[["render",_]]);export{d as default};
