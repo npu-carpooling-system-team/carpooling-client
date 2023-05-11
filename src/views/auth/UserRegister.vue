@@ -390,15 +390,15 @@
                 // 进一步解析
                 const resolveResult = JSON.parse(data.data)
                 if(resolveResult.data.back !== null) {
-                    if (resolveResult.data.back.inspectionRecord == null){
+                    if (resolveResult.data.back.data.inspectionRecord === null){
                         showNotify({ type: 'danger', message: '行驶证未年检,请更新材料' })
                         return
                     }
                     // 解析 浙江的格式是 浙AS0N56检验有效期至2020年05月浙AQ;浙AS0N56检验有效期至2024年05月浙A
                     // 我们现在需要把其中 2020年05月 和 2024年05月 即所有 '有效期至'后面的内容取出来
                     // 比较大小 取最大的 再与registerDto.value.driversExpireDate比较 取小的
-                    const inspectionRecord = resolveResult.data.back.inspectionRecord
-                    const reg = /有效期至([\u4e00-\u9fa5]{2,4}\d{1,4}年\d{1,2}月)/g
+                    const inspectionRecord = resolveResult.data.back.data.inspectionRecord
+                    const reg = /有效期至(\d{1,4}年\d{1,2}月)/g
                     const matchResult = inspectionRecord.match(reg)
                     if (matchResult === null){
                         showNotify({ type: 'danger', message: '行驶证年检信息解析失败,请更新材料' })

@@ -17,4 +17,5 @@ export const getPersonalInfo = async () => {
     } finally {
         closeToast()
     }
+    return null
 }

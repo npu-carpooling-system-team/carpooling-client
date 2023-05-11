@@ -95,6 +95,11 @@ const routes = [
                         path: '/main/driver/driver-home',
                         name: 'main-driver-home',
                         component: () => import('../views/driver/DriverHome.vue')
+                    },
+                    {
+                        path: '/main/driver/preview-map',
+                        name: 'main-preview-map',
+                        component: () => import('../views/driver/PreviewMap.vue')
                     }
                 ]
             },
