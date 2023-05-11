@@ -15,7 +15,7 @@ export const useUserStore
             email: 'wangminan0811@hotmail.com',
             alipayId: '2088722003402347',
             isDriver: true,
-            isPassenger : true,
+            isPassenger: true,
             isDeleted: 1
         },
         driver: {

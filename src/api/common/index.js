@@ -7,7 +7,7 @@ export const getPersonalInfo = async () => {
     showLoadingToast({
         duration: 0,
         forbidClick: true,
-        message: '正在加载您的个人信息',
+        message: '正在加载您的个人信息'
     })
     try{
         const {data} = await axios.get('/api/user/info')

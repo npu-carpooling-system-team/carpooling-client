@@ -6,7 +6,7 @@
     import {storeToRefs} from "pinia";
     import {getPersonalInfo} from '../api/common'
 
-    const active = ref(0)
+    const active = ref('carpooling')
     
     const userStore = useUserStore()
     const {currentUser} = storeToRefs(userStore)
@@ -21,8 +21,6 @@
             showNotify({ type: 'danger', message: `首页初始化失败,${data.msg},请刷新页面重试` });
         }
     }
-
-    console.log(currentUser)
     
     onMounted(async () => {
         await getUserBasic()
@@ -31,14 +29,14 @@
 
 <template>
     <van-tabbar v-model="active">
-        <van-tabbar-item v-if="currentUser.user.isDeleted === 0" icon="shop-o" to="/main/passenger">
+        <van-tabbar-item name="passenger" v-if="currentUser.user.isDeleted === 0" icon="shop-o" to="/main/passenger">
             我要拼车
         </van-tabbar-item>
-        <van-tabbar-item v-if="currentUser.driver.isDeleted === 0" icon="logistics" to="/main/driver">
+        <van-tabbar-item name="driver" v-if="currentUser.driver.isDeleted === 0" icon="logistics" to="/main/driver">
             我要发车
         </van-tabbar-item>
-        <van-tabbar-item icon="todo-list-o" to="/main/carpooling">我的行程</van-tabbar-item>
-        <van-tabbar-item icon="user-o" to="/main/my">我的</van-tabbar-item>
+        <van-tabbar-item name="carpooling" icon="todo-list-o" to="/main/carpooling">我的行程</van-tabbar-item>
+        <van-tabbar-item name="my" icon="user-o" to="/main/my">我的</van-tabbar-item>
     </van-tabbar>
 </template>
 

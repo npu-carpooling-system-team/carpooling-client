@@ -78,8 +78,8 @@ const routes = [
                     {
                         path: '/main/passenger/passenger-home',
                         name: 'main-passenger-home',
-                        component: () => import('../views/passenger/PassengerHome.vue'),
-                    },
+                        component: () => import('../views/passenger/PassengerHome.vue')
+                    }
                 ]
             },
             {
@@ -94,7 +94,7 @@ const routes = [
                     {
                         path: '/main/driver/driver-home',
                         name: 'main-driver-home',
-                        component: () => import('../views/driver/DriverHome.vue'),
+                        component: () => import('../views/driver/DriverHome.vue')
                     }
                 ]
             },
@@ -110,22 +110,22 @@ const routes = [
                     {
                         path: '/main/my/my-home',
                         name: 'main-my-home',
-                        component: () => import('../views/my/MyHome.vue'),
+                        component: () => import('../views/my/MyHome.vue')
                     },
                     {
                         path: '/main/my/my-chats',
                         name: 'main-my-chats',
-                        component: () => import('../views/my/MyChats.vue'),
+                        component: () => import('../views/my/MyChats.vue')
                     },
                     {
                         path: '/main/my/revise-info',
                         name: 'main-revise-info',
-                        component: () => import('../views/my/ReviseInfo.vue'),
+                        component: () => import('../views/my/ReviseInfo.vue')
                     },
                     {
                         path: '/main/my/handle-alipay',
                         name: 'main-handle-alipay',
-                        component: () => import('../views/my/HandleAlipay.vue'),
+                        component: () => import('../views/my/HandleAlipay.vue')
                     }
                 ]
             }
@@ -136,8 +136,8 @@ const routes = [
         name: 'NotFound',
         component: () => import('../views/common/NotFound.vue'),
         meta: {
-            title: '您访问的页面不存在',
-        },
+            title: '您访问的页面不存在'
+        }
     },
     // 所有未定义路由，全部重定向到404页，必须放在最后
     {
