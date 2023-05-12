@@ -22,15 +22,19 @@ _axios.interceptors.request.use(
 )
 
 _axios.interceptors.response.use(
+    // eslint-disable-next-line consistent-return
     (res) => {
-        if (res !== null && res.code !== null){
-            if (res.code === 4012 || res.code === 4010) {
+        if (res !== null && res.data !== null && res.data.code !== null){
+            if (res.data.code === 4012 || res.data.code === 4010 || res.data.code === 4030) {
                 Cookies.remove('token')
                 showNotify({
                     type: 'danger',
-                    message: '登录过期，请重新登录'
+                    message: '登录过期，将跳转至登录页'
                 })
-                window.location.href = '/login'
+                // 倒计时
+                setTimeout(() => {
+                    window.location.href = '/login'
+                }, 3000)
             }
         }
         return res

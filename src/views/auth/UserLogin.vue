@@ -1,5 +1,5 @@
 <script setup>
-    import {ref} from 'vue'
+    import {onMounted, ref} from 'vue'
     import {useRouter} from 'vue-router'
     import axios from '../../api/index.js'
     import {encrypt} from '@/utils/jsencrypt'
@@ -130,6 +130,12 @@
     const jumpToRegister = async () => {
         await router.push('/register')
     }
+    
+    onMounted(async () => {
+        if (Cookies.get('token') !== undefined) {
+            await router.push('/main/home')
+        }
+    })
 </script>
 
 <template>

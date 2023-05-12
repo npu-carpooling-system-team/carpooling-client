@@ -1,5 +1,5 @@
 <script setup>
-    import {ref, watch} from 'vue'
+    import {onBeforeUnmount, onMounted, ref, watch} from 'vue'
     import {validatorCode, validatorPassword, validatorPhone, validatorRegisterCode} from '@/utils/validatorUtil'
     import {closeToast, showLoadingToast, showNotify} from 'vant'
     import 'vant/es/notify/style'
@@ -8,8 +8,13 @@
     import {useRouter} from 'vue-router'
     import {scanDrivingLicense, scanIdCard, scanVehicleLicense} from '@/utils/ocrUtil'
     import {encrypt} from '@/utils/jsencrypt'
+    import {useRegisterDtoStore} from '@/stores/auth'
+    import {storeToRefs} from 'pinia'
 
     const router = useRouter()
+    
+    const registerStore = useRegisterDtoStore()
+    const {registerCache} = storeToRefs(registerStore)
     
     const registerDto = ref({
         username: '',
@@ -518,6 +523,35 @@
             closeToast();
         }
     }
+    
+    onMounted(() => {
+        if (registerCache.value.registerDto.isDriver || registerCache.value.registerDto.isPassenger
+             || registerCache.value.registerDto.username !== ''
+        ){
+            // 加载
+            registerDto.value = registerCache.value.registerDto
+            checkSmsDisabled.value = registerCache.value.checkSmsDisabled
+            checkMailDisabled.value = registerCache.value.checkMailDisabled
+            checkIdFront = registerCache.value.checkIdFront
+            checkIdBack = registerCache.value.checkIdBack
+            checkDriving = registerCache.value.checkDriving
+            checkCarFront = registerCache.value.checkCarFront
+            checkCarBack = registerCache.value.checkCarBack
+        }
+    })
+    
+    onBeforeUnmount(() => {
+        registerStore.$patch((state) => {
+            state.registerCache.registerDto = registerDto.value
+            state.registerCache.checkSmsDisabled = checkSmsDisabled.value
+            state.registerCache.checkMailDisabled = checkMailDisabled.value
+            state.registerCache.checkIdFront = checkIdFront
+            state.registerCache.checkIdBack = checkIdBack
+            state.registerCache.checkDriving = checkDriving
+            state.registerCache.checkCarFront = checkCarFront
+            state.registerCache.checkCarBack = checkCarBack
+        })
+    })
 </script>
 
 <template>
