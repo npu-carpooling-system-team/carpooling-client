@@ -24,7 +24,7 @@ _axios.interceptors.request.use(
 _axios.interceptors.response.use(
     (res) => {
         if (res !== null && res.code !== null){
-            if (res.code === 4012) {
+            if (res.code === 4012 || res.code === 4010) {
                 Cookies.remove('token')
                 showNotify({
                     type: 'danger',

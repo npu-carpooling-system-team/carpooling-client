@@ -4,6 +4,7 @@
     import Cookies from 'js-cookie'
     import 'vant/es/toast/style'
     import axios from '../../api/index'
+
     const router = useRouter()
     
     const handleLogout = async () => {
@@ -11,9 +12,10 @@
         showLoadingToast({
             duration: 3,
             forbidClick: true,
-            message: '正在退出登录',
+            message: '正在退出登录'
         })
         try {
+            clearSession()
             await axios.post('/api/auth/loginuser/logout')
         } catch (e) {
             // 不用管异常
@@ -22,6 +24,11 @@
         Cookies.remove('token')
         // 跳转到登录页面
         await router.push('/login')
+    }
+    
+    const clearSession = () => {
+        window.sessionStorage.removeItem('carpoolingCache')
+        window.sessionStorage.removeItem('currentUser')
     }
 </script>
 
@@ -36,5 +43,5 @@
     </van-list>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 </style>

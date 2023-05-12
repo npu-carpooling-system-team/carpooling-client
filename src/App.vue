@@ -1,6 +1,7 @@
 <script setup>
     import {useDark} from '@vueuse/core'
     import {watch} from 'vue'
+
     const isDark = useDark()
     
     // 监听isDark 如果切换到暗黑模式 则config-provider的background-color为black

@@ -4,7 +4,7 @@
     import Cookies from 'js-cookie'
     import {showNotify} from 'vant'
     import 'vant/es/notify/style'
-    
+
     const router = useRouter()
     
     onMounted(() => {

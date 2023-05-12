@@ -4,7 +4,7 @@
     import axios from '../../api/index.js'
     import {encrypt} from '@/utils/jsencrypt'
     import Cookies from 'js-cookie'
-    import {showLoadingToast, closeToast, showNotify} from 'vant'
+    import {closeToast, showLoadingToast, showNotify} from 'vant'
     import 'vant/es/notify/style'
     import 'vant/es/toast/style'
     import {validatorCode, validatorPassword, validatorPhone} from "@/utils/validatorUtil";

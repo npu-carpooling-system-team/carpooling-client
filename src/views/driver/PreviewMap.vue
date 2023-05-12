@@ -1,6 +1,6 @@
 <script setup>
     import {getGeoPoint, initMap} from '../../utils/amapUtil'
-    import {onMounted, shallowRef, watch} from 'vue'
+    import {onBeforeUnmount, onMounted, shallowRef, watch} from 'vue'
     import {closeToast, showLoadingToast, showNotify, showToast} from 'vant'
     import 'vant/es/notify/style'
     import 'vant/es/toast/style'
@@ -177,17 +177,22 @@
             closeToast()
         }
     })
+    
+    onBeforeUnmount(() => {
+        // 调用document来destroy地图 即id为carpooling-route-map的div
+        document.getElementById('carpooling-route-map').remove()
+    })
 </script>
 
 <template>
     <div class="container">
         <van-nav-bar
-                title="行程预览"
-                left-text="返回"
-                right-text="使用高德地图打开"
-                left-arrow
-                @click-left="router.go(-1)"
-                @click-right="formUrlOfAMapApp()"
+            title="行程预览"
+            left-text="返回"
+            right-text="使用高德地图打开"
+            left-arrow
+            @click-left="router.go(-1)"
+            @click-right="formUrlOfAMapApp()"
         />
         <div id="carpooling-route-map"></div>
     </div>

@@ -1,13 +1,13 @@
 <script setup>
     import {ref, watch} from 'vue'
-    import {validatorCode, validatorPassword, validatorPhone, validatorRegisterCode} from '../../utils/validatorUtil'
+    import {validatorCode, validatorPassword, validatorPhone, validatorRegisterCode} from '@/utils/validatorUtil'
     import {closeToast, showLoadingToast, showNotify} from 'vant'
     import 'vant/es/notify/style'
     import 'vant/es/toast/style'
     import axios from '../../api'
     import {useRouter} from 'vue-router'
-    import {scanDrivingLicense, scanIdCard, scanVehicleLicense} from '../../utils/ocrUtil'
-    import {encrypt} from '../../utils/jsencrypt'
+    import {scanDrivingLicense, scanIdCard, scanVehicleLicense} from '@/utils/ocrUtil'
+    import {encrypt} from '@/utils/jsencrypt'
 
     const router = useRouter()
     
@@ -188,6 +188,12 @@
     const showExtraForm = ref(false)
     
     // 进入司机专属部分
+    let checkIdFront = false
+    let checkIdBack = false
+    let checkDriving = false
+    let checkCarFront = false
+    let checkCarBack = false
+    
     const picPreCheck = (file) => {
         console.log(file.file.type)
         // 大于10M则禁止识别
@@ -225,6 +231,7 @@
                     }
                     registerDto.value.driversName = face.data.name
                     registerDto.value.driversPersonalId = face.data.idNumber
+                    checkIdFront = true
                 } else{
                     showNotify({ type: 'danger', message: '身份证识别失败,请重试' });
                 }
@@ -270,6 +277,7 @@
                             back.data.validPeriod.split('-')[1]
                                 .replace(/(\d{4})\.(\d{2})\.(\d{2})/, '$1-$2-$3')
                     }
+                    checkIdBack = true
                 } else {
                     showNotify({ type: 'danger', message: '请识别身份证反面' });
                 }
@@ -321,6 +329,7 @@
                             registerDto.value.driversExpireDate > licenseExpireDate ?
                                 licenseExpireDate : registerDto.value.driversExpireDate
                     }
+                    checkDriving = true
                 } else {
                     showNotify({ type: 'danger', message: '驾驶证识别失败,请重试' });
                 }
@@ -363,6 +372,7 @@
                         resolveResult.data.face.data.licensePlateNumber
                     registerDto.value.driversVehicleType =
                         resolveResult.data.face.data.model + " " + resolveResult.data.face.data.vehicleType
+                    checkCarFront = true
                 }
                 } else {
                     showNotify({ type: 'danger', message: '行驶证识别失败,请重试' });
@@ -422,7 +432,7 @@
                             registerDto.value.driversExpireDate > licenseExpireDate ?
                                 licenseExpireDate : registerDto.value.driversExpireDate
                     }
-                    
+                    checkCarBack = true
                 }
             } else {
                 showNotify({ type: 'danger', message: '行驶证识别失败,请重试' });
@@ -438,6 +448,36 @@
     watch(role, (newValue) => {
         showExtraForm.value = !!newValue.includes('isDriver');
     })
+    
+    const submitPreCheck = () => {
+        // 如果是司机 则有关字段均不允许为空
+        if (registerDto.value.isDriver &&
+            (registerDto.value.driversName === '' ||
+                registerDto.value.driversPersonalId === '' ||
+                registerDto.value.driversVehicleType === '' ||
+                registerDto.value.driversExpireDate === '' ||
+                registerDto.value.driversPlateNo === ''
+            )
+        ){
+            showNotify({ type: 'danger', message: '请完善司机信息' })
+            return false
+        }
+        // 确认手机号与邮箱已经完成校验
+        if (!checkSmsDisabled.value){
+            showNotify({ type: 'danger', message: '请先完成手机号校验' })
+            return false
+        }
+        if (!checkMailDisabled.value && registerDto.value.email !== ''){
+            showNotify({ type: 'danger', message: '请先完成邮箱校验' })
+            return false
+        }
+        if (registerDto.value.isDriver &&
+            (!checkIdFront || !checkIdBack || !checkDriving || !checkCarFront || !checkCarBack)){
+            showNotify({ type: 'danger', message: '请先有关证照校验' })
+            return false
+        }
+        return true
+    }
     
     // 这下终于得注册了
     const onSubmit = async () => {
@@ -459,25 +499,7 @@
                 showNotify({ type: 'danger', message: '请选择用户角色' })
                 return
             }
-            // 如果是司机 则有关字段均不允许为空
-            if (registerDto.value.isDriver &&
-                (registerDto.value.driversName === '' ||
-                    registerDto.value.driversPersonalId === '' ||
-                    registerDto.value.driversVehicleType === '' ||
-                    registerDto.value.driversExpireDate === '' ||
-                    registerDto.value.driversPlateNo === ''
-                )
-            ){
-                showNotify({ type: 'danger', message: '请完善司机信息' })
-                return
-            }
-            // 确认手机号与邮箱已经完成校验
-            if (!checkSmsDisabled.value){
-                showNotify({ type: 'danger', message: '请先完成手机号校验' })
-                return
-            }
-            if (!checkMailDisabled.value && registerDto.value.email !== ''){
-                showNotify({ type: 'danger', message: '请先完成邮箱校验' })
+            if (!submitPreCheck()){
                 return
             }
             // 预校验结束 开始提交

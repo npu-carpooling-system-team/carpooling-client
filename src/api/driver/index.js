@@ -11,15 +11,15 @@ const beginLoading = (message) => {
     })
 }
 
-export const getPersonalInfo = async () => {
-    beginLoading('正在加载您的个人信息')
+export const addCarpooling = async (carpoolingDto) => {
+    beginLoading('正在上传拼车信息')
     try{
-        const {data} = await axios.get('/api/user/info')
+        const {data} = await axios.post('/api/carpooling/driver/carpooling', carpoolingDto)
         return data
     } catch (e) {
-        showNotify({type: 'danger', message: `首页初始化失败,${e.message}`})
+        showNotify({type: 'danger', message: `上传拼车信息失败,${e.message}`})
     } finally {
         closeToast()
     }
-    return null
+    return false
 }

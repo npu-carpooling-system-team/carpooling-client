@@ -100,6 +100,11 @@ const routes = [
                         path: '/main/driver/preview-map',
                         name: 'main-preview-map',
                         component: () => import('../views/driver/PreviewMap.vue')
+                    },
+                    {
+                        path: '/main/driver/fee-policy',
+                        name: 'main-fee-policy',
+                        component: () => import('../views/common/FeePolicy.vue')
                     }
                 ]
             },

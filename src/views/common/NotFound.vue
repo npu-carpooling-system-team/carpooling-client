@@ -2,8 +2,9 @@
     import {showFailToast} from 'vant'
     import 'vant/es/toast/style'
     import {onMounted} from 'vue'
-    
+
     import {useRouter} from 'vue-router'
+
     const router = useRouter()
 
     onMounted(async () => {
