@@ -43,14 +43,17 @@
     
     // 滚动条滚动事件 隐藏导航条以修正fix属性带来的内容覆盖
     window.onscroll = function () {
+        if (document.documentElement.scrollTop < 5){
+            verbTop = 0
+        }
         // 只有在有导航条的页面上才允许生效监听
         if (homeList.indexOf(router.currentRoute.value.path) !== -1) {
             // 如果下滑距离大于30px则隐藏navbar 如果上划距离大于30px则显示navbar
-            if (document.documentElement.scrollTop - verbTop > 30 && showNav.value) {
+            if (document.documentElement.scrollTop - verbTop > 1 && showNav.value) {
                 showNav.value = false
                 // 更新滚动条高度
                 verbTop = document.documentElement.scrollTop
-            } else if (verbTop - document.documentElement.scrollTop > 30 && !showNav.value) {
+            } else if (verbTop - document.documentElement.scrollTop > 1 && !showNav.value) {
                 showNav.value = true
                 verbTop = document.documentElement.scrollTop
             }

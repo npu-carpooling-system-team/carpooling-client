@@ -152,8 +152,6 @@
                 const policy = 0
                 const coordinate = 'gaode'
                 const callnative = 1
-                console.log(from)
-                console.log(to)
                 window.location.href = `https://uri.amap.com/navigation?' +
                     'policy=${policy}&from=${from}&to=${to}&via=${via}&mode=${mode}' +
                     '&coordinate=${coordinate}&callnative=${callnative}`

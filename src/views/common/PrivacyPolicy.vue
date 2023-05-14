@@ -8,9 +8,13 @@
     <div class="privacy-box">
         <h3 style="color: #5CA0FF">我们的隐私政策</h3>
         <van-list>
-            <van-cell center>
-                1. 您的证照将在您的浏览器与平台后端服务器之间传输。
-                平台仅保存必须的身份信息以保证您的交易安全，不会直接保存证照图片。
+            <van-cell>
+                <van-row>
+                    <div>
+                        1. 您的证照将在您的浏览器与平台后端服务器之间传输。
+                        平台仅保存必须的身份信息以保证您的交易安全，不会直接保存证照图片。
+                    </div>
+                </van-row>
             </van-cell>
         </van-list>
         <van-button plain block type="primary" @click="router.go(-1)">
@@ -24,6 +28,14 @@
         margin-top: 5%;
         text-align: center;
         align-items: center;
+        .van-cell{
+            .van-cell__value{
+                min-width:80%;
+                .van-row{
+                    text-align: center;
+                }
+            }
+        }
         .van-button{
             width: 40%;
             // 永远处于底部

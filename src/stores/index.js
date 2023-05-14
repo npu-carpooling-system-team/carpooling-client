@@ -32,7 +32,36 @@ export const useUserStore =
                 isDeleted: 1
             }
         })
-        return {currentUser}
+
+        function reset () {
+            currentUser.value = {
+                user: {
+                    id: 1,
+                    username: '13500560235',
+                    userImage: 'https://wangminan-files.oss-cn-hongkong.aliyuncs.com/bucket/defaultYouDontKnow.png',
+                    email: 'wangminan0811@hotmail.com',
+                    alipayId: '2088722003402347',
+                    isDriver: true,
+                    isPassenger: true,
+                    isDeleted: 1
+                },
+                driver: {
+                    id: 3,
+                    driverId: 4,
+                    driversPersonalId: '330105200208153213',
+                    driversName: '王旻安',
+                    driversLicenseNo: '330106748147',
+                    driversLicenseType: 'C1',
+                    driversPlateNo: '浙AS1245',
+                    driversVehicleType: '白色斯柯达',
+                    driversExpireDate: '',
+                    avgScore: '',
+                    isDeleted: 1
+                }
+            }
+        }
+
+        return {currentUser, reset}
     }, {
         persist: {
             storage: sessionStorage,
@@ -48,7 +77,14 @@ export const useNavStore =
             currentNav: 'carpooling',
             to: '/main/carpooling'
         })
-        return {nav}
+
+        function reset () {
+            nav.value = {
+                currentNav: 'carpooling',
+                to: '/main/carpooling'
+            }
+        }
+        return {nav, reset}
     },{
         // https://prazdevs.github.io/pinia-plugin-persistedstate/zh/guide/config.html
         // https://blog.csdn.net/qq_42859450/article/details/125841641

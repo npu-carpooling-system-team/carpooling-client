@@ -2,7 +2,7 @@
     import {useRouter} from 'vue-router'
     import Cookies from 'js-cookie'
     import 'vant/es/toast/style'
-    import {useUserStore} from "@/stores";
+    import {useUserStore, useNavStore} from '@/stores'
     import {storeToRefs} from "pinia";
     import {handleCheckHasNewChat, handleLogoutReq} from '@/api/my'
     import {onMounted, ref} from 'vue'
@@ -11,10 +11,14 @@
     const router = useRouter()
 
     const userStore = useUserStore()
+    const navStore = useNavStore()
     const {currentUser} = storeToRefs(userStore)
     
     const handleLogout = async () => {
         await handleLogoutReq()
+        // 重置userStore navStore
+        userStore.reset()
+        navStore.reset()
         // 清除token信息
         Cookies.remove('token')
         // 跳转到登录页面
@@ -56,7 +60,11 @@
                     width="6rem"
                     height="6rem"
                     :src="currentUser.user.userImage"
-                />
+                >
+                    <template v-slot:loading>
+                        <van-loading type="spinner" size="20" />
+                    </template>
+                </van-image>
             </van-col>
             <van-col span="16">
                 <h2>{{ currentUser.user.username }}</h2>
@@ -66,13 +74,17 @@
     </van-cell-group>
     <van-cell-group inset>
         <van-list>
-            <van-cell :key="1" :title="'我的聊天'" @click="router.push('/main/my/my-chats')" >
+            <van-cell :key="1" :title="'我的聊天'" @click="router.push('/main/my/my-chats/list')" >
                 <a v-if="hasNewChat">
                     您有新的消息,请查看
                 </a>
             </van-cell>
             <van-cell :key="2" :title="'个人信息维护'" @click="router.push('/main/my/revise-info')" />
             <van-cell :key="3" :title="'支付宝与解绑'" @click="router.push('/main/my/handle-alipay')" />
+        </van-list>
+    </van-cell-group>
+    <van-cell-group inset>
+        <van-list>
             <van-cell :key="4" :title="'退出登录'" @click="handleLogout"/>
         </van-list>
     </van-cell-group>
@@ -84,7 +96,7 @@
     }
     .personCard{
         height: 100%;
-        // 纵向居中 使用auto
+        // 纵向居中
         display: flex;
         align-items: center;
         .avatar-container{

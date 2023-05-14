@@ -76,7 +76,7 @@ const routes = [
                 redirect: '/main/passenger/passenger-home',
                 children: [
                     {
-                        path: '/main/passenger/passenger-home',
+                        path: 'passenger-home',
                         name: 'main-passenger-home',
                         component: () => import('../views/passenger/PassengerHome.vue')
                     }
@@ -92,17 +92,17 @@ const routes = [
                 redirect: '/main/driver/driver-home',
                 children: [
                     {
-                        path: '/main/driver/driver-home',
+                        path: 'driver-home',
                         name: 'main-driver-home',
                         component: () => import('../views/driver/DriverHome.vue')
                     },
                     {
-                        path: '/main/driver/preview-map',
+                        path: 'preview-map',
                         name: 'main-preview-map',
                         component: () => import('../views/driver/PreviewMap.vue')
                     },
                     {
-                        path: '/main/driver/fee-policy',
+                        path: 'fee-policy',
                         name: 'main-fee-policy',
                         component: () => import('../views/common/FeePolicy.vue')
                     }
@@ -118,22 +118,27 @@ const routes = [
                 redirect: '/main/my/my-home',
                 children: [
                     {
-                        path: '/main/my/my-home',
+                        path: 'my-home',
                         name: 'main-my-home',
                         component: () => import('../views/my/MyHome.vue')
                     },
                     {
-                        path: '/main/my/my-chats',
-                        name: 'main-my-chats',
-                        component: () => import('../views/my/MyChats.vue')
+                        path: 'my-chats/list',
+                        name: 'main-my-chats-list',
+                        component: () => import('../views/my/chat/ChatsList.vue')
                     },
                     {
-                        path: '/main/my/revise-info',
+                        path: 'my-chats/detail',
+                        name: 'main-my-chats-detail',
+                        component: () => import('../views/my/chat/ChatDetail.vue')
+                    },
+                    {
+                        path: 'revise-info',
                         name: 'main-revise-info',
                         component: () => import('../views/my/ReviseInfo.vue')
                     },
                     {
-                        path: '/main/my/handle-alipay',
+                        path: 'handle-alipay',
                         name: 'main-handle-alipay',
                         component: () => import('../views/my/HandleAlipay.vue')
                     }

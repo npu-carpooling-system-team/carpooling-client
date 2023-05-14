@@ -8,8 +8,12 @@
     <div class="privacy-box">
         <h3 style="color: #5CA0FF">我们的服务费率政策</h3>
         <van-list>
-            <van-cell center>
-                1. 平台为您提供信息存储与检索以及收款等服务,因此平台将收取40%的服务费。
+            <van-cell>
+                <van-row>
+                    <div>
+                        1. 平台为您提供信息存储与检索以及收款等服务,因此平台将收取40%的服务费。
+                    </div>
+                </van-row>
             </van-cell>
         </van-list>
         <van-button plain block type="primary" @click="router.go(-1)">
@@ -23,6 +27,14 @@
     margin-top: 5%;
     text-align: center;
     align-items: center;
+    .van-cell{
+      .van-cell__value{
+        min-width:80%;
+        .van-row{
+            text-align: center;
+        }
+      }
+    }
     .van-button{
       width: 40%;
       // 永远处于底部

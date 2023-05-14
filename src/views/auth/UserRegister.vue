@@ -200,7 +200,6 @@
     let checkCarBack = false
     
     const picPreCheck = (file) => {
-        console.log(file.file.type)
         // 大于10M则禁止识别
         if (file.content.size > 10 * 1024 * 1024) {
             showNotify({ type: 'danger', message: '文件大小不能超过10M' });
@@ -556,6 +555,12 @@
 
 <template>
     <div class="register-form">
+        <van-nav-bar
+            title="注册"
+            left-text="返回"
+            left-arrow
+            @click-left="router.go(-1)"
+        />
         <h3 class="title">西工大拼车平台——注册</h3>
         <van-form @submit="onSubmit()">
             <van-cell-group inset style="padding: 1%;">
@@ -754,9 +759,6 @@
             <div class="submit-login-btn">
                 <van-button plain block type="primary" native-type="submit">
                     注册
-                </van-button>
-                <van-button plain block type="success" @click="router.push('/login')">
-                    返回登录页
                 </van-button>
             </div>
         </van-form>

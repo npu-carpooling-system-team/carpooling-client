@@ -1,5 +1,5 @@
 import axios from '../index.js'
-import {showLoadingToast, showNotify} from 'vant'
+import {closeToast, showLoadingToast, showNotify} from 'vant'
 import 'vant/es/notify/style'
 import 'vant/es/toast/style'
 
@@ -36,6 +36,32 @@ export const handleCheckHasNewChat = async () => {
         const {data} = await axios.get('/api/order/preorder/message')
         return data
     } catch (e) {
-        showNotify({type: 'danger', message: `检查是否有新消息失败,${e.message}`})
+        showNotify({type: 'danger', message: `检查新消息失败,${e.message}`})
     }
+    return null
+}
+
+export const handleGetChat = async () => {
+    beginLoading('正在获取聊天记录')
+    try{
+        return await handleCheckHasNewChat()
+    } catch (e) {
+        showNotify({type: 'danger', message: `获取聊天记录失败,${e.message}`})
+    } finally {
+        closeToast()
+    }
+    return null
+}
+
+export const handleSendChat = async (messageDto) => {
+    beginLoading('正在发送消息')
+    try {
+        const {data} = await axios.post('/api/order/preorder/message', messageDto)
+        return data
+    } catch (e) {
+        showNotify({type: 'danger', message: `发送消息失败,${e.message}`})
+    } finally {
+        closeToast()
+    }
+    return null
 }
