@@ -1,0 +1,1 @@
+import{o as s,n as _,b as e,a as o,V as c,p as l,F as r,D as f,E as m}from"./.pnpm-c62345a9.js";import{_ as p}from"./index-92aeb057.js";const d={},i=l("h1",null,"修改个人信息",-1);function u(h,v){const n=f,t=m,a=r;return s(),_(c,null,[i,e(a,null,{default:o(()=>[e(t,{inset:""},{default:o(()=>[e(n,{label:"你好"})]),_:1})]),_:1})],64)}const B=p(d,[["render",u]]);export{B as default};
