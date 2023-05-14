@@ -169,7 +169,7 @@
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          text-align: right;
+          text-align: center;
           .message-div{
             color: black;
           }

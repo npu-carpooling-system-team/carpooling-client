@@ -33,12 +33,17 @@
             state.nav.to = to
         })
     }
+    
+    const isDriver = ref(false)
+    const isPassenger = ref(false)
 
     onMounted(async () => {
         if (currentUser.value.user.isDeleted === 1 && currentUser.value.driver.isDeleted === 1) {
             // 首次登入 pinia为空 加载用户信息
             await getUserBasic()
         }
+        isDriver.value = currentUser.value.user.isDriver
+        isPassenger.value = currentUser.value.user.isPassenger
         // 从pinia读取当前active
         active.value = nav.value.currentNav
         await router.push(nav.value.to)
@@ -48,14 +53,14 @@
 <template>
     <van-tabbar v-model="active">
         <van-tabbar-item
-            name="passenger" v-if="currentUser.user.isDeleted === 0"
+            name="passenger" v-if="isPassenger"
             icon="shop-o" to="/main/passenger"
             @click="saveNavState('passenger', '/main/passenger')"
         >
             我要拼车
         </van-tabbar-item>
         <van-tabbar-item
-            name="driver" v-if="currentUser.driver.isDeleted === 0"
+            name="driver" v-if="isDriver"
             icon="logistics" to="/main/driver"
             @click="saveNavState('driver', '/main/driver')"
         >

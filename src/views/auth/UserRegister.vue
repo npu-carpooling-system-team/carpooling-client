@@ -452,17 +452,22 @@
     watch(role, (newValue) => {
         showExtraForm.value = !!newValue.includes('isDriver');
     })
+
+    const isDriverInfoEmpty = () => {
+        return registerDto.value.driversName === '' ||
+            registerDto.value.driversPersonalId === '' ||
+            registerDto.value.driversVehicleType === '' ||
+            registerDto.value.driversExpireDate === '' ||
+            registerDto.value.driversPlateNo === ''
+    }
+
+    const notAllCardChecked = () => {
+        return !checkIdFront || !checkIdBack || !checkDriving || !checkCarFront || !checkCarBack
+    }
     
     const submitPreCheck = () => {
         // 如果是司机 则有关字段均不允许为空
-        if (registerDto.value.isDriver &&
-            (registerDto.value.driversName === '' ||
-                registerDto.value.driversPersonalId === '' ||
-                registerDto.value.driversVehicleType === '' ||
-                registerDto.value.driversExpireDate === '' ||
-                registerDto.value.driversPlateNo === ''
-            )
-        ){
+        if (registerDto.value.isDriver && isDriverInfoEmpty()){
             showNotify({ type: 'danger', message: '请完善司机信息' })
             return false
         }
@@ -475,8 +480,7 @@
             showNotify({ type: 'danger', message: '请先完成邮箱校验' })
             return false
         }
-        if (registerDto.value.isDriver &&
-            (!checkIdFront || !checkIdBack || !checkDriving || !checkCarFront || !checkCarBack)){
+        if (registerDto.value.isDriver && notAllCardChecked){
             showNotify({ type: 'danger', message: '请先有关证照校验' })
             return false
         }
@@ -536,6 +540,12 @@
             checkDriving = registerCache.value.checkDriving
             checkCarFront = registerCache.value.checkCarFront
             checkCarBack = registerCache.value.checkCarBack
+            if (registerCache.value.registerDto.isDriver) {
+                role.value.push('isDriver')
+            }
+            if (registerCache.value.registerDto.isPassenger) {
+                role.value.push('isPassenger')
+            }
         }
     })
     
@@ -658,7 +668,7 @@
                     <van-checkbox name="isPassenger">我希望拼车-乘客</van-checkbox>
                     <van-checkbox name="isDriver">我可以搭人-司机</van-checkbox>
                 </van-checkbox-group>
-                <h5 v-if="showExtraForm">请您补充以下信息</h5>
+                <h5 v-if="showExtraForm">请您点击按钮，通过图片识别填入以下信息</h5>
                 <van-uploader v-if="showExtraForm" style="width: 60%; margin: 0 auto;" :after-read="resolveIdCardFront">
                     <van-button plain block type="primary" size="small">
                         拍摄您的身份证-正面-以自动识别

@@ -1,5 +1,5 @@
 <script setup>
-    import {useUserStore} from "../../stores";
+    import {useUserStore} from "@/stores";
     import {storeToRefs} from "pinia";
 
     const userStore = useUserStore()
@@ -9,8 +9,8 @@
 
 <template>
     <van-tabs>
-        <van-tab title="乘客-订单" v-if="currentUser.user.isDeleted === 0" name="order" />
-        <van-tab title="司机-行程" v-if="currentUser.driver.isDeleted === 0" name="carpooling" />
+        <van-tab title="乘客-订单" v-if="currentUser.user.isPassenger" name="order" />
+        <van-tab title="司机-行程" v-if="currentUser.user.isDriver" name="carpooling" />
     </van-tabs>
     <h1>我的行程</h1>
     <h2>展示司机的所有行程列表</h2>
