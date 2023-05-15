@@ -1,0 +1,1 @@
+import{_ as e}from"./index-f5a7dfcf.js";import{r,o as t,c}from"./.pnpm-cd511795.js";const n={};function s(_,a){const o=r("router-view");return t(),c(o)}const m=e(n,[["render",s]]);export{m as default};

@@ -1,0 +1,1 @@
+import{_ as o}from"./index-f5a7dfcf.js";import{o as n,n as s,V as t,p as e}from"./.pnpm-cd511795.js";const r={},c=e("h1",null,"我是乘客",-1),a=e("h2",null,"提供搜索",-1);function _(l,m){return n(),s(t,null,[c,a],64)}const i=o(r,[["render",_]]);export{i as default};
