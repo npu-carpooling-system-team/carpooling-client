@@ -9,17 +9,17 @@
     onMounted(async () => {
         showNotify({
             type: 'danger',
-            message: '您的账户未绑定支付宝账号,请先登录并绑定'
+            message: '由于支付宝服务器原因绑定失败,请稍后重试'
         })
         setTimeout(async () => {
-            await router.push('/login')
+            await router.push('/main/home')
         }, 3000)
     })
 </script>
 
 <template>
     <div class="welcome-banner">
-        <h1>正在处理登录信息</h1>
+        <h1>正在处理绑定信息</h1>
     </div>
 </template>
 

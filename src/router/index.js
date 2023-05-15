@@ -138,9 +138,14 @@ const routes = [
                         component: () => import('../views/my/ReviseInfo.vue')
                     },
                     {
-                        path: 'handle-alipay',
+                        path: 'bind-alipay/success',
                         name: 'main-handle-alipay',
-                        component: () => import('../views/my/HandleAlipay.vue')
+                        component: () => import('../views/my/BindAlipaySuccess.vue')
+                    },
+                    {
+                        path: 'bind-alipay/failure',
+                        name: 'main-handle-alipay-failure',
+                        component: () => import('../views/my/BindAlipayFailure.vue')
                     }
                 ]
             }
@@ -176,7 +181,9 @@ router.beforeEach((to, from, next) => {
         to.path === '/register' ||
         to.path === '/oauth/alipay/success' ||
         to.path === '/oauth/alipay/failure' ||
-        to.path === '/privacy'
+        to.path === '/privacy' ||
+        to.path === '/main/my/bind-alipay/success' ||
+        to.path === '/main/my/bind-alipay/failure'
     ) {
         return next()
     }

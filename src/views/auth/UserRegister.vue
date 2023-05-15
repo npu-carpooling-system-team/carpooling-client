@@ -480,7 +480,7 @@
             showNotify({ type: 'danger', message: '请先完成邮箱校验' })
             return false
         }
-        if (registerDto.value.isDriver && notAllCardChecked){
+        if (registerDto.value.isDriver && notAllCardChecked()){
             showNotify({ type: 'danger', message: '请先有关证照校验' })
             return false
         }

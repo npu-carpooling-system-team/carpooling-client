@@ -389,16 +389,19 @@
     
     const submitPreCheck = () => {
         // 如果是司机 则有关字段均不允许为空
-        if (reviseUserDto.value.isDriver && isDriverInfoEmpty){
+        if (reviseUserDto.value.isDriver && isDriverInfoEmpty()){
             showNotify({ type: 'danger', message: '请完善司机信息' })
             return false
         }
         // 确认邮箱已经完成校验
-        if (!checkMailDisabled.value && reviseUserDto.value.email !== ''){
+        if (!checkMailDisabled.value
+            && reviseUserDto.value.email !== ''
+            && reviseUserDto.value.email !== currentUser.value.user.email
+        ){
             showNotify({ type: 'danger', message: '请先完成邮箱校验' })
             return false
         }
-        if (reviseUserDto.value.isDriver && notAllCardChecked){
+        if (reviseUserDto.value.isDriver && notAllCardChecked()){
             showNotify({ type: 'danger', message: '请先有关证照校验' })
             return false
         }
@@ -458,9 +461,16 @@
         reviseUserDto.value.driversExpireDate = currentUser.value.driver.driversExpireDate
         reviseUserDto.value.driversPlateNo = currentUser.value.driver.driversPlateNo
         reviseUserDto.value.driversLicenseType = currentUser.value.driver.driversLicenseType
+        reviseUserDto.value.driversLicenseNo = currentUser.value.driver.driversLicenseNo
         if (currentUser.value.user.isDriver) {
             role.value.push('isDriver')
             showExtraForm.value = true
+            // 所有确认应当被设置到正确状态
+            checkIdFront = true
+            checkIdBack = true
+            checkDriving = true
+            checkCarFront = true
+            checkCarBack = true
         }
         if (currentUser.value.user.isPassenger) {
             role.value.push('isPassenger')

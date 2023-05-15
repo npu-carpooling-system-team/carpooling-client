@@ -23,7 +23,6 @@
     })
     
     const showChatDetails = async (item) => {
-        // 不知道为什么这个位置的router.push完全不生效 那就只能window了
         window.location.href = `#/main/my/my-chats/detail?toUserId=${item.toUserVo.id}`
     }
 </script>

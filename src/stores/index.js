@@ -10,10 +10,10 @@ export const useUserStore =
         const currentUser = ref({
             user: {
                 id: 1,
-                username: '13500560235',
+                username: '',
                 userImage: 'https://wangminan-files.oss-cn-hongkong.aliyuncs.com/bucket/defaultYouDontKnow.png',
-                email: 'wangminan0811@hotmail.com',
-                alipayId: '2088722003402347',
+                email: '',
+                alipayId: '',
                 isDriver: true,
                 isPassenger: true,
                 isDeleted: 1

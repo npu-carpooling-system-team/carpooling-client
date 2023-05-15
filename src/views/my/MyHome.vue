@@ -1,12 +1,14 @@
 <script setup>
     import {useRouter} from 'vue-router'
     import Cookies from 'js-cookie'
+    import 'vant/es/notify/style'
     import 'vant/es/toast/style'
+    import 'vant/es/dialog/style'
     import {useUserStore, useNavStore} from '@/stores'
     import {storeToRefs} from "pinia";
     import {handleCheckHasNewChat, handleLogoutReq} from '@/api/my'
     import {onMounted, ref} from 'vue'
-    import {showNotify} from "vant";
+    import {showNotify,showConfirmDialog} from 'vant'
 
     const router = useRouter()
 
@@ -48,6 +50,30 @@
     onMounted(() => {
         checkHasNewChat()
     })
+    
+    const handleBindAlipay = () => {
+        if (currentUser.value.user.alipayId !== ''){
+            showConfirmDialog({
+                title: '提示',
+                message: '您已绑定支付宝,是否重新绑定?',
+                confirmButtonText: '绑定',
+                cancelButtonText: '取消',
+                confirmButtonColor: '#f00',
+                showCancelButton: true
+            }).then(() => {
+                window.location.href = 'https://openauth.alipaydev.com/oauth2/publicAppAuthorize.htm?' +
+                'app_id=' + import.meta.env.VITE_ALIPAY_SANDBOX_APP_ID + '&' +
+                'scope=' + import.meta.env.VITE_ALIPAY_SANDBOX_LOGIN_SCOPE + '&' +
+                'redirect_uri=' + import.meta.env.VITE_ALIPAY_SANDBOX_BIND_REDIRECT_URI + '&' +
+                'state=' + Cookies.get('token')
+            }).catch(() => {
+                showNotify({
+                    type: 'primary',
+                    message: '已取消重新解绑'
+                })
+            })
+        }
+    }
 </script>
 
 <template>
@@ -80,7 +106,7 @@
                 </a>
             </van-cell>
             <van-cell :key="2" :title="'个人信息维护'" @click="router.push('/main/my/revise-info')" />
-            <van-cell :key="3" :title="'支付宝与解绑'" @click="router.push('/main/my/handle-alipay')" />
+            <van-cell :key="3" :title="'支付宝与解绑'" @click="handleBindAlipay()" />
         </van-list>
     </van-cell-group>
     <van-cell-group inset>
