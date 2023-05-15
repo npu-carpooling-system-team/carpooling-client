@@ -24,7 +24,7 @@ export const scanVehicleLicense = async (base64File) => {
     return await axios.post('/api/auth/register/ocr/vehicleLicense', formData)
 }
 
-function base64ToFile(dataUrl, filename) {
+export function base64ToFile (dataUrl, filename) {
     let arr = dataUrl.split(","),
         mime = arr[0].match(/:(.*?);/)[1],
         bStr = window.atob(arr[1]),

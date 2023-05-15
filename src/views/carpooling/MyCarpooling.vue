@@ -1,6 +1,6 @@
 <script setup>
-    import {useUserStore} from "@/stores";
-    import {storeToRefs} from "pinia";
+    import {useUserStore} from '@/stores'
+    import {storeToRefs} from 'pinia'
 
     const userStore = useUserStore()
     // 直接从中提取currentUser是非响应式的 所以需要使用storeToRefs

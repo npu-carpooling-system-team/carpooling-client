@@ -38,8 +38,8 @@
         :finished="true"
         finished-text="没有更多聊天了"
     >
-        <van-cell-group inset style="margin-top:2%">
-            <van-cell class="chatPreview" v-for="item in chatList" :key="item">
+        <van-cell-group inset style="margin-top:2%"  v-for="item in chatList" :key="item">
+            <van-cell class="chatPreview">
                 <van-row @click="showChatDetails(item)">
                     <!-- 用户头像 -->
                     <van-col span="8">

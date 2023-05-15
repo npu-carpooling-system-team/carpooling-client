@@ -67,13 +67,13 @@
     
     window.onscroll = function () {
         if (document.documentElement.scrollTop < 5){
-            verbTop = 0
+			showInput.value = true
         }
-        if (document.documentElement.scrollTop - verbTop > 30 && showInput.value) {
+        if (document.documentElement.scrollTop - verbTop > 10 && showInput.value) {
             showInput.value = false
             // 更新滚动条高度
             verbTop = document.documentElement.scrollTop
-        } else if (verbTop - document.documentElement.scrollTop > 5 && !showInput.value) {
+        } else if (verbTop - document.documentElement.scrollTop > 10 && !showInput.value) {
             showInput.value = true
             verbTop = document.documentElement.scrollTop
         }
@@ -130,25 +130,27 @@
         </van-cell-group>
     </van-list>
     
-    <van-cell-group class="chat-input" inset v-if="showInput">
-        <van-field
-            center
-            label="您的留言"
-            label-align="center"
-            rows="1"
-            v-model="inputMessage"
-        >
-            <template #button>
-                <van-button
-                    size="small"
-                    type="primary"
-                    icon="guide-o"
-                    @click="sendChat"
-                >
-                </van-button>
-            </template>
-        </van-field>
-    </van-cell-group>
+    <div class="input-container">
+        <van-cell-group class="chat-input" inset v-if="showInput">
+            <van-field
+                    center
+                    label="您的留言"
+                    label-align="center"
+                    rows="1"
+                    v-model="inputMessage"
+            >
+                <template #button>
+                    <van-button
+                            size="small"
+                            type="primary"
+                            icon="guide-o"
+                            @click="sendChat"
+                    >
+                    </van-button>
+                </template>
+            </van-field>
+        </van-cell-group>
+    </div>
 </template>
 
 <style lang="less" scoped>
@@ -177,9 +179,18 @@
       }
     }
   }
-  .chat-input {
+  .input-container{
     position: fixed;
     bottom: 1%;
+    width: 100%;
+    // 内容水平居中
+    display: flex;
+    justify-content: center;
     /* other styles */
+    .chat-input {
+      border: 1px solid #ebedf0;
+      // 阴影
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    }
   }
 </style>

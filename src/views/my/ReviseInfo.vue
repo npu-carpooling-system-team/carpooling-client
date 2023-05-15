@@ -6,9 +6,11 @@
     import 'vant/es/toast/style'
     import axios from '../../api'
     import {useRouter} from 'vue-router'
-    import {scanDrivingLicense, scanIdCard, scanVehicleLicense} from '@/utils/ocrUtil'
+	import {base64ToFile, scanDrivingLicense, scanIdCard, scanVehicleLicense} from '@/utils/ocrUtil'
     import {useUserStore} from '@/stores'
     import {storeToRefs} from 'pinia'
+	import {deleteFile, putFile} from '@/utils/ossUtil'
+	import {getPersonalInfo} from "@/api/common";
 
     const router = useRouter()
 
@@ -43,16 +45,20 @@
 
     const mailLoadingText = ref('')
 
+	const beginLoading = (message) => {
+		showLoadingToast({
+			duration: 0,
+			forbidClick: true,
+			message: message
+		})
+	}
+
     const sendMail = async () => {
         if (!/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(reviseUserDto.value.email)){
             showNotify({ type: 'danger', message: '邮箱格式不正确' });
             return
         }
-        showLoadingToast({
-            duration: 0,
-            forbidClick: true,
-            message: '请求验证码发送中'
-        })
+        beginLoading('请求验证码发送中')
         const sendMailDto = {
             'email': reviseUserDto.value.email
         }
@@ -89,11 +95,7 @@
             showNotify({ type: 'danger', message: '格式不正确' });
             return
         }
-        showLoadingToast({
-            duration: 0,
-            forbidClick: true,
-            message: '请求邮箱验证中'
-        })
+        beginLoading('请求邮箱验证中')
         try{
             const {data} = await axios.post("/api/auth/checkmail", confirmMailDto.value)
             if (data.code !== null && data.code === 2000){
@@ -138,11 +140,7 @@
             return
         }
         // 开始转圈
-        showLoadingToast({
-            duration: 0,
-            forbidClick: true,
-            message: '正在识别身份证'
-        })
+        beginLoading('正在识别身份证')
         try {
             const {data} = await scanIdCard(file)
             if(data.code === 2000){
@@ -176,11 +174,7 @@
             return
         }
         // 开始转圈
-        showLoadingToast({
-            duration: 0,
-            forbidClick: true,
-            message: '正在识别身份证'
-        })
+        beginLoading('正在识别身份证')
         try {
             const {data} = await scanIdCard(file)
             if(data.code === 2000){
@@ -225,11 +219,7 @@
             showNotify({ type: 'danger', message: '请先识别身份证信息' });
         }
         // 开始转圈
-        showLoadingToast({
-            duration: 0,
-            forbidClick: true,
-            message: '正在识别驾驶证'
-        })
+        beginLoading('正在识别驾驶证')
         try{
             const {data} = await scanDrivingLicense(file)
             if (data.code === 2000){
@@ -274,11 +264,7 @@
             return
         }
         // 开始转圈
-        showLoadingToast({
-            duration: 0,
-            forbidClick: true,
-            message: '正在识别行驶证'
-        })
+        beginLoading('正在识别行驶证')
         try{
             const {data} = await scanVehicleLicense(file)
             if (data.code === 2000){
@@ -315,11 +301,7 @@
             return
         }
         // 开始转圈
-        showLoadingToast({
-            duration: 0,
-            forbidClick: true,
-            message: '正在识别行驶证'
-        })
+		beginLoading('正在识别行驶证')
         try{
             const {data} = await scanVehicleLicense(file)
             if (data.code === 2000){
@@ -408,14 +390,63 @@
         return true
     }
 
+	const fileList = ref([])
+	
+    // https://wangminan-files.oss-cn-hongkong.aliyuncs.com/default/defaultAvatar.png 取出 defaultAvatar.png
+    const oldAvatarFileName = currentUser.value.user.userImage.split('/').pop()
+    
+    const uploadAvatar = async (file) => {
+		beginLoading('正在上传头像')
+		try {
+			const newAvatar = base64ToFile(file.content, file.file.name)
+			const result = await putFile(newAvatar.name, newAvatar)
+			if (result.url !== undefined){
+				reviseUserDto.value.userImage = result.url
+			}
+			return true
+        } catch (e) {
+            showNotify({ type: 'danger', message: `头像上传失败,请重试` })
+		} finally {
+			closeToast()
+		}
+		return false
+    }
+	
+	const renewPinia = async () => {
+		beginLoading('正在更新用户信息缓存')
+		try {
+			// 更新pinia缓存
+			const data = await getPersonalInfo()
+			if (data.code === 2000) {
+				userStore.$patch((state) => {
+					state.currentUser = data.result.result
+				})
+			} else {
+				showNotify({type: 'danger', message: `首页初始化失败,${data.msg},请刷新页面重试`});
+			}
+        } finally {
+			closeToast()
+		}
+    }
+    
     // 这下终于得注册了
+    // eslint-disable-next-line complexity
     const onSubmit = async () => {
+		let reviseAvatar = false
+		if (fileList.value[0].url === undefined){
+			reviseAvatar = true
+			const tmpPic = fileList.value[0]
+            if (!picPreCheck(tmpPic)){
+				return
+            }
+			// 上传图片
+            const result = await uploadAvatar(fileList.value[0])
+            if (!result){
+				return
+            }
+        }
         // 开始转圈
-        showLoadingToast({
-            duration: 0,
-            forbidClick: true,
-            message: '正在提交修改信息'
-        })
+        beginLoading('正在提交修改信息')
         try {
             // 开始预校验
             // 解析用户角色
@@ -435,23 +466,37 @@
             const {data} = await axios.put('/api/user/info', reviseUserDto.value)
             if (data.code === 2000){
                 showNotify({ type: 'success', message: '修改个人信息成功' })
-                // 跳转到用户主页
-                await router.push('/main/my/my-home')
+                await renewPinia()
             } else {
                 showNotify({ type: 'danger', message: data.message })
             }
         } catch (e) {
             showNotify({ type: 'danger', message: `服务器异常${e},请通知管理员` });
         } finally {
-            closeToast();
+			closeToast()
+            beginLoading('正在清除旧缓存')
+			if (
+				reviseAvatar &&
+				oldAvatarFileName !== import.meta.env.VITE_DEFAULT_AVATAR.split('/').pop()
+			){
+				// 非默认头像 删除数据省OSS存储
+				await deleteFile(oldAvatarFileName)
+			}
+            closeToast()
         }
+		// 刷新当前页面
+		await router.go(0)
     }
-
+	
     onMounted(() => {
         // 初始化
         reviseUserDto.value.username = currentUser.value.user.username
         reviseUserDto.value.email = currentUser.value.user.email
         reviseUserDto.value.userImage = currentUser.value.user.userImage
+        fileList.value.push({
+            url: currentUser.value.user.userImage,
+            isImage: true
+        })
         reviseUserDto.value.alipayId = currentUser.value.user.alipayId
         reviseUserDto.value.isDriver = currentUser.value.user.isDriver
         reviseUserDto.value.isPassenger = currentUser.value.user.isPassenger
@@ -488,6 +533,20 @@
         />
         <van-form @submit="onSubmit()">
             <van-cell-group inset style="padding: 1%;">
+                <van-cell>
+                    <van-row class="personCard">
+                        <van-col span="8">
+                            头像
+                        </van-col>
+                        <van-col span="16">
+                            <van-uploader
+                                v-model="fileList"
+                                :max-count="1"
+                                :max-size="10 * 1024 * 1024"
+                            />
+                        </van-col>
+                    </van-row>
+                </van-cell>
                 <van-field
                     v-model="reviseUserDto.username"
                     name="手机号"
@@ -541,6 +600,7 @@
                     <van-checkbox name="isPassenger">我希望拼车-乘客</van-checkbox>
                     <van-checkbox name="isDriver">我可以搭人-司机</van-checkbox>
                 </van-checkbox-group>
+                <!-- 司机部分 -->
                 <h5 v-if="showExtraForm">请您点击按钮，通过图片识别修改以下信息</h5>
                 <van-uploader v-if="showExtraForm" style="width: 60%; margin: 0 auto;" :after-read="resolveIdCardFront">
                     <van-button plain block type="primary" size="small">
@@ -647,6 +707,16 @@
     width: 100%;
     height: 100%;
     text-align: center;
+    .personCard{
+      height: 10%;
+      // 纵向居中
+      display: flex;
+      align-items: center;
+      text-align: left;
+      .avatar-container{
+        margin-left: 5px;
+      }
+    }
     .title{
       margin-top:5%;
     }

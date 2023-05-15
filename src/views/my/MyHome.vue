@@ -55,7 +55,7 @@
         if (currentUser.value.user.alipayId !== ''){
             showConfirmDialog({
                 title: '提示',
-                message: '您已绑定支付宝,是否重新绑定?',
+                message: `您已绑定支付宝,您当前的支付宝账号为${currentUser.value.user.alipayId},是否重新绑定?`,
                 confirmButtonText: '绑定',
                 cancelButtonText: '取消',
                 confirmButtonColor: '#f00',

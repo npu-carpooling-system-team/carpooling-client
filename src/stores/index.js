@@ -11,7 +11,7 @@ export const useUserStore =
             user: {
                 id: 1,
                 username: '',
-                userImage: 'https://wangminan-files.oss-cn-hongkong.aliyuncs.com/bucket/defaultYouDontKnow.png',
+                userImage: import.meta.env.VITE_DEFAULT_AVATAR,
                 email: '',
                 alipayId: '',
                 isDriver: true,
@@ -21,12 +21,12 @@ export const useUserStore =
             driver: {
                 id: 3,
                 driverId: 4,
-                driversPersonalId: '330105200208153213',
-                driversName: '王旻安',
-                driversLicenseNo: '330106748147',
-                driversLicenseType: 'C1',
-                driversPlateNo: '浙AS1245',
-                driversVehicleType: '白色斯柯达',
+                driversPersonalId: '',
+                driversName: '',
+                driversLicenseNo: '',
+                driversLicenseType: '',
+                driversPlateNo: '',
+                driversVehicleType: '',
                 driversExpireDate: '',
                 avgScore: '',
                 isDeleted: 1
@@ -37,10 +37,10 @@ export const useUserStore =
             currentUser.value = {
                 user: {
                     id: 1,
-                    username: '13500560235',
-                    userImage: 'https://wangminan-files.oss-cn-hongkong.aliyuncs.com/bucket/defaultYouDontKnow.png',
-                    email: 'wangminan0811@hotmail.com',
-                    alipayId: '2088722003402347',
+                    username: '',
+                    userImage: import.meta.env.VITE_DEFAULT_AVATAR,
+                    email: '',
+                    alipayId: '',
                     isDriver: true,
                     isPassenger: true,
                     isDeleted: 1
@@ -48,12 +48,12 @@ export const useUserStore =
                 driver: {
                     id: 3,
                     driverId: 4,
-                    driversPersonalId: '330105200208153213',
-                    driversName: '王旻安',
-                    driversLicenseNo: '330106748147',
-                    driversLicenseType: 'C1',
-                    driversPlateNo: '浙AS1245',
-                    driversVehicleType: '白色斯柯达',
+                    driversPersonalId: '',
+                    driversName: '',
+                    driversLicenseNo: '',
+                    driversLicenseType: '',
+                    driversPlateNo: '',
+                    driversVehicleType: '',
                     driversExpireDate: '',
                     avgScore: '',
                     isDeleted: 1

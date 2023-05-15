@@ -28,6 +28,9 @@
     })
     const passingPoint = ref('')
 
+	// 获取当前日期 yyyy-MM-dd
+	const today = new Date()
+
     const jumpToPreviewMap = async () => {
         if (addCarpoolingDto.value.departurePoint === ''
             || addCarpoolingDto.value.arrivePoint === ''
@@ -222,7 +225,10 @@
                     :rules="[{ required: true, message: '请选择出发日期' }]"
                 />
                 <van-popup v-model:show="showDatePicker1" position="bottom">
-                    <van-date-picker @confirm="onDepartureDateConfirm" @cancel="showDatePicker1 = false" />
+                    <van-date-picker
+                        :min-date="today"
+                        @confirm="onDepartureDateConfirm"
+                        @cancel="showDatePicker1 = false" />
                 </van-popup>
                 <van-field
                     v-model="departureTime"
@@ -248,7 +254,10 @@
                     :rules="[{ required: true, message: '请选择到达日期' }]"
                 />
                 <van-popup v-model:show="showDatePicker2" position="bottom">
-                    <van-date-picker @confirm="onArriveDateConfirm" @cancel="showDatePicker2 = false" />
+                    <van-date-picker
+                        :min-date="today"
+                        @confirm="onArriveDateConfirm"
+                        @cancel="showDatePicker2 = false" />
                 </van-popup>
                 <van-field
                     v-model="arriveTime"
@@ -301,7 +310,7 @@
                         服务费率政策
                     </p>
                 </div>
-                <div class="submit-login-btn">
+                <div class="submit-carpooling-btn">
                     <van-button plain block type="primary" native-type="submit">
                         添加行程
                     </van-button>
@@ -319,7 +328,7 @@
         width: 100%;
         height: 100%;
         text-align: center;
-        .submit-login-btn{
+        .submit-carpooling-btn{
             display: flex;
             justify-content: space-around;
             margin: 5% auto 5%;
