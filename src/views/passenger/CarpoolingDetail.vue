@@ -169,9 +169,6 @@
         width: 100%;
         height: 100%;
         text-align: center;
-        .van-form{
-            color: black;
-        }
         .submit-order-btn{
             display: flex;
             justify-content: space-around;

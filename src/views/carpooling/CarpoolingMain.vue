@@ -3,6 +3,9 @@
 	import {storeToRefs} from 'pinia'
     import {useRouter} from 'vue-router'
 	import {onMounted} from 'vue'
+	import {closeToast, showLoadingToast} from 'vant'
+	import 'vant/es/toast/style'
+	import 'vant/es/notify/style'
     
     const router = useRouter()
 	const userStore = useUserStore()
@@ -18,11 +21,21 @@
     }
 	
 	onMounted(async () => {
-		if (currentUser.value.user.isPassenger) {
-			await router.push('/main/carpooling/passenger-order')
-		} else {
-			await router.push('/main/carpooling/driver-carpooling')
-        }
+		showLoadingToast({
+            message: '加载行程中...',
+            forbidClick: true,
+            duration: 0
+        })
+		try {
+			if (currentUser.value.user.isPassenger) {
+				await router.push('/main/carpooling/passenger-order')
+			} else {
+				await router.push('/main/carpooling/driver-carpooling')
+			}
+        } finally {
+            closeToast()
+		}
+		
     })
 </script>
 

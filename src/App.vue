@@ -1,6 +1,6 @@
 <script setup>
     import {useDark} from '@vueuse/core'
-    import {watch} from 'vue'
+	import {onMounted, watch} from 'vue'
 
     const isDark = useDark()
     
@@ -9,6 +9,15 @@
         // 不加这一句log这个watch要失效 不知道为什么
         console.log(val)
         if (val) {
+            document.getElementById('config-provider').style.backgroundColor = 'black'
+        } else {
+            document.getElementById('config-provider').style.backgroundColor = '#ebedf0'
+        }
+    })
+    
+    onMounted(() => {
+		console.log(isDark.value)
+		if (isDark.value) {
             document.getElementById('config-provider').style.backgroundColor = 'black'
         } else {
             document.getElementById('config-provider').style.backgroundColor = '#ebedf0'

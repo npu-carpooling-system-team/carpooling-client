@@ -176,9 +176,6 @@
           justify-content: center;
           align-items: center;
           text-align: center;
-          .message-div{
-            color: black;
-          }
         }
       }
     }

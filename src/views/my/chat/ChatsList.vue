@@ -58,7 +58,7 @@
                     <!-- 聊天详情 -->
                     <van-col span="14">
                         <van-row style="height:2rem;">
-                            <van-col span="24" style="font-size: 1.5rem; color: black;">
+                            <van-col span="24" style="font-size: 1.5rem;">
                                 <strong>{{item.toUserVo.username}}</strong>
                             </van-col>
                         </van-row>
