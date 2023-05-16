@@ -1,1 +1,0 @@
-import{_ as s}from"./index-46d97138.js";import{s as o,t,q as e}from"./.pnpm-f0908098.js";const n=a=>{e({duration:0,forbidClick:!0,message:a})},g=async()=>{n("正在加载您的个人信息");try{const{data:a}=await s.get("/api/user/info");return a}catch(a){o({type:"danger",message:`首页初始化失败,${a.message}`})}finally{t()}return null};export{g};
