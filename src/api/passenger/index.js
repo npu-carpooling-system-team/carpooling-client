@@ -31,3 +31,36 @@ export const handleGetCarpoolingList = async (queryDto) => {
 	}
 	return null
 }
+
+
+export const handleGetCarpoolingDetail = async (id) => {
+	beginLoading('正在加载拼车信息详情')
+	try {
+		const {data} = await axios.get(`/api/carpooling/frontend/${id}`)
+		return data
+	} catch (e) {
+		showNotify({
+			type: 'danger',
+			message: '加载拼车信息详情失败'
+		})
+	} finally {
+		closeToast()
+	}
+	return null
+}
+
+export const handleSubmitApplication = async (id) => {
+	beginLoading('正在提交申请')
+	try {
+		const {data} = await axios.post(`/api/order/preorder/passenger/apply/${id}`)
+		return data
+	} catch (e) {
+		showNotify({
+			type: 'danger',
+			message: '提交申请失败'
+		})
+	} finally {
+		closeToast()
+	}
+	return null
+}

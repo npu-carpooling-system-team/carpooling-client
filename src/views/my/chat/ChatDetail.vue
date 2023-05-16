@@ -2,7 +2,8 @@
     import {useRouter} from 'vue-router'
     import {onMounted, ref} from 'vue'
     import {handleGetChat, handleSendChat} from '@/api/my'
-    import {showNotify} from "vant";
+    import {showNotify} from 'vant'
+	import 'vant/es/notify/style'
     import {useUserStore} from '@/stores'
     import {storeToRefs} from 'pinia'
     
@@ -11,7 +12,7 @@
     
     const chatDetail = ref({})
     
-    const navTitle = ref('加载中...')
+    const navTitle = ref('发送第一条信息后可见对方账号')
 
     const userStore = useUserStore()
     const {currentUser} = storeToRefs(userStore)
@@ -21,11 +22,13 @@
     const getChat = async () => {
         const data = await handleGetChat()
         if (data.code === 2000) {
-            // 处理
-            chatDetail.value = data.result.list.find(
-                item => item.toUserVo.id === toUserId
-            )
-            navTitle.value = chatDetail.value.toUserVo.username
+            if (data.result !== null){
+				// 处理
+				chatDetail.value = data.result.list.find(
+					item => item.toUserVo.id === toUserId
+				)
+				navTitle.value = chatDetail.value.toUserVo.username
+            }
         } else {
             showNotify({
                 type: 'danger',
@@ -91,7 +94,8 @@
         :finished="true"
         finished-text="没有更多聊天了"
     >
-        <van-cell-group style="margin-top:2%" v-for="chat in chatDetail.chats" :key="chat" inset>
+        <van-cell-group
+            style="margin-top:2%" v-for="chat in chatDetail.chats" :key="chat" inset>
             <van-cell class="chatItem">
                 <van-row>
                     <!-- 用户头像 -->

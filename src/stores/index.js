@@ -14,8 +14,8 @@ export const useUserStore =
                 userImage: import.meta.env.VITE_DEFAULT_AVATAR,
                 email: '',
                 alipayId: '',
-                isDriver: true,
-                isPassenger: true,
+                isDriver: false,
+                isPassenger: false,
                 isDeleted: 1
             },
             driver: {
@@ -41,8 +41,8 @@ export const useUserStore =
                     userImage: import.meta.env.VITE_DEFAULT_AVATAR,
                     email: '',
                     alipayId: '',
-                    isDriver: true,
-                    isPassenger: true,
+                    isDriver: false,
+                    isPassenger: false,
                     isDeleted: 1
                 },
                 driver: {

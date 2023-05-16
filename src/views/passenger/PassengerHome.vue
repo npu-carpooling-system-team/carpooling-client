@@ -1,8 +1,11 @@
 <script setup>
 	import {onMounted, ref} from 'vue'
 	import {handleGetCarpoolingList} from '@/api/passenger'
-	import {showNotify} from "vant";
-    
+	import {showNotify} from 'vant'
+	import 'vant/es/notify/style'
+	import {useRouter} from 'vue-router'
+ 
+	const router = useRouter()
     const departureDate = ref('')
     const departureTime = ref('')
     
@@ -131,6 +134,10 @@
 		departureTime.value = ''
 		showTimePicker.value = false
     }
+	
+	const showCarpoolingDetail = async (carpooling) => {
+		await router.push(`/main/passenger/carpooling-detail?id=${carpooling.id}`)
+    }
 </script>
 
 <template>
@@ -192,7 +199,7 @@
             @load="getCarpoolingList"
         >
             <van-cell-group inset style="margin-top:2%" v-for="carpooling in carpoolingList" :key="carpooling">
-                <van-cell class="carpoolingItem">
+                <van-cell class="carpoolingItem" @click="showCarpoolingDetail(carpooling)">
                     <van-row>
                         <van-col span="11">
                             {{carpooling.departurePoint}}
@@ -255,5 +262,9 @@
             }
           }
         }
+    }
+    .van-cell-group{
+      // 边缘投影
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     }
 </style>

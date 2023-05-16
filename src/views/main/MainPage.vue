@@ -12,7 +12,9 @@
         '/main/carpooling',
         '/main/passenger/passenger-home',
         '/main/driver/driver-home',
-        '/main/my/my-home'
+        '/main/my/my-home',
+        '/main/carpooling/passenger-order',
+        '/main/carpooling/driver-carpooling'
     ]
 
     //滚动条距离顶部的距离
