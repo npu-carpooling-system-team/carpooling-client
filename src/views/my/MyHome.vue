@@ -86,6 +86,7 @@
                     width="6rem"
                     height="6rem"
                     :src="currentUser.user.userImage"
+                    fit="cover"
                 >
                     <template v-slot:loading>
                         <van-loading type="spinner" size="20" />

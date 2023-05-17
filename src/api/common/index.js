@@ -11,7 +11,7 @@ const beginLoading = (message) => {
     })
 }
 
-export const getPersonalInfo = async () => {
+export const handleGetPersonalInfo = async () => {
     beginLoading('正在加载您的个人信息')
     try{
         const {data} = await axios.get('/api/user/info')

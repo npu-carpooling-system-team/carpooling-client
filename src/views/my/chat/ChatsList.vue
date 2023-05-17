@@ -49,6 +49,7 @@
                             width="4.5rem"
                             height="4.5rem"
                             :src="item.toUserVo.avatar"
+                            fit="cover"
                         >
                             <template v-slot:loading>
                                 <van-loading type="spinner" size="20" />

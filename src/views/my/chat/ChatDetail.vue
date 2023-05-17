@@ -106,6 +106,7 @@
                             height="3rem"
                             :src="chat.fromUserId === toUserId ? chatDetail.toUserVo.avatar
                             : currentUser.user.userImage"
+                            fit="cover"
                         >
                             <template v-slot:loading>
                                 <van-loading type="spinner" size="20" />

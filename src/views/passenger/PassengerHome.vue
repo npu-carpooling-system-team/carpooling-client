@@ -201,13 +201,10 @@
             <van-cell-group inset style="margin-top:2%" v-for="carpooling in carpoolingList" :key="carpooling">
                 <van-cell class="carpoolingItem" @click="showCarpoolingDetail(carpooling)">
                     <van-row>
-                        <van-col span="11">
+                        <van-col span="12">
                             {{carpooling.departurePoint}}
                         </van-col>
-                        <van-col span="2">
-                            <span>--></span>
-                        </van-col>
-                        <van-col span="11">
+                        <van-col span="12">
                             {{carpooling.arrivePoint}}
                         </van-col>
                     </van-row>
@@ -215,7 +212,9 @@
                         <van-col span="11">
                             {{carpooling.departureTime}}
                         </van-col>
-                        <van-col span="2"/>
+                        <van-col span="2">
+                            <span>--></span>
+                        </van-col>
                         <van-col span="11">
                             {{carpooling.arriveTime}}
                         </van-col>

@@ -28,9 +28,9 @@
         })
 		try {
 			if (currentUser.value.user.isPassenger) {
-				await router.push('/main/carpooling/passenger-order')
+				window.location.href = '#/main/carpooling/passenger-order'
 			} else {
-				await router.push('/main/carpooling/driver-carpooling')
+				window.location.href = '#/main/carpooling/driver-carpooling'
 			}
         } finally {
             closeToast()

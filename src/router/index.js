@@ -75,6 +75,11 @@ const routes = [
                         path: 'driver-carpooling',
                         name: 'main-carpooling-driver-carpooling',
                         component: () => import('../views/carpooling/DriverCarpooling.vue')
+                    },
+                    {
+                        path: 'order-detail',
+                        name: 'main-carpooling-order-detail',
+                        component: () => import('../views/carpooling/OrderDetail.vue')
                     }
                 ]
             },

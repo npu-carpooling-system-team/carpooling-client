@@ -4,7 +4,7 @@
     import 'vant/es/notify/style'
     import {useUserStore, useNavStore} from '@/stores'
     import {storeToRefs} from 'pinia'
-    import {getPersonalInfo} from '@/api/common'
+	import {handleGetPersonalInfo} from '@/api/common'
     import {useRouter} from 'vue-router'
 
     const router = useRouter()
@@ -17,13 +17,15 @@
     const {nav} = storeToRefs(navStore)
 
     const getUserBasic = async () => {
-        const data = await getPersonalInfo()
-        if (data.code === 2000) {
+        const data = await handleGetPersonalInfo()
+        if (data !== null && data.code === 2000) {
             userStore.$patch((state) => {
                 state.currentUser = data.result.result
             })
-        } else {
+        } else if (data !== null) {
             showNotify({type: 'danger', message: `首页初始化失败,${data.msg},请刷新页面重试`});
+        } else {
+            showNotify({type: 'danger', message: `首页初始化失败,请刷新页面重试`});
         }
     }
     

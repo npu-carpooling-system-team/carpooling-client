@@ -64,3 +64,19 @@ export const handleSubmitApplication = async (id) => {
 	}
 	return null
 }
+
+export const getOrderListByPassenger = async () => {
+	beginLoading('正在加载订单列表')
+	try {
+		const {data} = await axios.get(`/api/order/passenger/order/list`)
+		return data
+	} catch (e) {
+		showNotify({
+			type: 'danger',
+			message: '加载订单列表失败'
+		})
+	} finally {
+		closeToast()
+	}
+	return null
+}

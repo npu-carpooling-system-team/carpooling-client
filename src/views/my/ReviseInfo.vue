@@ -10,7 +10,7 @@
     import {useUserStore} from '@/stores'
     import {storeToRefs} from 'pinia'
 	import {deleteFile, putFile} from '@/utils/ossUtil'
-	import {getPersonalInfo} from "@/api/common";
+	import {handleGetPersonalInfo} from "@/api/common";
 
     const router = useRouter()
 
@@ -416,7 +416,7 @@
 		beginLoading('正在更新用户信息缓存')
 		try {
 			// 更新pinia缓存
-			const data = await getPersonalInfo()
+			const data = await handleGetPersonalInfo()
 			if (data.code === 2000) {
 				userStore.$patch((state) => {
 					state.currentUser = data.result.result
