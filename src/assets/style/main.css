@@ -19,6 +19,11 @@ html,body,#app{
     -webkit-text-size-adjust: 100%;
 }
 
+.van-cell-group{
+/* 边缘投影 */
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
 /**
  * 适配 iphone 底部安全区（指示条，配合index.html <meta name="viewport" ... />使用
  */

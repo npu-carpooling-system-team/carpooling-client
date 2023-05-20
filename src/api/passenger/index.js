@@ -80,3 +80,19 @@ export const getOrderListByPassenger = async () => {
 	}
 	return null
 }
+
+export const getOrderDetailsByPassenger = async (id) => {
+	beginLoading('正在加载订单详情')
+	try {
+		const {data} = await axios.get(`/api/order/passenger/order?orderId=${id}`)
+		return data
+	} catch (e) {
+		showNotify({
+			type: 'danger',
+			message: '加载订单详情失败'
+		})
+	} finally {
+		closeToast()
+	}
+	return null
+}

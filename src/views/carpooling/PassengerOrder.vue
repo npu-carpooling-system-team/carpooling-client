@@ -3,6 +3,7 @@
 	import {getOrderListByPassenger} from '@/api/passenger'
 	import {showNotify} from 'vant'
 	import 'vant/es/notify/style'
+	import router from "@/router";
 	
     const orderList = ref([])
 	const getOrderList = async () => {
@@ -35,6 +36,10 @@
 	onMounted(async () => {
 		await getOrderList()
     })
+    
+    const checkOrderDetails = async (order) => {
+		await router.push(`/main/carpooling/order-detail?orderId=${order.id}`)
+    }
 </script>
 
 <template>
@@ -43,7 +48,7 @@
             finished
             finished-text="没有更多订单了"
         >
-            <van-cell-group inset v-for="order in orderList" :key="order">
+            <van-cell-group inset v-for="order in orderList" :key="order" @click="checkOrderDetails(order)">
                 <van-cell class="orderItem">
                     <van-row>
                         <van-col span="12">

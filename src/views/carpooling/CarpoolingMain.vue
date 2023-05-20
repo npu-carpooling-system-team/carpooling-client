@@ -2,10 +2,7 @@
 	import {useUserStore} from '@/stores'
 	import {storeToRefs} from 'pinia'
     import {useRouter} from 'vue-router'
-	import {onMounted} from 'vue'
-	import {closeToast, showLoadingToast} from 'vant'
-	import 'vant/es/toast/style'
-	import 'vant/es/notify/style'
+	import {onMounted, ref, watch} from 'vue'
     
     const router = useRouter()
 	const userStore = useUserStore()
@@ -21,26 +18,27 @@
     }
 	
 	onMounted(async () => {
-		showLoadingToast({
-            message: '加载行程中...',
-            forbidClick: true,
-            duration: 0
-        })
-		try {
-			if (currentUser.value.user.isPassenger) {
-				window.location.href = '#/main/carpooling/passenger-order'
-			} else {
-				window.location.href = '#/main/carpooling/driver-carpooling'
-			}
-        } finally {
-            closeToast()
-		}
-		
+		await routerPush(currentUser.value.user.isPassenger ?
+            {title: '乘客-订单'} : {title: '司机-行程'})
     })
+
+    const carpoolingHomeList = [
+		'/main/carpooling',
+        '/main/carpooling/passenger-order',
+        '/main/carpooling/driver-carpooling'
+    ]
+    
+    const showVanTabs = ref(true)
+    
+	watch(() => router.currentRoute.value.path, (path) => {
+		// 修正跳转到其他页面后转回的操作执行两次之后verbTop定位错误的问题
+		showVanTabs.value = carpoolingHomeList.indexOf(path) !== -1
+	})
+ 
 </script>
 
 <template>
-    <van-tabs @click-tab="routerPush" sticky>
+    <van-tabs @click-tab="routerPush" sticky v-if="showVanTabs">
         <van-tab
             title="乘客-订单" v-if="currentUser.user.isPassenger"
             name="order"/>

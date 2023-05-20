@@ -179,7 +179,7 @@
         }
     }
     .van-cell-group{
-        // 边缘投影
-        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+      // 阴影
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
     }
 </style>

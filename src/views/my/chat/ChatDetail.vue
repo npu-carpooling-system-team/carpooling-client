@@ -138,18 +138,18 @@
     <div class="input-container">
         <van-cell-group class="chat-input" inset v-if="showInput">
             <van-field
-                    center
-                    label="您的留言"
-                    label-align="center"
-                    rows="1"
-                    v-model="inputMessage"
+                center
+                label="您的留言"
+                label-align="center"
+                rows="1"
+                v-model="inputMessage"
             >
                 <template #button>
                     <van-button
-                            size="small"
-                            type="primary"
-                            icon="guide-o"
-                            @click="sendChat"
+                        size="small"
+                        type="primary"
+                        icon="guide-o"
+                        @click="sendChat"
                     >
                     </van-button>
                 </template>
