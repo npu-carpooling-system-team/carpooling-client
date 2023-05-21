@@ -37,17 +37,22 @@
                 message: '加载订单具体信息失败,请检查网络连接'
             })
         }
-	}
+    }
     
+
     onMounted(async () => {
 		orderId.value = router.currentRoute.value.query.orderId
         await getOrderDetails()
     })
+
+//TODO 高德接口
+
 </script>
 
+//TODO 返回时不显示订单，可能是go(-1)的问题?具体界面修改
 <template>
     <van-nav-bar
-        :title="'订单' +  orderId + '详情'"
+        :title="'订单详情'"
         left-text="返回"
         left-arrow
         @click-left="router.go(-1)"
@@ -68,9 +73,24 @@
         />
         <van-field
             readonly
-            :v-model="order.passingPoint ? JSON.parse(order.passingPoint).join(' ') : '无'"
-            name="到达地"
-            label="到达地"
+            :v-model="order.passingPoint ? JSON.parse.passingPoint : '无'"
+            name="途径地"
+            label="途径地"
+        />
+        <van-button plain block type="primary"
+                            size="small" style="width: 40%;margin: 2% auto"
+                            @click="jumpToPreviewMap()">
+                    预览行程路线
+        </van-button>
+        <van-field
+            v-model="order.departureTime"
+            name="出发时间"
+            label="出发时间"
+        />
+        <van-field
+            v-model="order.arriveTime"
+            name="到达时间"
+            label="到达时间"
         />
     </van-cell-group>
     <!-- 行程按钮区 -->
