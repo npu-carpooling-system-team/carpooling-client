@@ -34,7 +34,7 @@
     statusI18nList.set('ORDER_NORMAL_CLOSED', '订单正常结束')
 	
 	onMounted(async () => {
-		await getOrderList()
+        await getOrderList()
     })
     
     const checkOrderDetails = async (order) => {

@@ -101,6 +101,12 @@ const routes = [
                         path: 'carpooling-detail',
                         name: 'main-carpooling-detail',
                         component: () => import('../views/passenger/CarpoolingDetail.vue')
+                    },
+                    {
+                        //TODO 这个路由放在passenger下有点奇怪
+                        path: 'carpooling-detail-driver',
+                        name: 'main-carpooling-detail-driver',
+                        component: () => import('../views/driver/CarpoolingDetailForDriver.vue')
                     }
                 ]
             },
