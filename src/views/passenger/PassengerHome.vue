@@ -36,15 +36,18 @@
 		departureTime: '',
 		arriveTime: ''
 	}
-    
+    let isFirstLoading = true
     // eslint-disable-next-line complexity
-    const getCarpoolingList = async (isFirstLoading) => {
+    const getCarpoolingList = async () => {
 		if (!isFirstLoading) {
 			queryDto.value.pageNum ++
+        } else {
+			isFirstLoading = !isFirstLoading
         }
 		if (oldQueryDto.query !== queryDto.value.query
             || oldQueryDto.departureTime !== queryDto.value.departureTime
             || oldQueryDto.arriveTime !== queryDto.value.arriveTime) {
+			isFirstLoading = true
             queryDto.value.pageNum = 1
             finished.value = false
         }
