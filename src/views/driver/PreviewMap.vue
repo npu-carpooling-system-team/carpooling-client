@@ -1,5 +1,5 @@
 <script setup>
-    import {getGeoPoint, initMap} from '../../utils/amapUtil'
+    import {getGeoPoint, initMap} from '@/utils/amapUtil'
     import {onBeforeUnmount, onMounted, shallowRef, watch} from 'vue'
     import {closeToast, showLoadingToast, showNotify, showToast} from 'vant'
     import 'vant/es/notify/style'
@@ -18,6 +18,7 @@
     let AMap
     let departurePoint
     let arrivePoint
+    let fromUrl = ''
     let passingPoint = ''
     let opts = {waypoints: []}
 
@@ -27,6 +28,7 @@
         const tmpArrive = await getGeoPoint(router.currentRoute.value.query.arrivePoint)
         arrivePoint = new AMap.LngLat(tmpArrive[0], tmpArrive[1])
         passingPoint = router.currentRoute.value.query.passingPoint
+        fromUrl = router.currentRoute.value.query.fromUrl
         if (passingPoint !== '') {
             const passingPointArr = passingPoint.split(',')
             for (const item of passingPointArr) {
@@ -180,6 +182,15 @@
         // 调用document来destroy地图 即id为carpooling-route-map的div
         document.getElementById('carpooling-route-map').remove()
     })
+    
+    const goBack = async () => {
+		console.log(fromUrl)
+		if (fromUrl !== '' && fromUrl !== null && fromUrl !== undefined){
+			window.location.href = `#${fromUrl}`
+        } else {
+			await router.go(-1)
+        }
+    }
 </script>
 
 <template>
@@ -189,7 +200,7 @@
             left-text="返回"
             right-text="使用高德地图打开"
             left-arrow
-            @click-left="router.go(-1)"
+            @click-left="goBack()"
             @click-right="formUrlOfAMapApp()"
         />
         <div id="carpooling-route-map"></div>

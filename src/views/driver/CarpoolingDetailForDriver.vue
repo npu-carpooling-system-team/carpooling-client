@@ -1,7 +1,7 @@
 <script setup>
     import {useRouter} from 'vue-router'
 	import {onMounted, ref} from 'vue'
-	import {getOrderDetailsByPassenger} from '@/api/passenger'
+	import {handleGetCarpoolingDetail} from '@/api/driver'
 	import {showNotify} from 'vant'
 	import 'vant/es/toast/style'
 	import 'vant/es/notify/style'
@@ -21,11 +21,10 @@
 	statusI18nList.set('ARRIVED_USER_UNPAID', '用户未支付')
 	statusI18nList.set('ORDER_NORMAL_CLOSED', '订单正常结束')
     
-    const getOrderDetails = async () => {
-		const data = await getOrderDetailsByPassenger(orderId.value)
+    const getCarpoolingDetails = async () => {
+		const data = await handleGetCarpoolingDetail(orderId.value)
         if (data !== null && data.code === 2000) {
-			order.value = data.result.result
-			console.log(order.value)
+			console.log(data)
         } else if (data !== null) {
 			showNotify({
                 type: 'danger',
@@ -42,8 +41,8 @@
 	const passingPoint = ref('')
 	
     onMounted(async () => {
-		orderId.value = router.currentRoute.value.query.orderId
-        await getOrderDetails()
+		orderId.value = router.currentRoute.value.query.carpoolingId
+        await getCarpoolingDetails()
         console.log(order.value.passingPoint)
         // passingPoint.value = JSON.parse(order.value.passingPoint).join(' ')
     })

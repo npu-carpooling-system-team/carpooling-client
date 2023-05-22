@@ -31,7 +31,6 @@
     const showVanTabs = ref(true)
     
 	watch(() => router.currentRoute.value.path, (path) => {
-		// 修正跳转到其他页面后转回的操作执行两次之后verbTop定位错误的问题
 		showVanTabs.value = carpoolingHomeList.indexOf(path) !== -1
 	})
  

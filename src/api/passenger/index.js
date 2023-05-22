@@ -81,7 +81,7 @@ export const getOrderListByPassenger = async () => {
 	return null
 }
 
-export const getOrderDetailsByPassenger = async (id) => {
+export const getCarpoolingDetailsByDriver = async (id) => {
 	beginLoading('正在加载订单详情')
 	try {
 		const {data} = await axios.get(`/api/order/passenger/order?orderId=${id}`)

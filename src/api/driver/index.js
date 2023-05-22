@@ -24,7 +24,7 @@ export const addCarpooling = async (carpoolingDto) => {
     return false
 }
 
-export const handleGetCarpoolingList = async (queryDto) => {
+export const handleGetDriversCarpoolingList = async (queryDto) => {
 	beginLoading('正在加载拼车信息列表')
 	try {
 		const {data} = await axios.get(

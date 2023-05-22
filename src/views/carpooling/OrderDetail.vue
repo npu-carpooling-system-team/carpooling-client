@@ -1,7 +1,7 @@
 <script setup>
     import {useRouter} from 'vue-router'
 	import {onMounted, ref} from 'vue'
-	import {getOrderDetailsByPassenger} from '@/api/passenger'
+	import {getCarpoolingDetailsByDriver} from '@/api/passenger'
 	import {showNotify} from 'vant'
 	import 'vant/es/toast/style'
 	import 'vant/es/notify/style'
@@ -17,15 +17,14 @@
 	statusI18nList.set('PRE_ORDER_REQUEST_PASSED', '订单已通过')
 	statusI18nList.set('PRE_DEPARTURE_USER_CANCELLED', '订单已被用户取消')
 	statusI18nList.set('DRIVING_USER_CONFIRM_DEPARTURE', '用户确认发车')
-	statusI18nList.set('DRIVING_USER_CONFIRM_ARRIVED', '用户确认到达')
 	statusI18nList.set('ARRIVED_USER_UNPAID', '用户未支付')
+    statusI18nList.set('PAID_WAITING_CALLBACK', '已支付，等待回调')
 	statusI18nList.set('ORDER_NORMAL_CLOSED', '订单正常结束')
     
     const getOrderDetails = async () => {
-		const data = await getOrderDetailsByPassenger(orderId.value)
+		const data = await getCarpoolingDetailsByDriver(orderId.value)
         if (data !== null && data.code === 2000) {
 			order.value = data.result.result
-			console.log(order.value)
         } else if (data !== null) {
 			showNotify({
                 type: 'danger',
@@ -45,6 +44,7 @@
 		orderId.value = router.currentRoute.value.query.orderId
         await getOrderDetails()
         passingPoint.value = JSON.parse(order.value.passingPoint).join(' ')
+		console.log(order.value.status)
     })
     
     const jumpToPreviewMap = async () => {
@@ -58,11 +58,11 @@
 			+ order.value.departurePoint
 			+ '&arrivePoint=' + order.value.arrivePoint
 			+ '&passingPoint=' + order.value.passingPoint
+            + '&fromUrl=/main/carpooling/passenger-order'
 	}
 
 </script>
 
-<!-- TODO 返回时不显示订单，可能是go(-1)的问题?具体界面修改 -->
 <template>
     <van-nav-bar
         :title="'订单详情'"
@@ -107,11 +107,43 @@
         />
     </van-cell-group>
     <!-- 行程按钮区 -->
-    
+    <div class="btn-area">
+        <div v-if="order.status === 'PRE_ORDER_REQUEST_SUBMITTED'">正在等待司机确认</div>
+        <div style="flex-direction: row" v-if="order.status === 'PRE_ORDER_REQUEST_PASSED'">
+            <van-button plain>
+                确认发车
+            </van-button>
+            <van-button plain type="danger">
+                取消行程
+            </van-button>
+        </div>
+        <div v-if="order.status === 'PRE_DEPARTURE_USER_CANCELLED'">订单已被用户取消</div>
+        <van-button plain v-if="order.status === 'DRIVING_USER_CONFIRM_DEPARTURE'">
+            确认到达
+        </van-button>
+        <div v-if="order.status === 'ARRIVED_USER_UNPAID'">请您支付订单</div>
+        <van-button plain v-if="order.status === 'ARRIVED_USER_UNPAID'">
+            开始支付
+        </van-button>
+        <div v-if="order.status === 'PAID_WAITING_CALLBACK'">已支付，等待回调</div>
+        <div v-if="order.status === 'ORDER_NORMAL_CLOSED'">订单正常结束</div>
+    </div>
 </template>
 
 <style lang="less" scoped>
     .van-cell-group{
       margin-top: 5%;
+    }
+    .btn-area{
+      display: flex;
+      margin-top:5%;
+      justify-content: center;
+      // 纵向
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      .van-button .div {
+        margin-top:1%;
+      }
     }
 </style>
