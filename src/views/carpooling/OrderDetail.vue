@@ -43,9 +43,22 @@
     onMounted(async () => {
 		orderId.value = router.currentRoute.value.query.orderId
         await getOrderDetails()
+        console.log(order.value.passingPoint)
     })
 
-//TODO 高德接口
+    //TODO 还是没识别进去
+    const jumpToPreviewMap = async () => {
+        const passingPointArr = []
+        console.log(order.value)
+		if (order.value.passingPoint !== '') {
+			// 解析途径地点
+			passingPointArr.push(JSON.parse(order.value.passingPoint))
+		}
+		window.location.href = '#/main/driver/preview-map?departurePoint='
+			+ order.value.departurePoint
+			+ '&arrivePoint=' + order.value.arrivePoint
+			+ '&passingPoint=' + order.value.passingPoint
+	}
 
 </script>
 
@@ -70,12 +83,6 @@
             v-model="order.arrivePoint"
             name="到达地"
             label="到达地"
-        />
-        <van-field
-            readonly
-            :v-model="order.passingPoint ? JSON.parse.passingPoint : '无'"
-            name="途径地"
-            label="途径地"
         />
         <van-button plain block type="primary"
                             size="small" style="width: 40%;margin: 2% auto"

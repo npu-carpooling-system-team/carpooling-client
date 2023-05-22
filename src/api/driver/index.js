@@ -23,3 +23,19 @@ export const addCarpooling = async (carpoolingDto) => {
     }
     return false
 }
+
+export const getOrderListByDriver = async () => {
+	beginLoading('正在加载订单列表')
+	try {
+		const {data} = await axios.get(`/api/carpooling/driver/carpooling`)
+		return data
+	} catch (e) {
+		showNotify({
+			type: 'danger',
+			message: '加载订单列表失败'
+		})
+	} finally {
+		closeToast()
+	}
+	return null
+}
