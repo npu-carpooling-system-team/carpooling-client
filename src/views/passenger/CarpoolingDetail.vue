@@ -118,8 +118,8 @@
                     label="途径地"
                 />
                 <van-button plain block type="primary"
-                            size="small" style="width: 40%;margin: 2% auto"
-                            @click="jumpToPreviewMap()">
+                        size="small" style="width: 40%;margin: 2% auto"
+                        @click="jumpToPreviewMap()">
                     预览行程路线
                 </van-button>
                 <van-field

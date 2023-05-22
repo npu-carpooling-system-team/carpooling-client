@@ -193,20 +193,24 @@ const router = createRouter({
     routes
 })
 
+const whiteList = [
+    '/login',
+    '/register',
+    '/oauth/alipay/success',
+    '/oauth/alipay/failure',
+    '/privacy',
+    '/main/my/bind-alipay/success',
+    '/main/my/bind-alipay/failure',
+    '/404'
+]
+
 // 挂载路由守卫 若请求头中没有access-token或refresh-token则跳转到登录页
 router.beforeEach((to, from, next) => {
     // 挂载页面名称
     if (to.meta.title) {
         document.title = to.meta.title
     }
-    if (to.path === '/login' ||
-        to.path === '/register' ||
-        to.path === '/oauth/alipay/success' ||
-        to.path === '/oauth/alipay/failure' ||
-        to.path === '/privacy' ||
-        to.path === '/main/my/bind-alipay/success' ||
-        to.path === '/main/my/bind-alipay/failure'
-    ) {
+    if (whiteList.includes(to.path)) {
         return next()
     }
     const token = Cookies.get('token')

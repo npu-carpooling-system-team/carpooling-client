@@ -38,15 +38,15 @@
             })
         }
     }
-    
 
+	const passingPoint = ref('')
+	
     onMounted(async () => {
 		orderId.value = router.currentRoute.value.query.orderId
         await getOrderDetails()
-        console.log(order.value.passingPoint)
+        passingPoint.value = JSON.parse(order.value.passingPoint).join(' ')
     })
-
-    //TODO 还是没识别进去
+    
     const jumpToPreviewMap = async () => {
         const passingPointArr = []
         console.log(order.value)
@@ -62,7 +62,7 @@
 
 </script>
 
-//TODO 返回时不显示订单，可能是go(-1)的问题?具体界面修改
+<!-- TODO 返回时不显示订单，可能是go(-1)的问题?具体界面修改 -->
 <template>
     <van-nav-bar
         :title="'订单详情'"
@@ -84,10 +84,16 @@
             name="到达地"
             label="到达地"
         />
+        <van-field
+            readonly
+            v-model="passingPoint"
+            name="途径地"
+            label="途径地"
+        />
         <van-button plain block type="primary"
-                            size="small" style="width: 40%;margin: 2% auto"
-                            @click="jumpToPreviewMap()">
-                    预览行程路线
+            size="small" style="width: 40%;margin: 2% auto"
+            @click="jumpToPreviewMap()">
+            预览行程路线
         </van-button>
         <van-field
             v-model="order.departureTime"

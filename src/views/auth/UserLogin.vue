@@ -7,7 +7,7 @@
     import {closeToast, showLoadingToast, showNotify} from 'vant'
     import 'vant/es/notify/style'
     import 'vant/es/toast/style'
-    import {validatorCode, validatorPassword, validatorPhone} from "@/utils/validatorUtil";
+    import {validatorCode, validatorPassword, validatorPhone} from '@/utils/validatorUtil'
 
     const router = useRouter()
     
@@ -43,6 +43,19 @@
             Cookies.remove('token')
             const {data} = await axios.post('/api/auth/login/password', passwordLoginDto)
             if (data.code !== null && data.code === 2000){
+				if (data.result.role === 1){
+					showLoadingToast({
+                        duration: 3000,
+                        forbidClick: true,
+                        message: '该账号为管理员账号,3秒后跳转到管理端'
+                    })
+                    setTimeout(() => {
+                        window.location.href =
+                            'https://carpooling-admin.wangminan.me/preHandleLogin?token=' +
+                            data.result.token
+                    }, 3000)
+                    return
+                }
                 Cookies.set('token', data.result.token)
                 await router.push('/main/home')
             } else {

@@ -10,11 +10,11 @@ export function validatorCode (val) {
     return /^\d{4}$/.test(val)
 }
 
-export function validatorRegisterCode(val) {
+export function validatorRegisterCode (val) {
     // 全空或4位纯数字
     return /^\s*$/.test(val) || /^\d{4}$/.test(val)
 }
 
-export function validatorPersonalId(val) {
+export function validatorPersonalId (val) {
     return /^[1-9]\d{5}(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}[\dXx]$/.test(val)
 }
