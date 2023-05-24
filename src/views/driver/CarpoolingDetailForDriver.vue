@@ -175,6 +175,7 @@
                 :rules="[{ required: true, message: '请选择出发日期' }]"
             />
             <van-popup v-model:show="showDatePicker1" position="bottom">
+<!--                TODO 这里定位到了2013年，有bug-->
                 <van-date-picker
                     :min-date="today"
                     @confirm="onDepartureDateConfirm"
