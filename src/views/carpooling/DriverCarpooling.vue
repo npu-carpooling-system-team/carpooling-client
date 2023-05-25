@@ -45,11 +45,11 @@
 
 	onMounted(async () => {
 		await getCarpoolingList()
-		console.log(carpoolingList)
+		// console.log(carpoolingList)
 	})
 
 	const checkCarpoolingDetails = async (carpooling) => {
-		console.log(carpooling)
+		// console.log(carpooling)
 		await router.push(`/main/passenger/carpooling-detail-driver?carpoolingId=${carpooling.id}`)
 	}
 </script>
