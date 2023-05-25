@@ -16,34 +16,41 @@
 			await router.push('/main/carpooling/driver-carpooling')
         }
     }
-	
-	onMounted(async () => {
-		await routerPush(currentUser.value.user.isPassenger ?
-            {title: '乘客-订单'} : {title: '司机-行程'})
-    })
 
     const carpoolingHomeList = [
-		'/main/carpooling',
+        '/main/carpooling',
         '/main/carpooling/passenger-order',
         '/main/carpooling/driver-carpooling'
     ]
+
+    onMounted(async () => {
+        const path = router.currentRoute.value.path
+        if (carpoolingHomeList.indexOf(path) !== -1) {
+            if (currentUser.value.user.isPassenger) {
+                await router.push('/main/carpooling/passenger-order')
+            } else {
+                await router.push('/main/carpooling/driver-carpooling')
+            }
+        }
+    })
     
     const showVanTabs = ref(true)
     
 	watch(() => router.currentRoute.value.path, (path) => {
 		showVanTabs.value = carpoolingHomeList.indexOf(path) !== -1
 	})
- 
 </script>
 
 <template>
-    <van-tabs @click-tab="routerPush" sticky v-if="showVanTabs">
-        <van-tab
-            title="乘客-订单" v-if="currentUser.user.isPassenger"
-            name="order"/>
-        <van-tab title="司机-行程" v-if="currentUser.user.isDriver" name="carpooling" />
-    </van-tabs>
-    <router-view/>
+    <div>
+        <van-tabs id="van-tab" @click-tab="routerPush" sticky v-if="showVanTabs">
+            <van-tab
+                title="乘客-订单" v-if="currentUser.user.isPassenger"
+                name="order"/>
+            <van-tab title="司机-行程" v-if="currentUser.user.isDriver" name="carpooling" />
+        </van-tabs>
+        <router-view/>
+    </div>
 </template>
 
 <style scoped>

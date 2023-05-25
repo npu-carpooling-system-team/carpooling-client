@@ -107,7 +107,7 @@
                 </a>
             </van-cell>
             <van-cell :key="2" :title="'个人信息维护'" @click="router.push('/main/my/revise-info')" />
-            <van-cell :key="3" :title="'支付宝与解绑'" @click="handleBindAlipay()" />
+            <van-cell :key="3" :title="'支付宝绑定与换绑'" @click="handleBindAlipay()" />
         </van-list>
     </van-cell-group>
     <van-cell-group inset>

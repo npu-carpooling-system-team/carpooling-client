@@ -184,7 +184,6 @@
     })
     
     const goBack = async () => {
-		console.log(fromUrl)
 		if (fromUrl !== '' && fromUrl !== null && fromUrl !== undefined){
 			window.location.href = `#${fromUrl}`
         } else {
