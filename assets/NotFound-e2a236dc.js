@@ -1,1 +1,0 @@
-import{l as o,o as t,aa as e,a as s,n}from"./.pnpm-33e9fd8e.js";const l={__name:"NotFound",setup(r){const a=o();return t(async()=>{e("您似乎来到了不存在车辆的荒原,三秒后跳转到上一页面"),setInterval(async()=>{await a.go(-1)},3e3)}),(c,u)=>(s(),n("div"))}};export{l as default};
