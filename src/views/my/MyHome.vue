@@ -72,6 +72,12 @@
                     message: '已取消重新解绑'
                 })
             })
+        } else {
+            window.location.href = 'https://openauth.alipaydev.com/oauth2/publicAppAuthorize.htm?' +
+                'app_id=' + import.meta.env.VITE_ALIPAY_SANDBOX_APP_ID + '&' +
+                'scope=' + import.meta.env.VITE_ALIPAY_SANDBOX_LOGIN_SCOPE + '&' +
+                'redirect_uri=' + import.meta.env.VITE_ALIPAY_SANDBOX_BIND_REDIRECT_URI + '&' +
+                'state=' + Cookies.get('token')
         }
     }
 </script>

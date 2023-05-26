@@ -17,7 +17,7 @@
                 duration: 3000
             })
             setTimeout(() => {
-                router.push('/login')
+                window.location.href = '#/login'
             }, 3000)
         } else {
             // 设置Cookies
@@ -29,7 +29,7 @@
                 duration: 3000
             })
             setTimeout(() => {
-                router.push('/main/home')
+                window.location.href = '#/main/my/my-home'
             }, 3000)
         }
     })

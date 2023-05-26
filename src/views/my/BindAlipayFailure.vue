@@ -1,18 +1,20 @@
 <script setup>
-    import {useRouter} from 'vue-router'
     import {onMounted} from 'vue'
     import {showNotify} from 'vant'
     import 'vant/es/notify/style'
+    import Cookies from 'js-cookie'
 
-    const router = useRouter()
-
-    onMounted(async () => {
+    onMounted(() => {
         showNotify({
             type: 'danger',
             message: '由于支付宝服务器原因绑定失败,请稍后重试'
         })
         setTimeout(async () => {
-            await router.push('/main/home')
+            if (Cookies.get('token') !== null) {
+                window.location.href = '#/main/my/my-home'
+            } else {
+                window.location.href = '#/login'
+            }
         }, 3000)
     })
 </script>
