@@ -5,7 +5,7 @@
     import 'vant/es/toast/style'
     import 'vant/es/dialog/style'
     import {useUserStore, useNavStore} from '@/stores'
-    import {storeToRefs} from "pinia";
+    import {storeToRefs} from 'pinia'
     import {handleCheckHasNewChat, handleLogoutReq} from '@/api/my'
     import {onMounted, ref} from 'vue'
     import {showNotify,showConfirmDialog} from 'vant'

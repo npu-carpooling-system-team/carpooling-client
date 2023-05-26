@@ -65,8 +65,31 @@
 			+ '&arrivePoint=' + carpoolingDetail.value.arrivePoint
 			+ '&passingPoint=' + passingPointArr
 	}
+    
+    const submitPreCheck = () => {
+        // 1. 不可以自己自己的订单
+        if (currentUser.value.user.id === carpoolingDetail.value.driverId) {
+            showNotify({
+                type: 'warning',
+                message: '不能申请自己的订单'
+            })
+            return false
+        }
+        // 2. 需要绑定支付宝
+        if (currentUser.value.user.alipayId === '' || currentUser.value.user.alipayId === null) {
+            showNotify({
+                type: 'warning',
+                message: '请先绑定支付宝'
+            })
+            return false
+        }
+        return true
+    }
 	
 	const submitApplication = async () => {
+        if (!submitPreCheck()) {
+            return
+        }
 		const data = await handleSubmitApplication(carpoolingDetail.value.id)
         if (data !== null && data.code === 2000) {
 			showNotify({
