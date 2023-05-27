@@ -1,9 +1,9 @@
 <script setup>
-	import {useUserStore} from '@/stores'
-	import {storeToRefs} from 'pinia'
+    import {useUserStore} from '@/stores'
+    import {storeToRefs} from 'pinia'
     import {useRouter} from 'vue-router'
-	import {onMounted, ref, watch} from 'vue'
-    
+    import {onMounted, ref, watch} from 'vue'
+
     const router = useRouter()
 	const userStore = useUserStore()
 	// 直接从中提取currentUser是非响应式的 所以需要使用storeToRefs

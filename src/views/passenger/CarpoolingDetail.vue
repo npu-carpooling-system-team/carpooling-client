@@ -1,12 +1,12 @@
 <script setup>
     import {useRouter} from 'vue-router'
-	import {onMounted, ref} from 'vue'
-	import {handleGetCarpoolingDetail, handleSubmitApplication} from '@/api/passenger'
-	import {showNotify} from 'vant'
-	import 'vant/es/notify/style'
-	import {useUserStore} from '@/stores'
-	import {storeToRefs} from 'pinia'
-    
+    import {onMounted, ref} from 'vue'
+    import {handleGetCarpoolingDetail, handleSubmitApplication} from '@/api/passenger'
+    import {showNotify} from 'vant'
+    import 'vant/es/notify/style'
+    import {useUserStore} from '@/stores'
+    import {storeToRefs} from 'pinia'
+
     const userStore = useUserStore()
     const {currentUser} = storeToRefs(userStore)
     

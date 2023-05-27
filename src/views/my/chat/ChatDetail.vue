@@ -3,10 +3,10 @@
     import {onMounted, ref} from 'vue'
     import {handleGetChat, handleSendChat} from '@/api/my'
     import {showNotify} from 'vant'
-	import 'vant/es/notify/style'
+    import 'vant/es/notify/style'
     import {useUserStore} from '@/stores'
     import {storeToRefs} from 'pinia'
-    
+
     const router = useRouter()
     let toUserId
     

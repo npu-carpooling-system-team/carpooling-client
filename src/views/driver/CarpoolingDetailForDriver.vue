@@ -1,12 +1,11 @@
 <script setup>
     import {useRouter} from 'vue-router'
-	import {onMounted, ref} from 'vue'
-    import {addCarpooling, handleGetCarpoolingDetail, updateCarpooling} from '@/api/driver'
-    import {closeToast, showNotify} from 'vant'
-	import 'vant/es/toast/style'
-	import 'vant/es/notify/style'
-    import axios from "@/api";
-    
+    import {onMounted, ref} from 'vue'
+    import {addCarpooling, handleGetCarpoolingDetail} from '@/api/driver'
+    import {showNotify} from 'vant'
+    import 'vant/es/toast/style'
+    import 'vant/es/notify/style'
+
     const orderId = ref('')
     
     const router = useRouter()

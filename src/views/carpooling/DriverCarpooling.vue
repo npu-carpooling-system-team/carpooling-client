@@ -1,11 +1,11 @@
 <script setup>
-	import { onMounted, ref } from 'vue'
-	import { handleGetDriversCarpoolingList } from '@/api/driver'
-	import { showNotify } from 'vant'
-	import 'vant/es/notify/style'
-	import router from '@/router'
+    import {onMounted, ref} from 'vue'
+    import {handleGetDriversCarpoolingList} from '@/api/driver'
+    import {showNotify} from 'vant'
+    import 'vant/es/notify/style'
+    import router from '@/router'
 
-	const carpoolingList = ref([])
+    const carpoolingList = ref([])
 
 	const queryDto = ref({
 		pageNum: 1,

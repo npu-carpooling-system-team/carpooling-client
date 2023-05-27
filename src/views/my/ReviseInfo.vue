@@ -6,11 +6,11 @@
     import 'vant/es/toast/style'
     import axios from '../../api'
     import {useRouter} from 'vue-router'
-	import {base64ToFile, scanDrivingLicense, scanIdCard, scanVehicleLicense} from '@/utils/ocrUtil'
+    import {base64ToFile, scanDrivingLicense, scanIdCard, scanVehicleLicense} from '@/utils/ocrUtil'
     import {useUserStore} from '@/stores'
     import {storeToRefs} from 'pinia'
-	import {deleteFile, putFile} from '@/utils/ossUtil'
-	import {handleGetPersonalInfo} from "@/api/common";
+    import {deleteFile, putFile} from '@/utils/ossUtil'
+    import {handleGetPersonalInfo} from "@/api/common";
 
     const router = useRouter()
 

@@ -1,6 +1,6 @@
 <script setup>
     import {useDark} from '@vueuse/core'
-	import {onMounted, watch} from 'vue'
+    import {onMounted, watch} from 'vue'
 
     const isDark = useDark()
     

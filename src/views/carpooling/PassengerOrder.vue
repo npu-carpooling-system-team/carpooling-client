@@ -1,10 +1,10 @@
 <script setup>
     import {onMounted, ref} from 'vue'
-	import {getOrderListByPassenger} from '@/api/passenger'
-	import {showNotify} from 'vant'
-	import 'vant/es/notify/style'
-	import router from "@/router";
-	
+    import {getOrderListByPassenger} from '@/api/passenger'
+    import {showNotify} from 'vant'
+    import 'vant/es/notify/style'
+    import router from "@/router";
+
     const orderList = ref([])
 	const getOrderList = async () => {
 		const data = await getOrderListByPassenger()

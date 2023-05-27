@@ -1,11 +1,11 @@
 <script setup>
-	import {onMounted, ref} from 'vue'
-	import {handleGetCarpoolingList} from '@/api/passenger'
-	import {showNotify} from 'vant'
-	import 'vant/es/notify/style'
-	import {useRouter} from 'vue-router'
- 
-	const router = useRouter()
+    import {onMounted, ref} from 'vue'
+    import {handleGetCarpoolingList} from '@/api/passenger'
+    import {showNotify} from 'vant'
+    import 'vant/es/notify/style'
+    import {useRouter} from 'vue-router'
+
+    const router = useRouter()
     const departureDate = ref('')
     const departureTime = ref('')
     

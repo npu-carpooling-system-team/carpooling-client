@@ -1,16 +1,19 @@
 <script setup>
     import {useRouter} from 'vue-router'
-	import {onMounted, ref} from 'vue'
+    import {onMounted, ref} from 'vue'
     import {
         getCancelTimes,
         getCarpoolingDetailsByDriver,
-        handleCancelOrder, handleConfirmArrive,
-        handleConfirmDeparture, handleStartPayment, handleSubmitScore
+        handleCancelOrder,
+        handleConfirmArrive,
+        handleConfirmDeparture,
+        handleStartPayment,
+        handleSubmitScore
     } from '@/api/passenger'
-	import {showConfirmDialog, showNotify} from 'vant'
-	import 'vant/es/toast/style'
-	import 'vant/es/notify/style'
-    
+    import {showConfirmDialog, showNotify} from 'vant'
+    import 'vant/es/toast/style'
+    import 'vant/es/notify/style'
+
     const orderId = ref('')
     
     const router = useRouter()

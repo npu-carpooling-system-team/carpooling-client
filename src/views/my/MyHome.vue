@@ -4,11 +4,11 @@
     import 'vant/es/notify/style'
     import 'vant/es/toast/style'
     import 'vant/es/dialog/style'
-    import {useUserStore, useNavStore} from '@/stores'
+    import {useNavStore, useUserStore} from '@/stores'
     import {storeToRefs} from 'pinia'
     import {handleCheckHasNewChat, handleLogoutReq} from '@/api/my'
     import {onMounted, ref} from 'vue'
-    import {showNotify,showConfirmDialog} from 'vant'
+    import {showConfirmDialog, showNotify} from 'vant'
 
     const router = useRouter()
 

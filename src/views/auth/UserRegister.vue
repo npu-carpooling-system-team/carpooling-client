@@ -3,7 +3,7 @@
     import {validatorCode, validatorPassword, validatorPhone, validatorRegisterCode} from '@/utils/validatorUtil'
     import {closeToast, showLoadingToast, showNotify} from 'vant'
     import 'vant/es/toast/style'
-	import 'vant/es/notify/style'
+    import 'vant/es/notify/style'
     import axios from '../../api'
     import {useRouter} from 'vue-router'
     import {scanDrivingLicense, scanIdCard, scanVehicleLicense} from '@/utils/ocrUtil'

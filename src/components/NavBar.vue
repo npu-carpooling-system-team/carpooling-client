@@ -2,9 +2,9 @@
     import {onMounted, ref} from 'vue'
     import {showNotify} from 'vant'
     import 'vant/es/notify/style'
-    import {useUserStore, useNavStore} from '@/stores'
+    import {useNavStore, useUserStore} from '@/stores'
     import {storeToRefs} from 'pinia'
-	import {handleGetPersonalInfo} from '@/api/common'
+    import {handleGetPersonalInfo} from '@/api/common'
     import {useRouter} from 'vue-router'
 
     const router = useRouter()
