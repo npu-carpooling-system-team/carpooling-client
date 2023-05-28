@@ -27,7 +27,7 @@ export const addCarpooling = async (carpoolingDto) => {
 export const updateCarpooling = async (carpoolingDto) => {
 	beginLoading('正在上传拼车信息')
 	try{
-		const {data} = await axios.post('/api/carpooling/driver/carpooling', carpoolingDto)
+		const {data} = await axios.put(`/api/carpooling/driver/carpooling/${carpoolingDto.id}}`, carpoolingDto)
 		return data
 	} catch (e) {
 		showNotify({type: 'danger', message: `修改拼车信息失败,${e.message}`})

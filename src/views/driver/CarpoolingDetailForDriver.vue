@@ -5,12 +5,15 @@
     import {showNotify} from 'vant'
     import 'vant/es/toast/style'
     import 'vant/es/notify/style'
+    import {useUserStore} from "@/stores";
+    import {storeToRefs} from "pinia";
 
     const orderId = ref('')
     
     const router = useRouter()
     const order = ref({})
     const updateCarpoolingDto = ref({
+        id: '',
         departurePoint: '',
         arrivePoint: '',
         passingPoint: '',
@@ -120,6 +123,50 @@
     }
     // eslint-disable-next-line no-warning-comments
     //TODO 表单校验
+    const preCheck = () => {
+      // 从pinia中获取当前用户信息
+      const userStore = useUserStore()
+      const {currentUser} = storeToRefs(userStore)
+      // 校验司机是否已经绑定支付宝
+      if (currentUser.value.user.alipayId === '' || currentUser.value.user.alipayId === null) {
+        showNotify({type: 'danger', message: '请先绑定支付宝'})
+        return false
+      }
+      console.log(updateCarpoolingDto.value.departureTime)
+      console.log(updateCarpoolingDto.value.arriveTime)
+      console.log(updateCarpoolingDto.value)
+      // 到达时间应在出发时间之后
+      if (updateCarpoolingDto.value.departureTime >= updateCarpoolpingDto.value.arriveTime) {
+        console.log(updateCarpoolingDto.value)
+        showNotify({type: 'danger', message: '到达时间应在出发时间之后'})
+        return false
+      }
+      // 出发时间应当在当前时间之后 2023/5/12 21:18:15
+      let currentTimeStr = new Date().toLocaleString('zh', {hour12: false})
+      // 转成yyyy-MM-dd HH:mm
+      currentTimeStr = currentTimeStr.replace(/\//g, '-')
+      // 如果月份是个位数的 补0
+      if (currentTimeStr.split('-')[1].length === 1) {
+        currentTimeStr = currentTimeStr.replace(/-/, '-0')
+      }
+      if (updateCarpoolingDto.value.departureTime <= currentTimeStr) {
+        showNotify({type: 'danger', message: '出发时间应当在当前时间之后'})
+        return false
+      }
+      // 司机的驾照类型 currentUser.value.driver.driversLicenseType
+      if ((currentUser.value.driver.driversLicenseType === 'C1' ||
+              currentUser.value.driver.driversLicenseType === 'C2') &&
+          updateCarpoolingDto.value.totalPassengerNo > 5) {
+        showNotify({type: 'danger', message: '您的驾照类型不支持超过5人的拼车'})
+        return false
+      }
+      // 总乘客人数大于等于剩余乘客人数
+      if (updateCarpoolingDto.value.totalPassengerNo < updateCarpoolingDto.value.leftPassengerNo) {
+        showNotify({type: 'danger', message: '总乘客人数应大于等于剩余乘客人数'})
+        return false
+      }
+      return true
+    }
     // eslint-disable-next-line no-warning-comments
     //TODO 修改行程put
     // eslint-disable-next-line no-warning-comments
@@ -153,7 +200,7 @@
                 :rules="[{ required: true, message: '请输入到达地点' }]"
             />
             <van-field
-                v-model="updateCarpoolingDto.passingPoint"
+                v-model="passingPoint"
                 name="途径地"
                 label="途径地"
                 placeholder="多个途径地点之间请用空格隔开"
@@ -166,7 +213,6 @@
             <van-field
                 v-model="updateCarpoolingDto.departureDate"
                 is-link
-                readonly
                 name="departureDatePicker"
                 label="出发日期"
                 placeholder="点击选择出发日期"
@@ -183,7 +229,6 @@
             <van-field
                 v-model="updateCarpoolingDto.departureTime"
                 is-link
-                readonly
                 name="departureTimePicker"
                 label="出发时间"
                 placeholder="点击选择出发时间"
@@ -196,7 +241,6 @@
             <van-field
                 v-model="updateCarpoolingDto.arriveDate"
                 is-link
-                readonly
                 name="arriveDatePicker"
                 label="到达日期"
                 placeholder="选择到达日期(默认当日到达)"
@@ -212,7 +256,6 @@
             <van-field
                 v-model="updateCarpoolingDto.arriveTime"
                 is-link
-                readonly
                 name="arriveTimePicker"
                 label="到达时间"
                 placeholder="选择到达时间"
