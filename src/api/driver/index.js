@@ -25,12 +25,27 @@ export const addCarpooling = async (carpoolingDto) => {
 }
 
 export const updateCarpooling = async (carpoolingDto) => {
-	beginLoading('正在上传拼车信息')
+	console.log(carpoolingDto.id)
+	beginLoading('正在修改拼车信息')
 	try{
-		const {data} = await axios.put(`/api/carpooling/driver/carpooling/${carpoolingDto.id}}`, carpoolingDto)
+		const {data} = await axios.put(`/api/carpooling/driver/carpooling/${carpoolingDto.id}`, carpoolingDto)
 		return data
 	} catch (e) {
 		showNotify({type: 'danger', message: `修改拼车信息失败,${e.message}`})
+	} finally {
+		closeToast()
+	}
+	return false
+}
+
+export const deleteCarpooling = async (id) => {
+	console.log(id)
+	beginLoading('正在删除拼车信息')
+	try{
+		const {data} = await axios.delete(`/api/carpooling/driver/carpooling/${id}`)
+		return data
+	} catch (e) {
+		showNotify({type: 'danger', message: `删除拼车信息失败,${e.message}`})
 	} finally {
 		closeToast()
 	}

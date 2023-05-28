@@ -1,7 +1,7 @@
 <script setup>
     import {useRouter} from 'vue-router'
     import {onMounted, ref} from 'vue'
-    import {addCarpooling, handleGetCarpoolingDetail} from '@/api/driver'
+    import {updateCarpooling, deleteCarpooling, handleGetCarpoolingDetail} from '@/api/driver'
     import {showNotify} from 'vant'
     import 'vant/es/toast/style'
     import 'vant/es/notify/style'
@@ -17,9 +17,7 @@
         departurePoint: '',
         arrivePoint: '',
         passingPoint: '',
-        departureDate: '',
         departureTime: '',
-        arriveDate: '',
         arriveTime: '',
         description: '',
         totalPassengerNo: '',
@@ -67,10 +65,10 @@
 
     const initUpdateInfo = async () => {
         updateCarpoolingDto.value = order.value
-        updateCarpoolingDto.value.departureDate = order.value.departureTime.split(' ')[0]
-        updateCarpoolingDto.value.departureTime = order.value.departureTime.split(' ')[1]
-        updateCarpoolingDto.value.arriveDate = order.value.arriveTime.split(' ')[0]
-        updateCarpoolingDto.value.arriveTime = order.value.arriveTime.split(' ')[1]
+        departureDate.value = order.value.departureTime.split(' ')[0]
+        departureTime.value = order.value.departureTime.split(' ')[1]
+        arriveDate.value = order.value.arriveTime.split(' ')[0]
+        arriveTime.value = order.value.arriveTime.split(' ')[1]
         updateCarpoolingDto.value.passingPoint = JSON.parse(order.value.passingPoint).join(' ')
         console.log(updateCarpoolingDto)
     }
@@ -99,28 +97,6 @@
 			+ '&passingPoint=' + order.value.passingPoint
 	}
 
-    const update = async () =>{
-        updateCarpoolingDto.value.passingPoint = JSON.stringify(passingPoint.value.split(' '))
-        // yyyy-MM-dd HH:mm
-        updateCarpoolingDto.value.departureTime =
-            departureDate.value + ' ' + departureTime.value
-        // yyyy-MM-dd HH:mm
-        updateCarpoolingDto.value.arriveTime =
-            arriveDate.value + ' ' + arriveTime.value
-        // 自定义preCheck
-        if (!preCheck()){
-            return
-        }
-        const data = await addCarpooling(updateCarpoolingDto.value)
-        if (data.code === 2000){
-            showNotify({type: 'success', message: '发布成功,请到详情页查看'})
-            clearAddCarpoolingDto()
-        } else if(data.msg !== null){
-            showNotify({type: 'danger', message: `发布失败,${data.msg}`})
-        } else {
-            showNotify({type: 'danger', message: '发布失败'})
-        }
-    }
     // eslint-disable-next-line no-warning-comments
     //TODO 表单校验
     const preCheck = () => {
@@ -132,11 +108,8 @@
         showNotify({type: 'danger', message: '请先绑定支付宝'})
         return false
       }
-      console.log(updateCarpoolingDto.value.departureTime)
-      console.log(updateCarpoolingDto.value.arriveTime)
-      console.log(updateCarpoolingDto.value)
       // 到达时间应在出发时间之后
-      if (updateCarpoolingDto.value.departureTime >= updateCarpoolpingDto.value.arriveTime) {
+      if (updateCarpoolingDto.value.departureTime >= updateCarpoolingDto.value.arriveTime) {
         console.log(updateCarpoolingDto.value)
         showNotify({type: 'danger', message: '到达时间应在出发时间之后'})
         return false
@@ -167,6 +140,30 @@
       }
       return true
     }
+    const update = async () =>{
+        updateCarpoolingDto.value.passingPoint = JSON.stringify(passingPoint.value.split(' '))
+        // yyyy-MM-dd HH:mm
+        updateCarpoolingDto.value.departureTime =
+            departureDate.value + ' ' + departureTime.value
+        // yyyy-MM-dd HH:mm
+        updateCarpoolingDto.value.arriveTime =
+            arriveDate.value + ' ' + arriveTime.value
+        // 自定义preCheck
+        if (!preCheck()){
+            return
+        }
+        const data = await updateCarpooling(updateCarpoolingDto.value)
+        if (data.code === 2000){
+            showNotify({type: 'success', message: '修改成功,请到详情页查看'})
+            clearAddCarpoolingDto()
+        } else if(data.msg !== null){
+            showNotify({type: 'danger', message: `修改失败,${data.msg}`})
+        } else {
+            showNotify({type: 'danger', message: '修改失败'})
+        }
+    }
+    // eslint-disable-next-line no-warning-comments
+
     // eslint-disable-next-line no-warning-comments
     //TODO 修改行程put
     // eslint-disable-next-line no-warning-comments
@@ -211,7 +208,7 @@
                 预览行程路线
             </van-button>
             <van-field
-                v-model="updateCarpoolingDto.departureDate"
+                v-model="departureDate"
                 is-link
                 name="departureDatePicker"
                 label="出发日期"
@@ -227,7 +224,7 @@
                     @cancel="showDatePicker1 = false" />
             </van-popup>
             <van-field
-                v-model="updateCarpoolingDto.departureTime"
+                v-model="departureTime"
                 is-link
                 name="departureTimePicker"
                 label="出发时间"
@@ -239,7 +236,7 @@
                 <van-time-picker @confirm="onDepartureTimeConfirm" @cancel="showTimePicker1 = false" />
             </van-popup>
             <van-field
-                v-model="updateCarpoolingDto.arriveDate"
+                v-model="arriveDate"
                 is-link
                 name="arriveDatePicker"
                 label="到达日期"
@@ -254,7 +251,7 @@
                     @cancel="showDatePicker2 = false" />
             </van-popup>
             <van-field
-                v-model="updateCarpoolingDto.arriveTime"
+                v-model="arriveTime"
                 is-link
                 name="arriveTimePicker"
                 label="到达时间"
@@ -301,7 +298,7 @@
                 <van-button plain block type="primary" native-type="submit">
                     修改行程
                 </van-button>
-                <van-button plain block type="danger" @click="clearAddCarpoolingDto()">
+                <van-button plain block type="danger" @click="deleteCarpooling(updateCarpoolingDto.id)">
                     删除行程
                 </van-button>
             </div>
