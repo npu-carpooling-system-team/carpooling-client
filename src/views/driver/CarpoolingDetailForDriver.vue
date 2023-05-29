@@ -1,12 +1,14 @@
 <script setup>
     import {useRouter} from 'vue-router'
     import {onMounted, ref} from 'vue'
-    import {updateCarpooling, deleteCarpooling, handleGetCarpoolingDetail} from '@/api/driver'
-    import {showNotify} from 'vant'
+    import {updateCarpooling, deleteCarpoolingById, handleGetCarpoolingDetail} from '@/api/driver'
+    import {showConfirmDialog, showNotify} from 'vant'
     import 'vant/es/toast/style'
     import 'vant/es/notify/style'
+    import 'vant/es/dialog/style'
     import {useUserStore} from "@/stores";
     import {storeToRefs} from "pinia";
+    import Cookies from "js-cookie";
 
     const orderId = ref('')
     
@@ -85,17 +87,17 @@
     })
 
     const jumpToPreviewMap = async () => {
-        const passingPointArr = []
-        // console.log(order.value)
-		if (order.value.passingPoint !== '') {
-			// 解析途径地点
-			passingPointArr.push(updateCarpoolingDto.value.passingPoint)
-		}
-		window.location.href = '#/main/driver/preview-map?departurePoint='
-			+ order.value.departurePoint
-			+ '&arrivePoint=' + order.value.arrivePoint
-			+ '&passingPoint=' + order.value.passingPoint
-	}
+      const passingPointArr = []
+      // console.log(order.value)
+      if (passingPoint.value !== '') {
+        // 解析途径地点
+        passingPointArr.push(passingPoint.value.split(' '))
+      }
+      window.location.href = '#/main/driver/preview-map?departurePoint='
+          + updateCarpoolingDto.value.departurePoint
+          + '&arrivePoint=' + updateCarpoolingDto.value.arrivePoint
+          + '&passingPoint=' + passingPointArr
+    }
 
     // eslint-disable-next-line no-warning-comments
     //TODO 表单校验
@@ -141,6 +143,14 @@
       return true
     }
     const update = async () =>{
+      showConfirmDialog({
+        title: '提示',
+        message: `确认修改拼车信息吗`,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        confirmButtonColor: '#f00',
+        showCancelButton: true
+      }).then(async () => {
         updateCarpoolingDto.value.passingPoint = JSON.stringify(passingPoint.value.split(' '))
         // yyyy-MM-dd HH:mm
         updateCarpoolingDto.value.departureTime =
@@ -149,25 +159,55 @@
         updateCarpoolingDto.value.arriveTime =
             arriveDate.value + ' ' + arriveTime.value
         // 自定义preCheck
+        //TODO 是不是该校验一下6小时内不能修改来着
         if (!preCheck()){
-            return
+          return
         }
         const data = await updateCarpooling(updateCarpoolingDto.value)
         if (data.code === 2000){
-            showNotify({type: 'success', message: '修改成功,请到详情页查看'})
-            clearAddCarpoolingDto()
+          showNotify({type: 'success', message: '修改成功,请到详情页查看'})
         } else if(data.msg !== null){
-            showNotify({type: 'danger', message: `修改失败,${data.msg}`})
+          showNotify({type: 'danger', message: `修改失败,${data.msg}`})
         } else {
-            showNotify({type: 'danger', message: '修改失败'})
+          showNotify({type: 'danger', message: '修改失败'})
         }
+      }).catch(() => {
+        showNotify({
+          type: 'primary',
+          message: '已取消修改'
+        })
+      })
     }
     // eslint-disable-next-line no-warning-comments
 
     // eslint-disable-next-line no-warning-comments
     //TODO 修改行程put
     // eslint-disable-next-line no-warning-comments
-    //TODO 删除行程delete
+    const deleteCarpooling = async (id)=>{
+      showConfirmDialog({
+        title: '提示',
+        message: `确认删除拼车行程吗`,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        confirmButtonColor: '#f00',
+        showCancelButton: true
+      }).then(async () => {
+        const data = await deleteCarpoolingById(id)
+        if (data.code === 2000){
+          showNotify({type: 'success', message: '删除成功,请到详情页查看'})
+          window.location.href = '#/main/carpooling/driver-carpooling'
+        } else if(data.msg !== null){
+          showNotify({type: 'danger', message: `删除失败,${data.msg}`})
+        } else {
+          showNotify({type: 'danger', message: '删除失败'})
+        }
+      }).catch(() => {
+        showNotify({
+          type: 'primary',
+          message: '已取消删除'
+        })
+      })
+    }
 
 </script>
 

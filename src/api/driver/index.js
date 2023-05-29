@@ -38,10 +38,10 @@ export const updateCarpooling = async (carpoolingDto) => {
 	return false
 }
 
-export const deleteCarpooling = async (id) => {
-	console.log(id)
-	beginLoading('正在删除拼车信息')
-	try{
+export const deleteCarpoolingById = async (id) => {
+	// console.log(id)
+	beginLoading('正在删除拼车行程')
+	try {
 		const {data} = await axios.delete(`/api/carpooling/driver/carpooling/${id}`)
 		return data
 	} catch (e) {
