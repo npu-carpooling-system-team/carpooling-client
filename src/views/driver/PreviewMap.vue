@@ -172,7 +172,7 @@
             await resolvePoints()
             await createMapInstance(AMap)
         } catch (e) {
-            showNotify({type: 'danger', message: '地图加载失败'})
+            showNotify({type: 'danger', message: `地图加载失败,${e.message}`})
         } finally {
             closeToast()
         }

@@ -4,8 +4,24 @@
     import Cookies from 'js-cookie'
     import {showNotify} from 'vant'
     import 'vant/es/notify/style'
+    import {handleGetPersonalInfo} from '@/api/common'
+    import {useUserStore} from '@/stores'
 
     const router = useRouter()
+    const userStore = useUserStore()
+    
+    const getUserBasic = async () => {
+        const data = await handleGetPersonalInfo()
+        if (data !== null && data.code === 2000) {
+            userStore.$patch((state) => {
+                state.currentUser = data.result.result
+            })
+        } else if (data !== null) {
+            showNotify({type: 'danger', message: `首页初始化失败,${data.msg},请刷新页面重试`});
+        } else {
+            showNotify({type: 'danger', message: `首页初始化失败,请刷新页面重试`});
+        }
+    }
 
     onMounted(() => {
         // 从当前页面URL参数中解析出token
@@ -28,7 +44,8 @@
                 message: '绑定成功,3s后执行跳转',
                 duration: 3000
             })
-            setTimeout(() => {
+            setTimeout(async () => {
+                await getUserBasic()
                 window.location.href = '#/main/my/my-home'
             }, 3000)
         }

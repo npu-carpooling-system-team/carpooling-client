@@ -29,7 +29,7 @@ export const getGeoPoint = async (address) => {
         })
     const geoData = await resp.json()
     if (geoData.info !== 'OK') {
-        throw new Error('获取经纬度失败')
+        throw new Error(`获取经纬度失败,我们建议您将地名 ${address} 修改为更精确的地址`)
     }
     // 开始解析
     return geoData.geocodes[0].location.split(',')
