@@ -75,13 +75,13 @@ export const useNavStore =
     defineStore('nav', () => {
         const nav = ref({
             currentNav: 'carpooling',
-            to: '/main/carpooling'
+            to: '/main/carpooling/home'
         })
 
         function reset () {
             nav.value = {
                 currentNav: 'carpooling',
-                to: '/main/carpooling'
+                to: '/main/carpooling/home'
             }
         }
         return {nav, reset}

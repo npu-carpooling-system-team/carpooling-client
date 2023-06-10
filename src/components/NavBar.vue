@@ -70,7 +70,7 @@
         </van-tabbar-item>
         <van-tabbar-item
             name="carpooling" icon="todo-list-o"
-            to="/main/carpooling"
+            to="/main/carpooling/home"
             @click="saveNavState('carpooling', '/main/carpooling')"
         >
             我的行程

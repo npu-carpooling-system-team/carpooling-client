@@ -45,12 +45,10 @@
 
 	onMounted(async () => {
 		await getCarpoolingList()
-		// console.log(carpoolingList)
 	})
 
 	const checkCarpoolingDetails = async (carpooling) => {
-		// console.log(carpooling)
-		await router.push(`/main/passenger/carpooling-detail-driver?carpoolingId=${carpooling.id}`)
+		await router.push(`/main/carpooling/carpooling-detail-driver?carpoolingId=${carpooling.id}`)
 	}
 </script>
 
@@ -62,7 +60,7 @@
                 v-for="carpooling in carpoolingList"
                 :key="carpooling"
                 @click="checkCarpoolingDetails(carpooling)">
-                <van-cell class="orderItem">
+                <van-cell class="order-item">
                     <van-row>
                         <van-col span="12">
                             {{ carpooling.departurePoint }}
@@ -95,7 +93,7 @@
     .van-cell-group {
       margin-top: 2%;
 
-      .orderItem {
+      .order-item {
         .van-cell__value {
           min-width: 80%;
 

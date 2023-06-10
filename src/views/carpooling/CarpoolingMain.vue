@@ -18,7 +18,7 @@
     }
 
     const carpoolingHomeList = [
-        '/main/carpooling',
+        '/main/carpooling/home',
         '/main/carpooling/passenger-order',
         '/main/carpooling/driver-carpooling'
     ]
@@ -27,9 +27,9 @@
         const path = router.currentRoute.value.path
         if (carpoolingHomeList.indexOf(path) !== -1) {
             if (currentUser.value.user.isPassenger) {
-                await router.push('/main/carpooling/passenger-order')
+                window.location.href = '#/main/carpooling/passenger-order'
             } else {
-                await router.push('/main/carpooling/driver-carpooling')
+                window.location.href = '#/main/carpooling/driver-carpooling'
             }
         }
     })

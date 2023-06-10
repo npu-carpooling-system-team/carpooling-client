@@ -9,7 +9,7 @@
     const router = useRouter()
     
     const homeList = [
-        '/main/carpooling',
+        '/main/carpooling/home',
         '/main/passenger/passenger-home',
         '/main/driver/driver-home',
         '/main/my/my-home',

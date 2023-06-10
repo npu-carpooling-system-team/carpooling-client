@@ -56,10 +56,10 @@ const routes = [
         meta: {
             title: '西工大拼车系统-主页'
         },
-        redirect: '/main/carpooling',
+        redirect: '/main/carpooling/home',
         children: [
             {
-                path: '/main/carpooling',
+                path: '/main/carpooling/home',
                 name: 'main-carpooling',
                 component: () => import('../views/carpooling/CarpoolingMain.vue'),
                 meta: {
@@ -67,19 +67,29 @@ const routes = [
                 },
                 children: [
                     {
-                        path: 'passenger-order',
+                        path: '/main/carpooling/passenger-order',
                         name: 'main-carpooling-passenger-order',
                         component: () => import('../views/carpooling/PassengerOrder.vue')
                     },
                     {
-                        path: 'driver-carpooling',
+                        path: '/main/carpooling/driver-carpooling',
                         name: 'main-carpooling-driver-carpooling',
                         component: () => import('../views/carpooling/DriverCarpooling.vue')
                     },
                     {
-                        path: 'order-detail',
+                        path: '/main/carpooling/order-detail',
                         name: 'main-carpooling-order-detail',
                         component: () => import('../views/carpooling/OrderDetail.vue')
+                    },
+                    {
+                        path: '/main/carpooling/carpooling-detail-driver',
+                        name: 'main-carpooling-detail-driver',
+                        component: () => import('../views/carpooling/CarpoolingDetail.vue')
+                    },
+                    {
+                        path: '/main/carpooling/carpooling-reserve-list',
+                        name: 'main-carpooling-reserve-list',
+                        component: () => import('../views/carpooling/ReserveList.vue')
                     }
                 ]
             },
@@ -101,12 +111,6 @@ const routes = [
                         path: 'carpooling-detail',
                         name: 'main-carpooling-detail',
                         component: () => import('../views/passenger/CarpoolingDetail.vue')
-                    },
-                    {
-                        //TODO 这个路由放在passenger下有点奇怪
-                        path: 'carpooling-detail-driver',
-                        name: 'main-carpooling-detail-driver',
-                        component: () => import('../views/driver/CarpoolingDetailForDriver.vue')
                     }
                 ]
             },
