@@ -1,6 +1,6 @@
 import axios from '../api/index'
 import OSS from 'ali-oss'
-import {revertFromUTF8} from './utf8Util.js'
+import { revertFromUTF8 } from './utf8Util.js'
 
 export const headers = {
     // 指定该Object被下载时的网页缓存行为。
@@ -28,6 +28,7 @@ export const createFileNameUUID = () => {
     function rx () {
         return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1)
     }
+
     return `${+new Date()}_${rx()}${rx()}`
 }
 

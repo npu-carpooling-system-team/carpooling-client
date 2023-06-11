@@ -33,5 +33,5 @@ export function base64ToFile (dataUrl, filename) {
     while (n--) {
         u8arr[n] = bStr.charCodeAt(n);
     }
-    return new File([u8arr], filename, { type: mime });
+    return new File([u8arr], filename, {type: mime});
 }

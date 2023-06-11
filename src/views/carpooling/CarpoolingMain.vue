@@ -24,8 +24,7 @@
     ]
 
     onMounted(async () => {
-        const path = router.currentRoute.value.path
-        if (carpoolingHomeList.indexOf(path) !== -1) {
+        if (router.currentRoute.value.path === '/main/carpooling/home') {
             if (currentUser.value.user.isPassenger) {
                 window.location.href = '#/main/carpooling/passenger-order'
             } else {
@@ -36,8 +35,15 @@
     
     const showVanTabs = ref(true)
     
-	watch(() => router.currentRoute.value.path, (path) => {
+	watch(() => router.currentRoute.value.path, async (path) => {
 		showVanTabs.value = carpoolingHomeList.indexOf(path) !== -1
+        if (router.currentRoute.value.path === '/main/carpooling/home') {
+            if (currentUser.value.user.isPassenger) {
+                window.location.href = '#/main/carpooling/passenger-order'
+            } else {
+                window.location.href = '#/main/carpooling/driver-carpooling'
+            }
+        }
 	})
 </script>
 

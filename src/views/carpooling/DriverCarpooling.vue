@@ -54,7 +54,7 @@
 
 <template>
     <div class="passenger-order-list-container">
-        <van-list finished finished-text="没有更多订单了">
+        <van-list id="driver-carpooling-list" finished finished-text="没有更多订单了">
             <van-cell-group
                 inset
                 v-for="carpooling in carpoolingList"

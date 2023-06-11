@@ -48,6 +48,7 @@
         <van-list
             finished
             finished-text="没有更多订单了"
+            id="passenger-order-list"
         >
             <van-cell-group inset v-for="order in orderList" :key="order" @click="checkOrderDetails(order)">
                 <van-cell class="orderItem">

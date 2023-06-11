@@ -243,6 +243,10 @@
     
     // 获取当前日期 yyyy-MM-dd
     const today = new Date()
+    
+    const goBackToCarpoolingMain = () => {
+        window.location.href = '#/main/carpooling/home'
+    }
 </script>
 
 <!-- TODO 返回时不显示订单，可能是go(-1)的问题?具体界面修改 这个我也不知道 没救了 -->
@@ -252,7 +256,7 @@
         left-text="返回"
         right-text="查看申请列表"
         left-arrow
-        @click-left="router.go(-1)"
+        @click-left="goBackToCarpoolingMain()"
         @click-right="checkReserveList()"
     />
     <!-- 订单详情 -->
