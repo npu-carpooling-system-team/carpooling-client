@@ -52,12 +52,12 @@
         } else if (data !== null) {
             showNotify({
                 type: 'danger',
-                message: `加载订单具体信息失败,${data.msg}`
+                message: `加载行程具体信息失败,${data.msg}`
             })
         } else {
             showNotify({
                 type: 'danger',
-                message: '加载订单具体信息失败,请检查网络连接'
+                message: '加载行程具体信息失败,请检查网络连接'
             })
         }
     }
@@ -86,7 +86,7 @@
         if (departureTimeStr > new Date().toLocaleString('zh', {hour12: false})) {
             showNotify({
                 type: 'warning',
-                message: '请注意,该订单已经超出出发时间'
+                message: '请注意,该行程已经超出出发时间'
             })
         }
         passingPoint.value = JSON.parse(carpooling.value.passingPoint).join(' ')
@@ -249,17 +249,17 @@
     }
 </script>
 
-<!-- TODO 返回时不显示订单，可能是go(-1)的问题?具体界面修改 这个我也不知道 没救了 -->
+<!-- TODO 返回时不显示行程，可能是go(-1)的问题?具体界面修改 这个我也不知道 没救了 -->
 <template>
     <van-nav-bar
-        :title="'订单详情'"
+        :title="'行程详情'"
         left-text="返回"
         right-text="查看申请列表"
         left-arrow
         @click-left="goBackToCarpoolingMain()"
         @click-right="checkReserveList()"
     />
-    <!-- 订单详情 -->
+    <!-- 行程详情 -->
     <van-form @submit="update()">
         <van-cell-group inset>
             <van-field

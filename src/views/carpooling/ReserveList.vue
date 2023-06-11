@@ -1,7 +1,7 @@
 <script setup>
     import { useRouter } from 'vue-router'
     import { onMounted, ref } from 'vue'
-    import { handleConfirmApplication, handleGetReserveList } from '@/api/driver'
+    import { handleConfirmApplication, handleGetCarpoolingDetail, handleGetReserveList } from '@/api/driver'
     import { showNotify } from 'vant'
     import 'vant/es/toast/style'
     import 'vant/es/notify/style'
@@ -11,6 +11,23 @@
     
     const reserveList = ref([])
     
+    const carpooling = ref({})
+    const getCarpoolingDetails = async () => {
+        const data = await handleGetCarpoolingDetail(carpoolingId.value)
+        if (data !== null && data.code === 2000) {
+            carpooling.value = data.carpooling
+        } else if (data !== null) {
+            showNotify({
+                type: 'danger',
+                message: `加载行程具体信息失败,${data.msg}`
+            })
+        } else {
+            showNotify({
+                type: 'danger',
+                message: '加载行程具体信息失败,请检查网络连接'
+            })
+        }
+    }
     const getReserveList = async () => {
         const data = await handleGetReserveList(carpoolingId.value)
         if (data !== null) {
@@ -37,10 +54,24 @@
             tab.style.display = 'none'
         }
         carpoolingId.value = router.currentRoute.value.query.carpoolingId
+        await getCarpoolingDetails()
+        if (carpooling.value.leftPassengerNo === 0) {
+            showNotify({
+                type: 'warning',
+                message: '当前行程已满员'
+            })
+        }
         await getReserveList()
     })
     
     const confirmApplication = async (orderId, pass) => {
+        if (carpooling.value.leftPassengerNo === 0) {
+            showNotify({
+                type: 'warning',
+                message: '当前行程已满员'
+            })
+            return
+        }
         const confirmDto = {
             orderId: orderId,
             pass: pass
@@ -52,6 +83,7 @@
                     type: 'success',
                     message: '操作成功'
                 })
+                await getCarpoolingDetails()
                 await getReserveList()
             } else {
                 showNotify({
@@ -75,6 +107,9 @@
         left-arrow
         @click-left="router.go(-1)"
     />
+    <div style="text-align: center">
+        <h5>当前行程剩余座位:{{carpooling.leftPassengerNo}}</h5>
+    </div>
     <div class="reserve-list-container">
         <van-list finished finished-text="没有更多申请了">
             <van-cell-group
@@ -103,6 +138,7 @@
                                 size="mini" type="success"
                                 icon="success"
                                 @click="confirmApplication(apply.orderId, true)"
+                                v-if="carpooling.leftPassengerNo !== 0"
                             >
                                 同意
                             </van-button>
