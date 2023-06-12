@@ -85,5 +85,4 @@
     </van-tabbar>
 </template>
 
-<style scoped>
-</style>
+

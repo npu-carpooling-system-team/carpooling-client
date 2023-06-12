@@ -29,9 +29,8 @@
     statusI18nList.set('PRE_ORDER_REQUEST_PASSED', '订单已通过')
     statusI18nList.set('PRE_DEPARTURE_USER_CANCELLED', '订单已被用户取消')
     statusI18nList.set('DRIVING_USER_CONFIRM_DEPARTURE', '用户确认发车')
-    
     statusI18nList.set('ARRIVED_USER_UNPAID', '用户未支付')
-	statusI18nList.set('PAID_WAITING_CALLBACK', '已支付，等待回调')
+    statusI18nList.set('PAID_WAITING_CALLBACK', '已支付，等待回调')
     statusI18nList.set('ORDER_NORMAL_CLOSED', '订单正常结束')
 	
 	onMounted(async () => {
