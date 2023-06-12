@@ -358,24 +358,31 @@
                 开始支付
             </van-button>
             <div v-if="order.status === 'PAID_WAITING_CALLBACK'">已发起支付，正在等待回调</div>
-            <div v-if="order.status === 'ORDER_NORMAL_CLOSED' && order.score === 0">
-                订单正常结束,请问本次行程评分
+            <div v-if="order.status === 'ORDER_NORMAL_CLOSED' && order.score === '0'">
+                订单正常结束,请为本次行程评分
+                <p />
             </div>
-            <div v-if="order.status === 'ORDER_NORMAL_CLOSED' && order.score !== 0">
+            <div v-if="order.status === 'ORDER_NORMAL_CLOSED' && order.score !== '0'">
                 订单正常结束
             </div>
-            <van-rate
-                v-if="order.status === 'ORDER_NORMAL_CLOSED'"
-                v-model="rateValue"
-                color="#ffd21e"
-                void-icon="star"
-            />
-            <van-button plain
-                v-if="order.status === 'ORDER_NORMAL_CLOSED' && order.score === 0"
-                @click="submitScore()"
-            >
-                确认提交评分
-            </van-button>
+            <div>
+                <div>
+                    <van-rate
+                        v-if="order.status === 'ORDER_NORMAL_CLOSED'"
+                        v-model="rateValue"
+                        color="#ffd21e"
+                        void-icon="star"
+                    />
+                </div>
+                <div>
+                    <van-button plain
+                        v-if="order.status === 'ORDER_NORMAL_CLOSED'"
+                        @click="submitScore()"
+                    >
+                        确认提交评分
+                    </van-button>
+                </div>
+            </div>
         </div>
     
         <!--  底部弹窗  -->
