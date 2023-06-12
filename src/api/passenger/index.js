@@ -208,3 +208,19 @@ export const handleSubmitScore = async (orderId,scoreDto) => {
 	}
 	return null
 }
+
+export const handlePutPaymentStatus = async (orderId) => {
+	beginLoading('正在更新支付状态')
+	try {
+		const {data} = await axios.put(`/api/payment/passenger/pay/${orderId}`)
+		return data
+	} catch (e) {
+		showNotify({
+			type: 'danger',
+			message: '更新支付状态失败,服务器异常,请重试'
+		})
+	} finally {
+		closeToast()
+	}
+	return null
+}

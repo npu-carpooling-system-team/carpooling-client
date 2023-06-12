@@ -90,6 +90,16 @@ const routes = [
                         path: '/main/carpooling/carpooling-reserve-list',
                         name: 'main-carpooling-reserve-list',
                         component: () => import('../views/carpooling/ReserveList.vue')
+                    },
+                    {
+                        path: '/main/carpooling/pay/failure',
+                        name: 'main-carpooling-pay-failure',
+                        component: () => import('../views/carpooling/payment/PayFailure.vue')
+                    },
+                    {
+                        path: '/main/carpooling/pay/success',
+                        name: 'main-carpooling-pay-success',
+                        component: () => import('../views/carpooling/payment/PaySuccess.vue')
                     }
                 ]
             },

@@ -11,7 +11,10 @@ import './assets/style/dark.less'
 
 // pinia持久化插件
 import piniaPluginPersistedState from 'pinia-plugin-persistedstate'
-
+// 引入固定的CSS文件
+import 'vant/es/toast/style'
+import 'vant/es/notify/style'
+import 'vant/es/dialog/style'
 
 const app = createApp(App)
     .use(createPinia().use(piniaPluginPersistedState))

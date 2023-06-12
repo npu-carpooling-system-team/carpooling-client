@@ -1,16 +1,15 @@
 <script setup>
-    import {useRouter} from 'vue-router'
-    import {onMounted} from 'vue'
+    import { useRouter } from 'vue-router'
+    import { onMounted } from 'vue'
     import Cookies from 'js-cookie'
-    import {showNotify} from 'vant'
-    import 'vant/es/notify/style'
-
+    import { showNotify } from 'vant'
+    
     const router = useRouter()
     
     onMounted(() => {
         // 从当前页面URL参数中解析出token
         const token = router.currentRoute.value.query.token
-        if(token === undefined){
+        if (token === undefined) {
             showNotify({
                 type: 'danger',
                 message: '登录失败,3s后跳转回登录页面',
@@ -42,7 +41,7 @@
 </template>
 
 <style lang="less" scoped>
-    .welcome-banner{
+    .welcome-banner {
         // 上下左右居中
         display: flex;
         justify-content: center;

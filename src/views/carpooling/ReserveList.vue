@@ -3,8 +3,6 @@
     import { onMounted, ref } from 'vue'
     import { handleConfirmApplication, handleGetCarpoolingDetail, handleGetReserveList } from '@/api/driver'
     import { showNotify } from 'vant'
-    import 'vant/es/toast/style'
-    import 'vant/es/notify/style'
     
     const router = useRouter()
     const carpoolingId = ref()

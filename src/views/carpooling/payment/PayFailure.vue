@@ -1,28 +1,25 @@
 <script setup>
-    import { useRouter } from 'vue-router'
     import { onMounted } from 'vue'
     import { showNotify } from 'vant'
-    
-    const router = useRouter()
     
     onMounted(async () => {
         showNotify({
             type: 'danger',
-            message: '您的账户未绑定支付宝账号,请先登录并绑定'
+            message: '您中途退出了支付,请等待后端服务器刷新您的支付状态后重试'
         })
         setTimeout(async () => {
-            await router.push('/login')
+            window.location.href = '#/main/carpooling/passenger-order'
         }, 3000)
     })
 </script>
 
 <template>
     <div class="welcome-banner">
-        <h1>正在处理登录信息</h1>
+        <h1>正在处理支付信息</h1>
     </div>
 </template>
 
-<style lang="less" scoped>
+<style scoped lang="less">
     .welcome-banner {
         // 上下左右居中
         display: flex;

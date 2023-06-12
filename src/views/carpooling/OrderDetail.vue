@@ -11,8 +11,6 @@
         handleSubmitScore
     } from '@/api/passenger'
     import {showConfirmDialog, showNotify} from 'vant'
-    import 'vant/es/toast/style'
-    import 'vant/es/notify/style'
 
     const orderId = ref('')
     
@@ -47,7 +45,8 @@
     }
 
 	const passingPoint = ref('')
-	
+    const rateValue = ref(0)
+    
     onMounted(async () => {
 		orderId.value = router.currentRoute.value.query.orderId
         await getOrderDetails()
@@ -71,17 +70,17 @@
 			+ '&passingPoint=' + order.value.passingPoint
             + '&fromUrl=/main/carpooling/passenger-order'
 	}
-
-	const confirmDeparture = async () => {
-		const data = await handleConfirmDeparture(orderId.value)
+    
+    const confirmDeparture = async () => {
+        const data = await handleConfirmDeparture(orderId.value)
         if (data !== null && data.code === 2000) {
             showNotify({
                 type: 'success',
                 message: '确认发车成功'
             })
             await getOrderDetails()
-		} else if (data !== null) {
-			showNotify({
+        } else if (data !== null) {
+            showNotify({
                 type: 'danger',
                 message: `确认发车失败,${data.msg}`
             })
@@ -90,7 +89,33 @@
                 type: 'danger',
                 message: '确认发车失败,请检查网络连接'
             })
-		}
+        }
+    }
+    
+	const checkAndConfirmDeparture = async () => {
+        // 如果当前时间与出发时间之间大于一小时 则需要提醒
+        const now = new Date()
+        const departureTime = new Date(order.value.departureTime)
+        if (departureTime.getTime() - now.getTime() > 3600000 ||
+            now.getTime() - departureTime.getTime() > 3600000) {
+            showConfirmDialog({
+                title: '提示',
+                message: '当前时间与出发时间相差较大,是否确认发车',
+                confirmButtonText: '确认发车',
+                cancelButtonText: '取消',
+                confirmButtonColor: '#f00',
+                showCancelButton: true
+            }).then(async () => {
+                await confirmDeparture()
+            }).catch(() => {
+                showNotify({
+                    type: 'primary',
+                    message: '您已放弃确认发车'
+                })
+            })
+        } else {
+            await confirmDeparture()
+        }
     }
 
 	const confirmCancelTimes = async () => {
@@ -190,10 +215,11 @@
     const handlePaymentSelect = async (index) => {
         if (index.name === '支付宝支付'){
             try {
-                const data = handleStartPayment(orderId.value)
+                const data = await handleStartPayment(orderId.value)
                 if (data !== null && data.code === 2000) {
-                    // 执行跳转
-                    window.location.href = data.payUrl
+                    showPayBar.value = false
+                    // 执行data.payUrl中的<script>代码
+                    document.write(data.payUrl)
                 } else if (data !== null){
                     showNotify({
                         type: 'danger',
@@ -205,7 +231,10 @@
                         message: '支付失败,请检查网络连接'
                     })
                 }
+            } catch (e) {
+                console.log(e)
             } finally {
+                showPayBar.value = false
                 await getOrderDetails()
             }
         } else {
@@ -222,7 +251,6 @@
         }
     ]
     
-    const rateValue = ref(0)
     const submitScore = async () => {
         const scoreDto = {
             score: rateValue.value
@@ -305,7 +333,7 @@
         <div class="btn-area">
             <div v-if="order.status === 'PRE_ORDER_REQUEST_SUBMITTED'">正在等待司机确认</div>
             <div style="flex-direction: row" v-if="order.status === 'PRE_ORDER_REQUEST_PASSED'">
-                <van-button plain @click="confirmDeparture()">
+                <van-button plain type="success" @click="checkAndConfirmDeparture()">
                     确认发车
                 </van-button>
                 <van-button plain type="danger" @click="confirmAndCancelOrder()">
@@ -313,7 +341,9 @@
                 </van-button>
             </div>
             <div v-if="order.status === 'PRE_DEPARTURE_USER_CANCELLED'">订单已被用户取消</div>
-            <van-button plain
+            <van-button
+                plain
+                type="success"
                 v-if="order.status === 'DRIVING_USER_CONFIRM_DEPARTURE'"
                 @click="confirmArrive()"
             >
@@ -322,10 +352,12 @@
             <div v-if="order.status === 'ARRIVED_USER_UNPAID'">请您支付订单</div>
             <van-button plain
                 v-if="order.status === 'ARRIVED_USER_UNPAID'"
-                @click="showPayBar=true">
+                @click="showPayBar=true"
+                type="success"
+            >
                 开始支付
             </van-button>
-            <div v-if="order.status === 'PAID_WAITING_CALLBACK'">已支付，等待回调</div>
+            <div v-if="order.status === 'PAID_WAITING_CALLBACK'">已发起支付，正在等待回调</div>
             <div v-if="order.status === 'ORDER_NORMAL_CLOSED' && order.score === 0">
                 订单正常结束,请问本次行程评分
             </div>
