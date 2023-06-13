@@ -252,10 +252,7 @@
     ]
     
     const submitScore = async () => {
-        const scoreDto = {
-            score: rateValue.value
-        }
-        const data = handleSubmitScore(orderId.value, scoreDto)
+        const data = await handleSubmitScore(orderId.value, rateValue.value)
         if (data !== null && data.code === 2000) {
             showNotify({
                 type: 'success',
@@ -363,7 +360,7 @@
                 <p />
             </div>
             <div v-if="order.status === 'ORDER_NORMAL_CLOSED' && order.score !== '0'">
-                订单正常结束
+                订单正常结束,您已经给出评分
             </div>
             <div>
                 <div>
@@ -376,7 +373,7 @@
                 </div>
                 <div>
                     <van-button plain
-                        v-if="order.status === 'ORDER_NORMAL_CLOSED'"
+                        v-if="order.status === 'ORDER_NORMAL_CLOSED' && order.score === '0'"
                         @click="submitScore()"
                     >
                         确认提交评分

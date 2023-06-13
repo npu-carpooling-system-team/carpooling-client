@@ -193,10 +193,10 @@ export const handleRateDriver = async (orderId) => {
 	return null
 }
 
-export const handleSubmitScore = async (orderId,scoreDto) => {
+export const handleSubmitScore = async (orderId,score) => {
 	beginLoading('正在提交评价')
 	try {
-		const {data} = await axios.post(`/api/order/finished/passenger/rate/${orderId}`, scoreDto)
+		const {data} = await axios.post(`/api/order/finished/passenger/rate/${orderId}/${score}`)
 		return data
 	} catch (e) {
 		showNotify({

@@ -1,14 +1,14 @@
 <script setup>
-    import {onMounted, ref} from 'vue'
-    import {useRouter} from 'vue-router'
+    import { onMounted, ref } from 'vue'
+    import { useRouter } from 'vue-router'
     import axios from '../../api/index.js'
-    import {encrypt} from '@/utils/jsencrypt'
+    import { encrypt } from '@/utils/jsencrypt'
     import Cookies from 'js-cookie'
-    import {closeToast, showLoadingToast, showNotify} from 'vant'
+    import { closeToast, showDialog, showLoadingToast, showNotify } from 'vant'
     import 'vant/es/notify/style'
     import 'vant/es/toast/style'
-    import {validatorCode, validatorPassword, validatorPhone} from '@/utils/validatorUtil'
-
+    import { validatorCode, validatorPassword, validatorPhone } from '@/utils/validatorUtil'
+    
     const router = useRouter()
     
     const loginDto = ref({
@@ -22,7 +22,7 @@
     
     // 开始登录流程
     const preCheckFailed = () => {
-        showNotify({ type: 'danger', message: '表单校验未通过,请检查输入' })
+        showNotify({type: 'danger', message: '表单校验未通过,请检查输入'})
         // 重新设置form-box的高度到50%
         const formBox = document.getElementById('form-box')
         formBox.style.height = '50%'
@@ -42,9 +42,9 @@
             // 清除Cookie中的token
             Cookies.remove('token')
             const {data} = await axios.post('/api/auth/login/password', passwordLoginDto)
-            if (data.code !== null && data.code === 2000){
-				if (data.result.role === 1){
-					showLoadingToast({
+            if (data.code !== null && data.code === 2000) {
+                if (data.result.role === 1) {
+                    showLoadingToast({
                         duration: 3000,
                         forbidClick: true,
                         message: '该账号为管理员账号,3秒后跳转到管理端'
@@ -59,10 +59,10 @@
                 Cookies.set('token', data.result.token)
                 await router.push('/main/home')
             } else {
-                showNotify({ type: 'danger', message: '用户名密码登录未通过,请检查输入' });
+                showNotify({type: 'danger', message: '用户名密码登录未通过,请检查输入'});
             }
         } catch (e) {
-            showNotify({ type: 'danger', message: `服务器异常${e},请通知管理员` });
+            showNotify({type: 'danger', message: `服务器异常${e},请通知管理员`});
         } finally {
             closeToast();
         }
@@ -83,8 +83,8 @@
         }
         try {
             const {data} = await axios.post('/api/auth/sendsms', sendSmsDto)
-            if (data.code !== null && data.code === 2000){
-                showNotify({ type: 'success', message: '验证码已发送' });
+            if (data.code !== null && data.code === 2000) {
+                showNotify({type: 'success', message: '验证码已发送'});
                 //在loadingText中展示60秒倒数
                 loadingText.value = '300s'
                 sendSmsEnabled.value = false
@@ -92,16 +92,16 @@
                 const timer = setInterval(() => {
                     time--
                     loadingText.value = time + 's'
-                    if(time === 0) {
+                    if (time === 0) {
                         clearInterval(timer)
                         sendSmsEnabled.value = true
                     }
                 }, 1000)
             } else {
-                showNotify({ type: 'danger', message: `验证码发送失败,${data.msg},请重试` });
+                showNotify({type: 'danger', message: `验证码发送失败,${data.msg},请重试`});
             }
         } catch (e) {
-            showNotify({ type: 'danger', message: `服务器异常${e},请通知管理员` });
+            showNotify({type: 'danger', message: `服务器异常${e},请通知管理员`});
         } finally {
             closeToast();
         }
@@ -119,14 +119,14 @@
         }
         try {
             const resp = await axios.post('/api/auth/login/phone', codeLoginDto)
-            if (resp.data.code !== null && resp.data.code === 2000){
+            if (resp.data.code !== null && resp.data.code === 2000) {
                 Cookies.set('token', resp.data.result.token)
                 await router.push('/main/home')
             } else {
-                showNotify({ type: 'danger', message: '用户名短信登录未通过,请检查输入' });
+                showNotify({type: 'danger', message: '用户名短信登录未通过,请检查输入'});
             }
         } catch (e) {
-            showNotify({ type: 'danger', message: `服务器异常${e},请通知管理员` });
+            showNotify({type: 'danger', message: `服务器异常${e},请通知管理员`});
         } finally {
             closeToast();
         }
@@ -147,6 +147,30 @@
     onMounted(async () => {
         if (Cookies.get('token') !== undefined) {
             await router.push('/main/home')
+        }
+        const ua = navigator.userAgent.toLowerCase()
+        const isChrome = ua.indexOf('chrome') !== -1
+        if (isChrome) {
+            const chromeVersion = ua.match(/chrome\/([\d.]+)/)[1]
+            if (parseInt(chromeVersion.split('.')[0]) < 51) {
+                showDialog({
+                    title: '我们建议您升级浏览器',
+                    message: '为了避免跳转、显示与样式的问题 , 我们建议您更新Chrome浏览器到51以上版本以获得更好的体验',
+                    theme: 'round-button'
+                }).then(() => {
+                    // on close
+                    window.sessionStorage.setItem('showUserAgentCheck', 'true')
+                });
+            }
+        } else if (!isChrome) {
+            showDialog({
+                title: '我们建议您更换浏览器',
+                message: '为了避免跳转、显示与样式的问题 , 我们建议您更换为Chrome内核的浏览器以获得更好的体验',
+                theme: 'round-button'
+            }).then(() => {
+                // on close
+                window.sessionStorage.setItem('showUserAgentCheck', 'true')
+            });
         }
     })
 </script>
@@ -175,7 +199,7 @@
                     style="margin-top: 0" plain block type="warning"
                     @click="isUsernamePasswordLogin = !isUsernamePasswordLogin"
                 >
-                    {{isUsernamePasswordLogin ? '切换到验证码登录' : '切换到用户名密码登录'}}
+                    {{ isUsernamePasswordLogin ? '切换到验证码登录' : '切换到用户名密码登录' }}
                 </van-button>
                 
                 <van-cell-group style="margin-top: 5%" inset>
@@ -199,7 +223,7 @@
                         :rules="[{ validator: validatorPassword, message: '应为4-16位数字/字母/下划线' }]"
                     />
                 </van-cell-group>
-
+                
                 <van-cell-group style="margin-top: 5%" inset v-else>
                     <van-field
                         v-model="loginDto.code"
@@ -229,7 +253,7 @@
                         </template>
                     </van-field>
                 </van-cell-group>
-
+                
                 <div class="submit-login-btn">
                     <van-button plain block type="primary" native-type="submit">
                         登录
@@ -239,7 +263,7 @@
                     </van-button>
                 </div>
             </van-form>
-
+            
             <img
                 @click="jumpToAlipay()"
                 class="alipay-icon" src="../../assets/imgs/alipayLogo.png" alt="支付宝登录"
@@ -249,14 +273,15 @@
 </template>
 
 <style lang="less" scoped>
-    .login-box{
+    .login-box {
         background: url("../../assets/imgs/bg1.webp") no-repeat fixed center;
-        background-size: auto ,100%;
+        background-size: auto, 100%;
         text-align: center;
         position: absolute;
         width: 100%;
         height: 100%;
-        .icon-box{
+        
+        .icon-box {
             // 毛玻璃
             background: rgba(255, 255, 255, 0.2);
             -webkit-backdrop-filter: blur(8px);
@@ -264,7 +289,7 @@
             // 居中
             margin-left: auto;
             margin-right: auto;
-            margin-top:10%;
+            margin-top: 10%;
             // 一个正圆
             border-radius: 50%;
             position: relative;
@@ -273,16 +298,18 @@
             padding-bottom: 30%;
             border: 1px solid rgba(128, 125, 125, 0.93);
             box-shadow: 0 0 10px #dddd;
-            .van-image{
-              position: absolute;
-              left: 50%;
-              top: 50%;
-              transform: translate(-50%,-50%);
-              width: 100%;
-              height: 100%;
+            
+            .van-image {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: 100%;
+                height: 100%;
             }
         }
-        .form-box{
+        
+        .form-box {
             width: 90%;
             height: 40%;
             margin-top: 10%;
@@ -293,7 +320,8 @@
             backdrop-filter: blur(8px);
             border-radius: 3%;
             align-items: center;
-            .login-type-choose-btn{
+            
+            .login-type-choose-btn {
                 width: 60%;
                 // 居中
                 margin-left: auto;
@@ -301,16 +329,19 @@
                 margin-top: 10%;
                 border-radius: 10px;
             }
-            .submit-login-btn{
+            
+            .submit-login-btn {
                 margin-top: 5%;
                 display: flex;
                 justify-content: space-around;
-                .van-button{
+                
+                .van-button {
                     width: 40%;
                     border-radius: 10px;
                 }
             }
-            .alipay-icon{
+            
+            .alipay-icon {
                 margin-top: 10%;
                 width: 50px;
                 height: 50px;
