@@ -51,7 +51,7 @@
                     })
                     setTimeout(() => {
                         window.location.href =
-                            'https://carpooling-admin.wangminan.me/preHandleLogin?token=' +
+                            'https://carpooling-admin.wangminan.me/#/preHandleLogin?token=' +
                             data.result.token
                     }, 3000)
                     return

@@ -33,7 +33,7 @@ _axios.interceptors.response.use(
                 })
                 // 倒计时
                 setTimeout(() => {
-                    window.location.href = '/login'
+                    window.location.href = '#/login'
                 }, 3000)
             }
         }

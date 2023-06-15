@@ -96,7 +96,7 @@
                 message: '申请成功,3秒后跳转回主页'
             })
             setTimeout(() => {
-                window.location.href = '/main/passenger/passenger-home'
+                window.location.href = '#/main/passenger/passenger-home'
             }, 3000)
         } else if (data !== null) {
             showNotify({
