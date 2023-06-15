@@ -36,33 +36,30 @@
 		departureTime: '',
 		arriveTime: ''
 	}
-    let isFirstLoading = true
     // eslint-disable-next-line complexity
     const getCarpoolingList = async () => {
-		if (!isFirstLoading) {
-			queryDto.value.pageNum ++
-        } else {
-			isFirstLoading = !isFirstLoading
+        loading.value = true
+        // 处理carpoolingDto中的数据
+        if (departureDate.value !== '') {
+            queryDto.value.departureTime = departureDate.value
+            if (departureTime.value !== '') {
+                queryDto.value.departureTime = queryDto.value.departureTime + ' ' + departureTime.value
+            } else {
+                // 拼接00:01
+                queryDto.value.departureTime = queryDto.value.departureTime + ' 00:01'
+            }
         }
+        
 		if (oldQueryDto.query !== queryDto.value.query
             || oldQueryDto.departureTime !== queryDto.value.departureTime
             || oldQueryDto.arriveTime !== queryDto.value.arriveTime) {
-			isFirstLoading = true
+            console.log("new query")
             queryDto.value.pageNum = 1
             finished.value = false
         }
-		loading.value = true
-		// 处理carpoolingDto中的数据
-        if (departureDate.value !== '') {
-			queryDto.value.departureTime = departureDate.value
-			if (departureTime.value !== '') {
-				queryDto.value.departureTime = queryDto.value.departureTime + ' ' + departureTime.value
-			} else {
-				// 拼接00:00
-				queryDto.value.departureTime = queryDto.value.departureTime + ' 00:00'
-			}
-		}
-  
+        
+        console.log(queryDto.value)
+        
 		if (departureDate.value === '' && departureTime.value !== ''){
 			showNotify({
                 type: 'danger',
@@ -103,6 +100,7 @@
             } else {
 				carpoolingList.value.push(...data.data)
             }
+            queryDto.value.pageNum ++
             if (data.total !== queryDto.value.pageSize) {
 				finished.value = true
 			}
