@@ -53,12 +53,9 @@
 		if (oldQueryDto.query !== queryDto.value.query
             || oldQueryDto.departureTime !== queryDto.value.departureTime
             || oldQueryDto.arriveTime !== queryDto.value.arriveTime) {
-            console.log("new query")
             queryDto.value.pageNum = 1
             finished.value = false
         }
-        
-        console.log(queryDto.value)
         
 		if (departureDate.value === '' && departureTime.value !== ''){
 			showNotify({
@@ -114,7 +111,7 @@
 	}
     
     onMounted(async () => {
-		await getCarpoolingList(true)
+		await getCarpoolingList()
     })
 
 	const onDepartureDateConfirm = ({ selectedValues }) => {

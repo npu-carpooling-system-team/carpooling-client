@@ -26,7 +26,9 @@ export const headers = {
  */
 export const createFileNameUUID = () => {
     function rx () {
-        return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1)
+        // 不要使用math.random 不安全
+        return ((1 + window.crypto.getRandomValues(new Uint32Array(1))[0])
+            * 0x10000 | 0).toString(16).substring(1)
     }
 
     return `${+new Date()}_${rx()}${rx()}`
