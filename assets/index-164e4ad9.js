@@ -1,0 +1,1 @@
+import{_ as s}from"./index-829bfcad.js";import{s as o,v as t,t as e}from"./.pnpm-2d117cc4.js";const n=a=>{e({duration:0,forbidClick:!0,message:a})},c=async()=>{n("正在加载您的个人信息");try{const{data:a}=await s.get("/api/user/info");return a}catch(a){o({type:"danger",message:`首页初始化失败,${a.message}`})}finally{t()}return null};export{c as h};
