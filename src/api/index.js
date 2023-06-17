@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 
 import {showNotify} from 'vant'
 import 'vant/es/notify/style'
+import router from '@/router'
 
 const _axios = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL
@@ -32,8 +33,8 @@ _axios.interceptors.response.use(
                     message: '登录过期，将跳转至登录页'
                 })
                 // 倒计时
-                setTimeout(() => {
-                    window.location.href = '#/login'
+                setTimeout(async () => {
+                    await router.push('/login')
                 }, 3000)
             }
         }

@@ -1,9 +1,12 @@
 <script setup>
-    import {onMounted} from 'vue'
-    import {showNotify} from 'vant'
+    import { onMounted } from 'vue'
+    import { showNotify } from 'vant'
     import 'vant/es/notify/style'
     import Cookies from 'js-cookie'
-
+    import { useRouter } from 'vue-router'
+    
+    const router = useRouter()
+    
     onMounted(() => {
         showNotify({
             type: 'danger',
@@ -11,9 +14,9 @@
         })
         setTimeout(async () => {
             if (Cookies.get('token') !== null) {
-                window.location.href = '#/main/my/my-home'
+                await router.push('/main/my/my-home')
             } else {
-                window.location.href = '#/login'
+                await router.push('/login')
             }
         }, 3000)
     })
@@ -26,11 +29,11 @@
 </template>
 
 <style lang="less" scoped>
-  .welcome-banner{
-    // 上下左右居中
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+    .welcome-banner {
+        // 上下左右居中
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 </style>

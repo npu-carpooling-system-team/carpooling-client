@@ -1,12 +1,12 @@
 <script setup>
-    import {useRouter} from 'vue-router'
-    import {onMounted} from 'vue'
+    import { useRouter } from 'vue-router'
+    import { onMounted } from 'vue'
     import Cookies from 'js-cookie'
-    import {showNotify} from 'vant'
+    import { showNotify } from 'vant'
     import 'vant/es/notify/style'
-    import {handleGetPersonalInfo} from '@/api/common'
-    import {useUserStore} from '@/stores'
-
+    import { handleGetPersonalInfo } from '@/api/common'
+    import { useUserStore } from '@/stores'
+    
     const router = useRouter()
     const userStore = useUserStore()
     
@@ -22,18 +22,18 @@
             showNotify({type: 'danger', message: `首页初始化失败,请刷新页面重试`});
         }
     }
-
+    
     onMounted(() => {
         // 从当前页面URL参数中解析出token
         const token = router.currentRoute.value.query.token
-        if(token === undefined){
+        if (token === undefined) {
             showNotify({
                 type: 'danger',
                 message: '绑定失败,3s后跳转回登录页面',
                 duration: 3000
             })
-            setTimeout(() => {
-                window.location.href = '#/login'
+            setTimeout(async () => {
+                await router.push('/login')
             }, 3000)
         } else {
             // 设置Cookies
@@ -46,7 +46,7 @@
             })
             setTimeout(async () => {
                 await getUserBasic()
-                window.location.href = '#/main/my/my-home'
+                await router.push('/main/my/my-home')
             }, 3000)
         }
     })
@@ -59,11 +59,11 @@
 </template>
 
 <style lang="less" scoped>
-  .welcome-banner{
-    // 上下左右居中
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+    .welcome-banner {
+        // 上下左右居中
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 </style>

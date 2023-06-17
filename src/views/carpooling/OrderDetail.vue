@@ -64,11 +64,11 @@
 			// 解析途径地点
 			passingPointArr.push(JSON.parse(order.value.passingPoint))
 		}
-		window.location.href = '#/main/driver/preview-map?departurePoint='
+        await router.push('/main/driver/preview-map?departurePoint='
 			+ order.value.departurePoint
 			+ '&arrivePoint=' + order.value.arrivePoint
 			+ '&passingPoint=' + order.value.passingPoint
-            + '&fromUrl=/main/carpooling/passenger-order'
+            + '&fromUrl=/main/carpooling/passenger-order')
 	}
     
     const confirmDeparture = async () => {

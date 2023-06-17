@@ -17,7 +17,7 @@
         try {
             await handlePutPaymentStatus(orderId)
         } finally {
-            window.location.href = '#/main/carpooling/passenger-order'
+            await router.push('/main/carpooling/passenger-order')
         }
     })
 </script>

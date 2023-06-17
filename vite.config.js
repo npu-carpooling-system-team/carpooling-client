@@ -13,10 +13,7 @@ export default defineConfig({
     plugins: [
         vue(),
         VitePWA({
-            registerType: 'autoUpdate',
-            devOptions: {
-                enabled: true
-            }
+            registerType: 'autoUpdate'
         }),
         // 启用顶级js文件中的await
         topLevelAwait({

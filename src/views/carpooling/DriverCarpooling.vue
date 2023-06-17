@@ -22,13 +22,14 @@
 		} else if (data !== null) {
 			showNotify({
 				type: 'danger',
-				message: `获取订单列表失败, ${data.msg}`
+				message: `获取行程列表失败, ${data.msg}`
 			})
 		} else {
-			showNotify({
+            // 该提示出现问题 我们暂时禁用了这个提示
+			/*showNotify({
 				type: 'danger',
-				message: '获取订单列表失败'
-			})
+				message: '获取行程列表失败'
+			})*/
 		}
 	}
 
@@ -54,7 +55,7 @@
 
 <template>
     <div class="passenger-order-list-container">
-        <van-list id="driver-carpooling-list" finished finished-text="没有更多订单了">
+        <van-list id="driver-carpooling-list" finished finished-text="没有更多行程了">
             <van-cell-group
                 inset
                 v-for="carpooling in carpoolingList"

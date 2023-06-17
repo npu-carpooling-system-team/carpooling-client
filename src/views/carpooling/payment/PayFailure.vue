@@ -1,6 +1,9 @@
 <script setup>
     import { onMounted } from 'vue'
     import { showNotify } from 'vant'
+    import { useRouter } from 'vue-router'
+    
+    const router = useRouter()
     
     onMounted(async () => {
         showNotify({
@@ -8,7 +11,7 @@
             message: '您中途退出了支付,请等待后端服务器刷新您的支付状态后重试'
         })
         setTimeout(async () => {
-            window.location.href = '#/main/carpooling/passenger-order'
+            await router.push('/main/carpooling/passenger-order')
         }, 3000)
     })
 </script>

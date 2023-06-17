@@ -185,7 +185,7 @@
     
     const goBack = async () => {
         if (fromUrl !== '' && fromUrl !== null && fromUrl !== undefined) {
-            window.location.href = `#${fromUrl}`
+            await router.push(`${fromUrl}`)
         } else {
             await router.go(-1)
         }
