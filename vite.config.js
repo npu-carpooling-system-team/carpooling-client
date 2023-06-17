@@ -13,7 +13,27 @@ export default defineConfig({
     plugins: [
         vue(),
         VitePWA({
-            registerType: 'autoUpdate'
+            base: '/',
+            injectRegister: 'auto',
+            manifest: {
+                name: '西工大拼车平台PWA',
+                themeColor: '#ffffff',
+                icons: [
+                    {
+                        src: "carpooling.svg",
+                        sizes: "64x64 32x32 24x24 16x16",
+                        type: "image/svg+xml"
+                    }
+                ]
+            },
+            registerType: "autoUpdate",
+            workbox: {
+                // 对所有匹配的静态资源进行缓存
+                globPatterns: ["**/*.{js,css,html,ico,png,svg}"]
+            },
+            devOptions: {
+                enabled: true
+            }
         }),
         // 启用顶级js文件中的await
         topLevelAwait({

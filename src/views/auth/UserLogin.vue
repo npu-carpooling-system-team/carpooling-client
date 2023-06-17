@@ -342,7 +342,7 @@
             }
             
             .alipay-icon {
-                margin-top: 20%;
+                margin-top: 10%;
                 width: 50px;
                 height: 50px;
             }
