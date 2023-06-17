@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
-
+import { VitePWA } from 'vite-plugin-pwa'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import topLevelAwait from 'vite-plugin-top-level-await'
@@ -12,6 +12,12 @@ export default defineConfig({
     publicDir: 'public',
     plugins: [
         vue(),
+        VitePWA({
+            registerType: 'autoUpdate',
+            devOptions: {
+                enabled: true
+            }
+        }),
         // 启用顶级js文件中的await
         topLevelAwait({
             // The export name of top-level await promise for each chunk module
