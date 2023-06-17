@@ -1,1 +1,1 @@
-{"name":"carpooling-client","short_name":"carpooling-client","start_url":"./","display":"standalone","background_color":"#ffffff","lang":"en","scope":"./"}
+{"name":"西工大拼车平台PWA","short_name":"carpooling-client","start_url":"/","display":"standalone","background_color":"#ffffff","lang":"en","scope":"/","themeColor":"#ffffff","icons":[{"src":"carpooling.svg","sizes":"64x64 32x32 24x24 16x16","type":"image/svg+xml"}]}
