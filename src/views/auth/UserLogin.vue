@@ -173,10 +173,13 @@
             });
         }
     })
+    
+    const getIconUrl = () => {
+        return new URL('../../assets/imgs/carpooling.svg', import.meta.url).href
+    }
 </script>
 
 <template>
-    <!--show notify不生效 使用HTML引入-->
     <div class="login-box">
         <h1 style="margin-top: 10%">西工大拼车平台</h1>
         <div class="icon-box">
@@ -184,7 +187,7 @@
                 round
                 width="80%"
                 height="80%"
-                src="/carpooling.svg"
+                :src="getIconUrl()"
             />
         </div>
         <div class="form-box" id="form-box">
