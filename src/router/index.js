@@ -214,6 +214,7 @@ const router = createRouter({
 })
 
 const whiteList = [
+    '/',
     '/login',
     '/register',
     '/oauth/alipay/success',
