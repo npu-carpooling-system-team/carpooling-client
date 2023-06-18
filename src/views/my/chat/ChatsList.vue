@@ -22,8 +22,8 @@
         }
     })
     
-    const showChatDetails = async (item) => {
-        await router.push(`/main/my/my-chats/detail?toUserId=${item.toUserVo.id}`)
+    const showChatDetails = (item) => {
+        window.location.href = `#/main/my/my-chats/detail?toUserId=${item.toUserVo.id}`
     }
 </script>
 
