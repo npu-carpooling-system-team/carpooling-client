@@ -3,8 +3,6 @@
     import { onMounted, ref } from 'vue'
     import { handleGetChat } from '@/api/my'
     import { showNotify } from 'vant'
-    import 'vant/es/notify/style'
-    import 'vant/es/toast/style'
     
     const router = useRouter()
     

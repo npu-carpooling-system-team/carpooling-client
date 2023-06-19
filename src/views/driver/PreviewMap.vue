@@ -29,7 +29,7 @@
         arrivePoint = new AMap.LngLat(tmpArrive[0], tmpArrive[1])
         passingPoint = router.currentRoute.value.query.passingPoint
         fromUrl = router.currentRoute.value.query.fromUrl
-        if (passingPoint !== '') {
+        if (passingPoint !== '' && passingPoint !== "['']") {
             const passingPointArr = passingPoint.split(',')
             for (const item of passingPointArr) {
                 const tmpPassing = await getGeoPoint(item)
